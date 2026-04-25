@@ -366,9 +366,29 @@ function isLikelyMedication(medication: {
   if (medication.dose || medication.frequency || medication.critical) {
     return true;
   }
-  return /\b(tablet|capsule|inhaler|insulin|metformin|warfarin|apixaban|rivaroxaban|aspirin|epipen)\b/i.test(
-    medication.name,
-  );
+
+  const name = medication.name.trim();
+  if (!name) return false;
+
+  const knownMedicationTerms =
+    /\b(tablet|capsule|inhaler|insulin|metformin|warfarin|apixaban|rivaroxaban|aspirin|epipen|paracetamol|acetaminophen|ibuprofen|amoxicillin|atorvastatin|simvastatin|omeprazole|lansoprazole|prednisolone|salbutamol|levothyroxine|lisinopril|losartan|amlodipine|metoprolol|bisoprolol)\b/i;
+  if (knownMedicationTerms.test(name)) return true;
+
+  const lowerName = name.toLowerCase();
+  if (/(olol|pril|sartan|azole|cillin|statin|mab)\b/.test(lowerName)) {
+    return true;
+  }
+
+  // Accept plain single-token names that look drug-like.
+  // - Initial capital (e.g. "Metformin")
+  // - Longer lowercase generic-style token
+  if (/^[A-Z][A-Za-z0-9-]{2,}$/.test(name)) return true;
+  if (/^[a-z][a-z0-9-]{5,}$/.test(name)) return true;
+
+  // Accept long alphanumeric medication tokens (brand/coded names).
+  if (/\b[A-Za-z]+\d+[A-Za-z0-9-]{2,}\b/.test(name)) return true;
+
+  return false;
 }
 
 function parseCondition(label: string) {
