@@ -42,6 +42,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "dotenv": "^17.4.1",
+    "framer-motion": "^12.38.0",
     "geist": "^1.7.0",
     "html5-qrcode": "^2.3.8",
     "jsonwebtoken": "^9.0.3",

@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import fs from "fs";
 import path from "path";
 
@@ -548,6 +549,22 @@ export function initDb() {
     CREATE INDEX IF NOT EXISTS appointments_patient
       ON appointments(patient_id, created_at);
 
+    CREATE TABLE IF NOT EXISTS message_events (
+      id TEXT PRIMARY KEY,
+      message_id TEXT NOT NULL,
+      handle TEXT NOT NULL,
+      direction TEXT NOT NULL,
+      linked_request_id TEXT,
+      linked_chain_ref TEXT,
+      event_type TEXT NOT NULL,
+      metadata_json TEXT,
+      created_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS message_events_message_id
+      ON message_events(message_id);
+    CREATE INDEX IF NOT EXISTS message_events_request_id
+      ON message_events(linked_request_id);
+
     CREATE TABLE IF NOT EXISTS shared_records (
       id TEXT PRIMARY KEY,
       patient_id TEXT NOT NULL,
@@ -600,6 +617,11 @@ export function initDb() {
   ensureColumn(db, "shared_records", "appointment_id", "TEXT");
   ensureColumn(db, "shared_records", "document_manifest_json", "TEXT");
   ensureColumn(db, "shared_records", "share_payload_version", "TEXT");
+  ensureColumn(db, "access_requests", "source_message_id", "TEXT");
+  ensureColumn(db, "access_requests", "clinician_handle", "TEXT");
+  ensureColumn(db, "access_requests", "clinician_chat_guid", "TEXT");
+  ensureColumn(db, "audit_events", "source_message_id", "TEXT");
+  ensureColumn(db, "pending_audit_events", "source_message_id", "TEXT");
 
   if (!database) {
     db.close();
@@ -1221,6 +1243,9 @@ export function createAccessRequest(input: {
   naturalLanguageRequest: string;
   presentedCredential?: string | null;
   emergencyMode: boolean;
+  sourceMessageId?: string | null;
+  clinicianHandle?: string | null;
+  clinicianChatGuid?: string | null;
 }) {
   const db = getDb();
   const timestamp = nowIso();
@@ -1229,10 +1254,12 @@ export function createAccessRequest(input: {
     INSERT INTO access_requests (
       id, patient_id, requester_id, requester_label, issuer_label,
       natural_language_request, presented_credential, emergency_mode,
+      source_message_id, clinician_handle, clinician_chat_guid,
       status, created_at, updated_at
     ) VALUES (
       @id, @patientId, @requesterId, @requesterLabel, @issuerLabel,
       @naturalLanguageRequest, @presentedCredential, @emergencyMode,
+      @sourceMessageId, @clinicianHandle, @clinicianChatGuid,
       'pending', @createdAt, @updatedAt
     )
   `,
@@ -1245,6 +1272,9 @@ export function createAccessRequest(input: {
     naturalLanguageRequest: input.naturalLanguageRequest,
     presentedCredential: input.presentedCredential ?? null,
     emergencyMode: input.emergencyMode ? 1 : 0,
+    sourceMessageId: input.sourceMessageId ?? null,
+    clinicianHandle: input.clinicianHandle ?? null,
+    clinicianChatGuid: input.clinicianChatGuid ?? null,
     createdAt: timestamp,
     updatedAt: timestamp,
   });
@@ -2175,4 +2205,58 @@ export function incrementSharedRecordAccess(
     chainRef: accessChainRef ?? null,
     updatedAt: nowIso(),
   });
+}
+
+// ---------------------------------------------------------------------------
+// Message Events — correlation logging for iMessage pipeline
+// ---------------------------------------------------------------------------
+
+export function logMessageEvent(input: {
+  messageId: string;
+  handle: string;
+  direction: "inbound" | "outbound";
+  linkedRequestId?: string | null;
+  linkedChainRef?: string | null;
+  eventType: string;
+  metadata?: Record<string, unknown> | null;
+}) {
+  const db = getDb();
+  const id = crypto.randomUUID();
+  db.prepare(
+    `
+    INSERT INTO message_events (
+      id, message_id, handle, direction, linked_request_id, linked_chain_ref,
+      event_type, metadata_json, created_at
+    ) VALUES (
+      @id, @messageId, @handle, @direction, @linkedRequestId, @linkedChainRef,
+      @eventType, @metadataJson, @createdAt
+    )
+  `,
+  ).run({
+    id,
+    messageId: input.messageId,
+    handle: input.handle,
+    direction: input.direction,
+    linkedRequestId: input.linkedRequestId ?? null,
+    linkedChainRef: input.linkedChainRef ?? null,
+    eventType: input.eventType,
+    metadataJson: input.metadata ? JSON.stringify(input.metadata) : null,
+    createdAt: nowIso(),
+  });
+  return id;
+}
+
+export function getClinicianHandleForRequest(
+  requestId: string,
+): { handle: string; chatGuid: string } | null {
+  const db = getDb();
+  const row = db
+    .prepare(
+      "SELECT clinician_handle, clinician_chat_guid FROM access_requests WHERE id = ?",
+    )
+    .get(requestId) as
+    | { clinician_handle: string | null; clinician_chat_guid: string | null }
+    | undefined;
+  if (!row?.clinician_handle || !row?.clinician_chat_guid) return null;
+  return { handle: row.clinician_handle, chatGuid: row.clinician_chat_guid };
 }

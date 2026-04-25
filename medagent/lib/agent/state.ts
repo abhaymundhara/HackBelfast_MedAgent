@@ -133,6 +133,7 @@ export const RequestContextSchema = z.object({
   requesterLabel: z.string().optional(),
   issuerLabel: z.string().optional(),
   patientApprovalPresent: z.boolean().default(false),
+  sourceMessageId: z.string().optional(),
 });
 export type RequestContext = z.infer<typeof RequestContextSchema>;
 

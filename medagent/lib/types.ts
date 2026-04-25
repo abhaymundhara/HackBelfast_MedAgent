@@ -127,6 +127,7 @@ export const AuditEventSchema = z.object({
   summary_hash: z.string().optional(),
   fields_accessed: z.string().optional(),
   duration_seconds: z.number().optional(),
+  source_message_id: z.string().optional(),
 });
 
 export type EmergencySummary = z.infer<typeof EmergencySummary>;
@@ -262,6 +263,7 @@ export interface AccessWorkflowInput {
   emergencyMode: boolean;
   patientApprovalPresent?: boolean;
   presentedCredential?: string;
+  sourceMessageId?: string;
 }
 
 export interface MedAgentOutcome {
@@ -287,6 +289,7 @@ export interface MedAgentOutcome {
   approvalToken?: string;
   approvalMethod?: "push" | "email";
   auditLog?: AuditWriteResult;
+  sourceMessageId?: string;
 }
 
 export interface PatientDocumentSeed {
