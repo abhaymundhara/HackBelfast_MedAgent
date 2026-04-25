@@ -1,3 +1,5 @@
+import { createHash } from "crypto";
+
 export type ParsedNameDob = {
   name: string;
   dob: string; // YYYY-MM-DD
@@ -15,6 +17,28 @@ function debugLog(message: string, data?: unknown) {
     return;
   }
   console.log(`[imessage/onboarding-nlp] ${message}`, data);
+}
+
+function piiSafeInputMeta(input: string): {
+  inputHash: string;
+  inputLength: number;
+} {
+  return {
+    inputHash: createHash("sha256").update(input).digest("hex").slice(0, 12),
+    inputLength: input.length,
+  };
+}
+
+function piiSafeParseMeta(parsed: ParsedNameDob | null): {
+  hasName: boolean;
+  nameLength: number;
+  hasDob: boolean;
+} {
+  return {
+    hasName: Boolean(parsed?.name),
+    nameLength: parsed?.name.length ?? 0,
+    hasDob: Boolean(parsed?.dob),
+  };
 }
 
 function isLeapYear(year: number): boolean {
@@ -197,7 +221,7 @@ async function parseWithOllama(input: string): Promise<ParsedNameDob | null> {
     debugLog("ollama parse skipped: OLLAMA_MODEL missing");
     return null;
   }
-  debugLog("ollama parse request", { host, model });
+  debugLog("ollama parse request", { host, model, ...piiSafeInputMeta(input) });
 
   const prompt = [
     "Extract a person's full name and date of birth from the user text.",
@@ -251,7 +275,8 @@ async function parseWithOllama(input: string): Promise<ParsedNameDob | null> {
   const parsed = parseFirstJsonObject(payload.response ?? "");
   if (!parsed?.name || !parsed?.dob) {
     debugLog("ollama parse failed: missing name/dob in model response", {
-      responsePreview: (payload.response ?? "").slice(0, 240),
+      responseLength: (payload.response ?? "").length,
+      ...piiSafeInputMeta(input),
     });
     return null;
   }
@@ -259,33 +284,42 @@ async function parseWithOllama(input: string): Promise<ParsedNameDob | null> {
   const dob = toIsoDob(parsed.dob);
   if (!dob) {
     debugLog("ollama parse failed: could not normalize dob", {
-      dob: parsed.dob,
+      modelDobLength: parsed.dob.length,
+      ...piiSafeInputMeta(input),
     });
     return null;
   }
 
-  debugLog("ollama parse success", { name: parsed.name, dob });
-  return {
+  const result = {
     name: parsed.name.trim(),
     dob,
   };
+  debugLog("ollama parse success", {
+    ...piiSafeInputMeta(input),
+    ...piiSafeParseMeta(result),
+  });
+  return result;
 }
 
 export async function parseNameDobInput(
   input: string,
 ): Promise<ParsedNameDob | null> {
-  debugLog("parse input", { input });
+  const inputMeta = piiSafeInputMeta(input);
+  debugLog("parse input", inputMeta);
   const deterministic = parseDeterministic(input);
   if (deterministic) {
-    debugLog("deterministic parse success", deterministic);
+    debugLog("deterministic parse success", {
+      ...inputMeta,
+      ...piiSafeParseMeta(deterministic),
+    });
     return deterministic;
   }
-  debugLog("deterministic parse failed; falling back to ollama");
+  debugLog("deterministic parse failed; falling back to ollama", inputMeta);
 
   try {
     const parsed = await parseWithOllama(input);
     if (!parsed) {
-      debugLog("ollama parse returned null");
+      debugLog("ollama parse returned null", inputMeta);
     }
     return parsed;
   } catch (err) {

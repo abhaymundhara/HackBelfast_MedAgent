@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { afterEach, describe, it, expect } from "vitest";
 import { formatOutbound, formatApprovalPrompt, formatPatientConfirmation, formatHelp, formatAck, formatFollowUpAnswer } from "../outbound";
 import type { MedAgentOutcome } from "@/lib/types";
 
@@ -95,6 +95,50 @@ describe("formatOutbound", () => {
     const combined = messages.join("\n");
     expect(combined).not.toContain("solscan.io");
   });
+
+  it("formats demographics languages defensively", () => {
+    const arrayMessages = formatOutbound({
+      outcome: makeOutcome({
+        summarySubset: {
+          demographics: {
+            name: "Sarah Bennett",
+            dob: "1991-08-14",
+            languages: ["English", 42, "Irish"],
+          },
+        },
+      }),
+      identityKind: "clinician",
+    });
+    expect(arrayMessages.join("\n")).toContain("Languages: English, Irish");
+
+    const stringMessages = formatOutbound({
+      outcome: makeOutcome({
+        summarySubset: {
+          demographics: {
+            name: "Sarah Bennett",
+            dob: "1991-08-14",
+            languages: "English",
+          },
+        },
+      }),
+      identityKind: "clinician",
+    });
+    expect(stringMessages.join("\n")).toContain("Languages: English");
+
+    const invalidMessages = formatOutbound({
+      outcome: makeOutcome({
+        summarySubset: {
+          demographics: {
+            name: "Sarah Bennett",
+            dob: "1991-08-14",
+            languages: { primary: "English" },
+          },
+        },
+      }),
+      identityKind: "clinician",
+    });
+    expect(invalidMessages.join("\n")).not.toContain("Languages:");
+  });
 });
 
 describe("formatApprovalPrompt", () => {
@@ -128,10 +172,26 @@ describe("formatPatientConfirmation", () => {
 });
 
 describe("formatHelp", () => {
+  const originalActivationKeyword = process.env.IMESSAGE_ACTIVATION_KEYWORD;
+
+  afterEach(() => {
+    if (originalActivationKeyword === undefined) {
+      delete process.env.IMESSAGE_ACTIVATION_KEYWORD;
+    } else {
+      process.env.IMESSAGE_ACTIVATION_KEYWORD = originalActivationKeyword;
+    }
+  });
+
   it("lists slash commands", () => {
     const text = formatHelp();
     expect(text).toContain("/access");
     expect(text).toContain("/help");
+  });
+
+  it("uses the shared normalized activation keyword", () => {
+    process.env.IMESSAGE_ACTIVATION_KEYWORD = "  HEY BAYMAX!  ";
+
+    expect(formatHelp()).toContain("say: hey baymax!");
   });
 });
 

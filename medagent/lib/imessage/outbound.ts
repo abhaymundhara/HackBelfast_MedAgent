@@ -1,7 +1,7 @@
 "use strict";
 
 import type { MedAgentOutcome } from "@/lib/types";
-import { DEFAULT_ACTIVATION_KEYWORD } from "./intents";
+import { getActivationKeyword } from "./intents";
 
 export interface OutboundContext {
   outcome: MedAgentOutcome;
@@ -34,6 +34,20 @@ function solscanLine(chainRef: string | null | undefined): string {
   return `• Audit: https://solscan.io/tx/${chainRef}?cluster=devnet`;
 }
 
+function formatLanguages(value: unknown): string | null {
+  if (Array.isArray(value)) {
+    const languages = value.filter(
+      (language): language is string => typeof language === "string",
+    );
+    return languages.length ? languages.join(", ") : null;
+  }
+  if (typeof value === "string") {
+    const language = value.trim();
+    return language || null;
+  }
+  return null;
+}
+
 function tier1Card(ctx: OutboundContext): string {
   const { outcome, requesterLabel, patientLabel } = ctx;
   const subset = outcome.summarySubset ?? {};
@@ -54,10 +68,8 @@ function tier1Card(ctx: OutboundContext): string {
     if (demographics.dob) lines.push(`• DOB: ${String(demographics.dob)}`);
     if (demographics.bloodType)
       lines.push(`• Blood: ${String(demographics.bloodType)}`);
-    if (demographics.languages)
-      lines.push(
-        `• Languages: ${(demographics.languages as string[]).join(", ")}`,
-      );
+    const languages = formatLanguages(demographics.languages);
+    if (languages) lines.push(`• Languages: ${languages}`);
     lines.push("");
   }
 
@@ -284,8 +296,7 @@ export function formatPatientConfirmation(input: {
 }
 
 export function formatHelp(): string {
-  const activationKeyword =
-    process.env.IMESSAGE_ACTIVATION_KEYWORD ?? DEFAULT_ACTIVATION_KEYWORD;
+  const activationKeyword = getActivationKeyword();
   return [
     "Hi — I’m MedAgent.",
     `To wake me up, say: ${activationKeyword}`,

@@ -21,13 +21,30 @@ export type BridgeActionResult = {
 
 const BRIDGE_KIND_MACOS_LOCAL = "macos-local";
 const execFileAsync = promisify(execFile);
+type AppleScriptRunner = (
+  script: string,
+  args: string[],
+  options: {
+    encoding?: BufferEncoding;
+    timeout: number;
+    maxBuffer: number;
+  },
+) => Promise<{ stdout?: string | Buffer }>;
+
+let appleScriptRunner: AppleScriptRunner = (script, args, options) =>
+  execFileAsync("osascript", ["-e", script, ...args], options);
 
 function parseHandleFromChatGuid(chatGuid: string): string {
   const raw = chatGuid.trim();
   if (!raw) return "";
+  if (!raw.includes(";")) return raw;
+
   const segments = raw.split(";");
   const candidate = segments[segments.length - 1]?.trim();
-  return candidate || raw;
+  if (!candidate || candidate === "-" || !/[A-Za-z0-9]/.test(candidate)) {
+    return "";
+  }
+  return candidate;
 }
 
 function buildImessageUrl(chatGuid: string): string {
@@ -113,7 +130,7 @@ end run
 `;
 
     try {
-      await execFileAsync("osascript", ["-e", script, imessageUrl], {
+      await appleScriptRunner(script, [imessageUrl], {
         timeout: 3000,
         maxBuffer: 1024 * 16,
       });
@@ -145,19 +162,48 @@ on run argv
   delay 0.2
   tell application "System Events"
     tell process "Messages"
+      if my composerHasText() then
+        return "skipped_non_empty_composer"
+      end if
       keystroke space
       delay 0.2
       key code 51
+      return "ok"
     end tell
   end tell
 end run
+
+on composerHasText()
+  tell application "System Events"
+    tell process "Messages"
+      set focusedText to ""
+      try
+        set focusedText to value of focused UI element as text
+      end try
+      if focusedText is not "" then return true
+
+      try
+        set candidateTextAreas to every text area of window 1
+        repeat with candidate in candidateTextAreas
+          set candidateValue to value of candidate as text
+          if candidateValue is not "" then return true
+        end repeat
+      end try
+    end tell
+  end tell
+  return false
+end composerHasText
 `;
 
     try {
-      await execFileAsync("osascript", ["-e", script, imessageUrl], {
+      const { stdout } = await appleScriptRunner(script, [imessageUrl], {
         timeout: 3000,
         maxBuffer: 1024 * 16,
       });
+      const output = typeof stdout === "string" ? stdout.trim() : "";
+      if (output === "skipped_non_empty_composer") {
+        return { status: "skipped", detail: "Messages composer already has draft text" };
+      }
       return { status: "ok" };
     } catch (err) {
       console.error("[MacOSLocalBridge] showTypingIndicator failed", toSafeErrorLog(err));
@@ -230,4 +276,13 @@ export function getBridge(): BridgeAdapter {
   bridgeInstance = buildMacOSLocalBridge();
 
   return bridgeInstance;
+}
+
+export function __setAppleScriptRunnerForTests(
+  runner: AppleScriptRunner | null,
+) {
+  appleScriptRunner =
+    runner ??
+    ((script, args, options) =>
+      execFileAsync("osascript", ["-e", script, ...args], options));
 }
