@@ -1,0 +1,39 @@
+.DS_Store
+.omx/
+**/node_modules/
+**/coverage/
+**/.next/
+**/next-env.d.ts
+target/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Local env files
+.env
+.env.*
+!.env.example
+
+# Next.js / frontend build artifacts
+**/out/
+**/dist/
+**/.turbo/
+**/.vercel/
+**/*.tsbuildinfo
+
+# Rust / Solana / Anchor build artifacts
+**/*.rs.bk
+**/*.so
+**/*.dylib
+**/*.keypair.json
+
+# Test and temporary output
+**/.nyc_output/
+tmp/
+temp/
+
+# MedAgent local runtime data
+medagent/data/

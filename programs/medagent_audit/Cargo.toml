@@ -1,0 +1,20 @@
+[package]
+name = "medagent_audit"
+version = "0.1.0"
+edition = "2021"
+description = "MedAgent on-chain audit log program — replaces Hedera HCS"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "medagent_audit"
+
+[features]
+default = []
+cpi = ["no-entrypoint"]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+idl-build = ["anchor-lang/idl-build"]
+
+[dependencies]
+anchor-lang = "0.31.1"

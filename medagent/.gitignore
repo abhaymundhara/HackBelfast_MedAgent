@@ -1,0 +1,8 @@
+.env.local
+.env
+
+# Retrieval observability generated artifacts
+data/retrieval-observability/alerts/
+data/retrieval-observability/test-*.jsonl
+data/retrieval-observability/regression-*.json
+data/retrieval-observability/eval/embedding-bakeoff-*.json

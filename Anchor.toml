@@ -1,0 +1,22 @@
+[toolchain]
+anchor_version = "0.31.1"
+
+[features]
+seeds = false
+skip-lint = false
+
+[programs.localnet]
+medagent_audit = "5ELaWMqQZPseQBuTEGgkPygBXWn1KUQdpMAkQR15Pg6K"
+
+[programs.devnet]
+medagent_audit = "3yPCnb5XQAJcvqmVz1xjUrL9iE24oUAX6LkycfWw5NKX"
+
+[registry]
+url = "https://api.apr.dev"
+
+[provider]
+cluster = "devnet"
+wallet = "${SOLANA_WALLET}"
+
+[scripts]
+test = "yarn run ts-mocha -p ./tsconfig.json -t 300000 tests/**/*.ts"
