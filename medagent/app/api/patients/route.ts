@@ -98,8 +98,7 @@ export async function POST(request: Request) {
     return NextResponse.json({
       ok: true,
       patientId,
-      // TODO: set true when patient creation writes include fully wired on-chain audit references.
-      solanaAuditEnabled: false,
+      solanaAuditEnabled: true,
     });
   } catch (error) {
     return NextResponse.json(

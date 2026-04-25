@@ -474,6 +474,30 @@ export function initDb() {
     );
     CREATE INDEX IF NOT EXISTS imessage_users_stage
       ON imessage_users(stage);
+
+    CREATE TABLE IF NOT EXISTS shared_records (
+      id TEXT PRIMARY KEY,
+      patient_id TEXT NOT NULL,
+      doctor_name TEXT NOT NULL,
+      doctor_email TEXT NOT NULL,
+      doctor_hash TEXT NOT NULL,
+      encrypted_summary TEXT NOT NULL,
+      encrypted_share_key TEXT NOT NULL,
+      fields_shared TEXT NOT NULL,
+      access_token_hash TEXT NOT NULL,
+      document_hash TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'active',
+      expires_at TEXT NOT NULL,
+      max_access_count INTEGER DEFAULT 3,
+      access_count INTEGER DEFAULT 0,
+      share_chain_ref TEXT,
+      share_chain_slot INTEGER,
+      access_chain_ref TEXT,
+      revoke_chain_ref TEXT,
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL,
+      FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE CASCADE
+    );
   `);
 
   // Lightweight forward-compatible migration for branches that already have old schemas.
@@ -1672,4 +1696,130 @@ export function updateImessageUser(
     throw new Error("Failed to update iMessage user record");
   }
   return user;
+}
+
+// ---------------------------------------------------------------------------
+// Shared Records
+// ---------------------------------------------------------------------------
+
+export type SharedRecordRow = {
+  id: string;
+  patient_id: string;
+  doctor_name: string;
+  doctor_email: string;
+  doctor_hash: string;
+  encrypted_summary: string;
+  encrypted_share_key: string;
+  fields_shared: string;
+  access_token_hash: string;
+  document_hash: string;
+  status: string;
+  expires_at: string;
+  max_access_count: number;
+  access_count: number;
+  share_chain_ref: string | null;
+  share_chain_slot: number | null;
+  access_chain_ref: string | null;
+  revoke_chain_ref: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export function createSharedRecord(input: {
+  id: string;
+  patientId: string;
+  doctorName: string;
+  doctorEmail: string;
+  doctorHash: string;
+  encryptedSummary: string;
+  encryptedShareKey: string;
+  fieldsShared: string[];
+  accessTokenHash: string;
+  documentHash: string;
+  expiresAt: string;
+  shareChainRef?: string;
+  shareChainSlot?: number;
+}) {
+  const db = getDb();
+  const now = nowIso();
+  db.prepare(
+    `INSERT INTO shared_records
+     (id, patient_id, doctor_name, doctor_email, doctor_hash,
+      encrypted_summary, encrypted_share_key, fields_shared,
+      access_token_hash, document_hash, status, expires_at,
+      share_chain_ref, share_chain_slot, created_at, updated_at)
+     VALUES (@id, @patientId, @doctorName, @doctorEmail, @doctorHash,
+      @encryptedSummary, @encryptedShareKey, @fieldsShared,
+      @accessTokenHash, @documentHash, 'active', @expiresAt,
+      @shareChainRef, @shareChainSlot, @createdAt, @updatedAt)`,
+  ).run({
+    id: input.id,
+    patientId: input.patientId,
+    doctorName: input.doctorName,
+    doctorEmail: input.doctorEmail,
+    doctorHash: input.doctorHash,
+    encryptedSummary: input.encryptedSummary,
+    encryptedShareKey: input.encryptedShareKey,
+    fieldsShared: JSON.stringify(input.fieldsShared),
+    accessTokenHash: input.accessTokenHash,
+    documentHash: input.documentHash,
+    expiresAt: input.expiresAt,
+    shareChainRef: input.shareChainRef ?? null,
+    shareChainSlot: input.shareChainSlot ?? null,
+    createdAt: now,
+    updatedAt: now,
+  });
+}
+
+export function getSharedRecord(shareId: string) {
+  const db = getDb();
+  return db
+    .prepare("SELECT * FROM shared_records WHERE id = ?")
+    .get(shareId) as SharedRecordRow | undefined;
+}
+
+export function listSharedRecords(patientId: string) {
+  const db = getDb();
+  return db
+    .prepare(
+      "SELECT * FROM shared_records WHERE patient_id = ? ORDER BY created_at DESC",
+    )
+    .all(patientId) as SharedRecordRow[];
+}
+
+export function updateSharedRecordStatus(
+  shareId: string,
+  status: string,
+  chainRef?: string,
+) {
+  const db = getDb();
+  db.prepare(
+    `UPDATE shared_records
+     SET status = @status, revoke_chain_ref = COALESCE(@chainRef, revoke_chain_ref),
+         updated_at = @updatedAt
+     WHERE id = @id`,
+  ).run({
+    id: shareId,
+    status,
+    chainRef: chainRef ?? null,
+    updatedAt: nowIso(),
+  });
+}
+
+export function incrementSharedRecordAccess(
+  shareId: string,
+  accessChainRef?: string,
+) {
+  const db = getDb();
+  db.prepare(
+    `UPDATE shared_records
+     SET access_count = access_count + 1,
+         access_chain_ref = COALESCE(@chainRef, access_chain_ref),
+         updated_at = @updatedAt
+     WHERE id = @id`,
+  ).run({
+    id: shareId,
+    chainRef: accessChainRef ?? null,
+    updatedAt: nowIso(),
+  });
 }

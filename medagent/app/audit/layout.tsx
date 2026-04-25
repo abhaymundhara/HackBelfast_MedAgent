@@ -20,10 +20,10 @@ export default function AuditLayout({
               Home
             </Link>
             <Link
-              href="/audit/sarah-bennett"
+              href="/doctor/dashboard"
               className="transition hover:text-foreground"
             >
-              Audit
+              Dashboard
             </Link>
           </div>
         </div>

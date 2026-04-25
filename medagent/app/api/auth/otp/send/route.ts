@@ -49,7 +49,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    return NextResponse.json({ sent: true, otpId });
+    const response: Record<string, unknown> = { sent: true, otpId };
+    if (result.devOtp) {
+      response.devOtp = result.devOtp;
+    }
+    return NextResponse.json(response);
   } catch (error) {
     console.error("OTP send error:", error);
     return NextResponse.json(

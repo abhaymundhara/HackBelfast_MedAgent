@@ -109,6 +109,9 @@ export const AuditEventTypeSchema = z.enum([
   "access_decision",
   "token_issued",
   "token_expired",
+  "record_shared",
+  "record_accessed",
+  "share_revoked",
 ]);
 
 export const AuditEventSchema = z.object({
