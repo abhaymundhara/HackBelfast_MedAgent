@@ -6,6 +6,8 @@ export type ParsedIntent =
   | { kind: "freeform_clinician"; patientHint: string | null; emergencyMode: boolean }
   | { kind: "unknown" };
 
+export const DEFAULT_ACTIVATION_KEYWORD = "hey baymax!";
+
 const PATIENT_CODE_MAP: Record<string, string> = {
   SARAHB: "sarah-bennett",
   OMARH: "omar-haddad",
@@ -21,6 +23,35 @@ const EMERGENCY_KEYWORDS = [
 ];
 
 const PATIENT_HINT_RE = /patient:\s*(\S+)/i;
+
+function normalizeKeyword(value: string): string {
+  return value.trim().toLowerCase();
+}
+
+export function getActivationKeyword(): string {
+  return normalizeKeyword(
+    process.env.IMESSAGE_ACTIVATION_KEYWORD ?? DEFAULT_ACTIVATION_KEYWORD,
+  );
+}
+
+export function stripActivationKeyword(text: string): {
+  activated: boolean;
+  cleanedText: string;
+  keyword: string;
+} {
+  const keyword = getActivationKeyword();
+  const trimmed = text.trim();
+  const lower = trimmed.toLowerCase();
+  if (!lower.startsWith(keyword)) {
+    return { activated: false, cleanedText: trimmed, keyword };
+  }
+
+  const cleanedText = trimmed
+    .slice(keyword.length)
+    .replace(/^[\s,:;.!?-]+/, "")
+    .trim();
+  return { activated: true, cleanedText, keyword };
+}
 
 export function classifyIntent(text: string, awaiting: string | null): ParsedIntent {
   if (awaiting === "approval_yes_no") {

@@ -10,7 +10,7 @@ export interface InboundMessage {
   receivedAt: string;
 }
 
-const BlueBubblesWebhookSchema = z.object({
+const BridgeWebhookSchema = z.object({
   type: z.string(),
   data: z.object({
     guid: z.string(),
@@ -31,7 +31,7 @@ const BlueBubblesWebhookSchema = z.object({
 const FIVE_MINUTES_MS = 5 * 60 * 1000;
 
 export function parseInbound(rawPayload: unknown): InboundMessage | null {
-  const result = BlueBubblesWebhookSchema.safeParse(rawPayload);
+  const result = BridgeWebhookSchema.safeParse(rawPayload);
   if (!result.success) {
     return null;
   }

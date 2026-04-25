@@ -1,10 +1,11 @@
 # MedAgent Demo Script (iMessage — Belfast 2036)
 
 ## Setup (~5 min)
-1. BlueBubbles running on demo Mac, webhook → laptop running `npm run dev`
-2. `npm run imessage:smoke -- --chat 'iMessage;-;+447700900401' --text 'MedAgent online'`
-3. `npm run demo:reset`
-4. Open `http://localhost:3000/audit/sarah-bennett` on second screen
+1. On the Mac with Messages.app, run `npm run imessage:live` (single terminal command)
+2. `npm run imessage:health` (expect `{ "healthy": true, ... }`)
+3. `npm run imessage:smoke -- --chat 'iMessage;-;+447700900401' --text 'MedAgent online'`
+4. `npm run demo:reset`
+5. Open `http://localhost:3000/audit/sarah-bennett` on second screen
 
 ## Flow 1 — Tier 1 (HSE clinician, verified, same jurisdiction)
 - iMessage from +353871000001 (Dr. Aoife Murphy, HSE)
