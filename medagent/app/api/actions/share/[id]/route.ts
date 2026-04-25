@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { decryptJson } from "@/lib/crypto";
-import { getPatientRow, getSharedRecord } from "@/lib/db";
+import { getAppointment, getPatientRow, getSharedRecord } from "@/lib/db";
 import { EmergencySummary } from "@/lib/types";
 
 const CORS_HEADERS = {
@@ -29,9 +29,11 @@ export async function GET(
   }
 
   const fieldsShared: string[] = JSON.parse(share.fields_shared);
-  const fieldsText = fieldsShared
-    .map((f) => f.charAt(0).toUpperCase() + f.slice(1))
-    .join(", ");
+  const isFullRecord = share.share_scope === "full_record";
+  const fieldsText = isFullRecord
+    ? "Full medical record"
+    : fieldsShared.map((f) => f.charAt(0).toUpperCase() + f.slice(1)).join(", ");
+  const appointment = share.appointment_id ? getAppointment(share.appointment_id) : null;
 
   let patientName = "Patient";
   const patient = getPatientRow(share.patient_id);
@@ -65,7 +67,13 @@ export async function GET(
     type: "action",
     icon: "https://raw.githubusercontent.com/nicecatch/medagent-assets/main/medical-record-blink.png",
     title: `Medical Record — ${patientName}`,
-    description: `Shared fields: ${fieldsText}${statusText}\nVerified on Solana`,
+    description: [
+      `Scope: ${fieldsText}`,
+      appointment
+        ? `Appointment: ${appointment.doctorName}, ${appointment.clinic}, ${new Date(appointment.startsAt).toLocaleString()}`
+        : `Doctor: ${share.doctor_name}`,
+      `${statusText.trim() || "Verified on Solana"}`,
+    ].join("\n"),
     label: "View Record",
     disabled: isDisabled,
     ...(isDisabled && {

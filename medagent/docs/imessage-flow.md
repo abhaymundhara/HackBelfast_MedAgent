@@ -5,6 +5,20 @@
 iMessage (Mac) → Local poller (chat.db) → Webhook POST → MedAgent Workflow → Messages.app bridge sendText → iMessage
 ```
 
+## Sequence: Belfast appointment + full-record share
+1. Patient onboards in iMessage and uploads a medical report PDF.
+2. Patient texts a request such as "my knee injury is spiking in Belfast, book a doctor".
+3. Webhook identifies the handle as an onboarded patient and classifies `appointment_search`.
+4. MedAgent searches the demo NHS booking-management adapter for Belfast slots today/tomorrow.
+5. Patient replies with a slot number, or sends a future date in `YYYY-MM-DD` format.
+6. MedAgent books the selected slot and confirms doctor, clinic, and time.
+7. MedAgent asks a separate consent question: share the full uploaded medical record with the named doctor?
+8. If the patient replies YES, MedAgent creates a full-record share and returns the original `/share/{id}#token=...` doctor link.
+9. The doctor opens the live share page. The page uses the fragment token to fetch summary fields and live document descriptors.
+10. Patient can revoke future live access from the dashboard. Revocation does not erase data already viewed or downloaded.
+
+The NHS booking integration is represented by deterministic seeded demo slots. Raw medical data remains off-chain; Solana receives audit metadata, hashes, expiry, scope, and revocation events only.
+
 ## Sequence: Tier 1 (Same-jurisdiction verified)
 1. Clinician sends iMessage to MedAgent number
 2. Local poller reads new row from `~/Library/Messages/chat.db`

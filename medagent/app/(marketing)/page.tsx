@@ -36,18 +36,18 @@ export default function HomePage() {
         <div className="container">
           <Link href="/how-it-works" className="pill-link">
             <span className="tag">NEW</span>
-            <span>Read about our HackBelfast 2026 demo →</span>
+            <span>Book, consent, and revoke in the HackBelfast demo →</span>
           </Link>
 
           <h1 className="display">
-            Emergency medical access,
+            Belfast doctor bookings,
             <br />
             by text message.
           </h1>
           <p className="lead">
-            MedAgent is a messaging-first agent for cross-border emergency care on the island of
-            Ireland. Clinicians text a request. Patients stay in control. Every access is logged on
-            Solana — auditable, PHI-free.
+            MedAgent helps Irish travelers in Belfast find verified appointment slots, confirm a
+            doctor, and share their full uploaded medical record only after explicit consent —
+            revocable from the dashboard and audited on Solana without PHI on-chain.
           </p>
           <div className="hero-ctas">
             <TextMedAgentButton className="btn btn-primary btn-lg">
@@ -65,7 +65,7 @@ export default function HomePage() {
             </span>
             <span>
               <span className="dot dot-blue" />
-              WhatsApp + SMS
+              NHS booking adapter
             </span>
             <span>
               <span className="dot dot-grey" />
@@ -98,8 +98,8 @@ export default function HomePage() {
         <div className="container">
           <div className="sec-head">
             <span className="eyebrow">How the agent thinks</span>
-            <h2 className="display-md">A three-stage agent for the messy bit of emergency care.</h2>
-            <p>From clinician text to on-chain audit — every step deterministic, every decision logged.</p>
+            <h2 className="display-md">A three-stage agent for cross-border appointments.</h2>
+            <p>From patient text to appointment confirmation to named-doctor record sharing.</p>
           </div>
           <WorkflowDiagram />
         </div>
@@ -107,7 +107,7 @@ export default function HomePage() {
 
       <section className="bigstats" id="audit">
         <div className="container">
-          <h2>Built for the scale of cross-border care.</h2>
+          <h2>Built for cross-border care when symptoms flare away from home.</h2>
           <div className="row">
             <div className="bigstat">
               <div className="n">30k+</div>
@@ -130,10 +130,10 @@ export default function HomePage() {
           <div className="start">
             <div>
               <span className="eyebrow">Start a conversation</span>
-              <h3>Text MedAgent. Get a record back in seconds.</h3>
+              <h3>Text MedAgent. Confirm a slot before sharing records.</h3>
               <p>
-                Save the number, send a message, watch the agent verify, route, and respond — with the
-                audit row hitting Solana before you blink.
+                Save the number, send a message, choose a Belfast appointment, then approve the
+                full-record share for the named doctor.
               </p>
 
               <div className="num-display">
@@ -164,7 +164,7 @@ export default function HomePage() {
 
       <section className="cta-final">
         <div className="container">
-          <h2 className="display">Send a text. See what happens.</h2>
+          <h2 className="display">Send a text. Book the slot. Share only when ready.</h2>
           <p>
             The whole demo runs over your phone&apos;s existing messaging app. No installs, no signup, no
             learning curve.
