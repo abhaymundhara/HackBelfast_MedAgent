@@ -77,8 +77,8 @@ const config: Config = {
         glow: "radial-gradient(circle at top left, rgba(14, 116, 144, 0.24), transparent 42%), radial-gradient(circle at bottom right, rgba(30, 64, 175, 0.18), transparent 36%)",
       },
       fontFamily: {
-        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
-        mono: ["var(--font-jetbrains-mono)", "monospace"],
+        sans: ["var(--font-geist-sans)", "var(--font-inter)", "system-ui", "sans-serif"],
+        mono: ["var(--font-geist-mono)", "var(--font-jetbrains-mono)", "monospace"],
       },
       keyframes: {
         "fade-up": {

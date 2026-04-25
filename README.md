@@ -1,6 +1,6 @@
 # MedAgent
 
-MedAgent is a deterministic emergency medical access system for cross-border healthcare on the island of Ireland. Designed for HackBelfast 2026's *Belfast 2036* problem statement, it gives verified clinicians on either side of the NI/ROI border time-limited access to a traveler's emergency summary, with non-PHI interaction audit trails on Solana. The demo combines IMC/GMC doctor verification, patient dashboards, and an iMessage bridge powered by BlueBubbles.
+MedAgent is a deterministic emergency medical access system for cross-border healthcare on the island of Ireland. Designed for HackBelfast 2026's *Belfast 2036* problem statement, it gives verified clinicians on either side of the NI/ROI border time-limited access to a traveler's emergency summary, with non-PHI interaction audit trails on Solana. The demo combines IMC/GMC doctor verification, patient dashboards, and a local macOS iMessage bridge.
 
 ## Product Model
 
@@ -161,7 +161,7 @@ The compatibility shim in `medagent/lib/agent/medagent.ts` re-exports the public
 cd medagent
 npm install
 npm run seed:demo
-npm run dev
+npm run imessage:live
 ```
 
 Open `http://localhost:3000`.
@@ -172,14 +172,25 @@ Optional `.env.local` values:
 
 ```bash
 OPENAI_API_KEY=...
+OLLAMA_HOST=http://127.0.0.1:11434
+OLLAMA_MODEL=llama3.1:8b
+IMESSAGE_OLLAMA_PARSE_ENABLED=true
 SOLANA_PRIVATE_KEY=[...]
 SOLANA_CLUSTER=devnet
 SOLANA_RPC_URL=https://api.devnet.solana.com
 SOLANA_WALLET=/absolute/path/to/solana/id.json
 JWT_SECRET=...
 ENCRYPTION_PEPPER=...
-BLUEBUBBLES_URL=http://localhost:1234
-BLUEBUBBLES_PASSWORD=...
+IMESSAGE_BRIDGE_KIND=macos-local
+# Optional
+IMESSAGE_CHAT_DB_PATH=/Users/<you>/Library/Messages/chat.db
+IMESSAGE_POLLER_INTERVAL_MS=2000
+IMESSAGE_POLLER_BATCH_SIZE=25
+IMESSAGE_POLLER_BOOTSTRAP=latest
+IMESSAGE_POLLER_SKIP_HISTORY_ON_START=true
+IMESSAGE_POLLER_ONLY_IMESSAGE_SERVICE=true
+# Optional sender allowlist (comma-separated); default uses mapped MedAgent handles
+IMESSAGE_POLLER_ALLOWED_HANDLES=+353871000001,+447700900201
 IMESSAGE_WEBHOOK_SECRET=...
 RESEND_API_KEY=re_...
 RESEND_FROM_EMAIL=noreply@medagent.dev
@@ -192,6 +203,12 @@ Notes:
 
 - If `SOLANA_PRIVATE_KEY` is missing, the app falls back to local-only audit markers instead of live chain submission.
 - If `OPENAI_API_KEY` is missing, translation/follow-up fall back to deterministic local behavior.
+- iMessage bridge runs live-only on macOS Messages.app (AppleScript + local chat.db polling). BlueBubbles and mock modes are disabled.
+- Use `GET /api/imessage/health` (with `x-webhook-secret` or `Authorization: Bearer <secret>` when configured) to verify local bridge connectivity.
+- Run `npm run imessage:live` to start both the app and inbound iMessage poller in one terminal.
+- Advanced/manual mode: run `npm run dev` and `npm run imessage:poll` separately.
+- Poller defaults to iMessage service only and forwards only allowlisted handles to avoid SMS shortcodes/system senders.
+- Poller defaults to `IMESSAGE_POLLER_SKIP_HISTORY_ON_START=true`, so each launch starts from the current message tail and does not replay old history.
 - Demo readiness checks validate RPC/program availability without polluting the audit log.
 - `Anchor.toml` now resolves wallet via `${SOLANA_WALLET}` for cross-platform compatibility.
   Set it to an absolute path before running Anchor commands:
@@ -217,9 +234,11 @@ From `medagent/`:
 
 ```bash
 npm run dev
+npm run imessage:live
 npm run seed:demo
 npm run demo:reset
 npm run demo:readiness
+npm run imessage:poll
 npm run eval:retrieval
 npm run test
 npm run test:agent

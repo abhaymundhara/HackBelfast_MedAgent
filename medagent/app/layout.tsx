@@ -1,24 +1,14 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { JetBrains_Mono, Manrope } from "next/font/google";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
 
 import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
 
-const manrope = Manrope({
-  subsets: ["latin"],
-  variable: "--font-manrope",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-jetbrains-mono",
-});
-
 export const metadata: Metadata = {
-  title: "MedAgent",
+  title: "MedAgent — Emergency medical access by text",
   description:
-    "Cross-border emergency medical access with tiered consent and on-chain audit trails on Solana.",
+    "Messaging-first agent for cross-border emergency care on the island of Ireland. Clinicians text. Patients consent. Solana audits.",
 };
 
 export default function RootLayout({
@@ -28,19 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${manrope.variable} ${jetbrainsMono.variable} min-h-screen`}>
-        <nav className="sticky top-0 z-50 border-b border-border/40 bg-white/80 backdrop-blur-md">
-          <div className="container flex h-14 items-center justify-between">
-            <Link href="/" className="text-lg font-semibold tracking-tight text-foreground">
-              MedAgent
-            </Link>
-            <div className="flex items-center gap-6 text-sm text-muted-foreground">
-              <Link href="/doctor/login" className="transition hover:text-foreground">Doctor</Link>
-              <Link href="/patient/login" className="transition hover:text-foreground">Patient</Link>
-              <Link href="/audit/sarah-bennett" className="transition hover:text-foreground">Audit</Link>
-            </div>
-          </div>
-        </nav>
+      <body className={`${GeistSans.variable} ${GeistMono.variable} min-h-screen`}>
         {children}
         <Toaster />
       </body>

@@ -148,6 +148,18 @@ type PendingAuditEventRow = {
   updated_at: string;
 };
 
+type ImessageUserRow = {
+  handle: string;
+  stage: string;
+  full_name: string | null;
+  dob: string | null;
+  patient_id: string | null;
+  onboarding_record_draft: string | null;
+  created_at: string;
+  updated_at: string;
+  last_seen_at: string;
+};
+
 function ensureDataDirs() {
   fs.mkdirSync(DATA_DIR, { recursive: true });
   fs.mkdirSync(DOC_DIR, { recursive: true });
@@ -449,6 +461,19 @@ export function initDb() {
       created_at TEXT NOT NULL,
       last_login_at TEXT
     );
+    CREATE TABLE IF NOT EXISTS imessage_users (
+      handle TEXT PRIMARY KEY,
+      stage TEXT NOT NULL,
+      full_name TEXT,
+      dob TEXT,
+      patient_id TEXT,
+      onboarding_record_draft TEXT,
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL,
+      last_seen_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS imessage_users_stage
+      ON imessage_users(stage);
   `);
 
   // Lightweight forward-compatible migration for branches that already have old schemas.
@@ -1529,4 +1554,122 @@ export function getDocumentForPatient(patientId: string, documentId: string) {
       "SELECT * FROM patient_documents WHERE patient_id = ? AND id = ? LIMIT 1",
     )
     .get(patientId, documentId) as DocumentRow | undefined;
+}
+
+export type ImessageOnboardingStage =
+  | "new"
+  | "awaiting_name_dob"
+  | "awaiting_ready_yes_no"
+  | "awaiting_new_user_record"
+  | "onboarded";
+
+export interface ImessageUser {
+  handle: string;
+  stage: ImessageOnboardingStage;
+  fullName: string | null;
+  dob: string | null;
+  patientId: string | null;
+  onboardingRecordDraft: string | null;
+  createdAt: string;
+  updatedAt: string;
+  lastSeenAt: string;
+}
+
+function mapImessageUserRow(row: ImessageUserRow): ImessageUser {
+  return {
+    handle: row.handle,
+    stage: row.stage as ImessageOnboardingStage,
+    fullName: row.full_name,
+    dob: row.dob,
+    patientId: row.patient_id,
+    onboardingRecordDraft: row.onboarding_record_draft,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+    lastSeenAt: row.last_seen_at,
+  };
+}
+
+export function getImessageUser(handle: string): ImessageUser | null {
+  const db = getDb();
+  const row = db
+    .prepare("SELECT * FROM imessage_users WHERE handle = ?")
+    .get(handle) as ImessageUserRow | undefined;
+  return row ? mapImessageUserRow(row) : null;
+}
+
+export function touchImessageUser(handle: string): ImessageUser {
+  const db = getDb();
+  const timestamp = nowIso();
+  db.prepare(
+    `
+    INSERT INTO imessage_users (
+      handle, stage, full_name, dob, patient_id, onboarding_record_draft,
+      created_at, updated_at, last_seen_at
+    ) VALUES (
+      @handle, 'new', NULL, NULL, NULL, NULL,
+      @createdAt, @updatedAt, @lastSeenAt
+    )
+    ON CONFLICT(handle) DO UPDATE SET
+      last_seen_at = excluded.last_seen_at,
+      updated_at = excluded.updated_at
+  `,
+  ).run({
+    handle,
+    createdAt: timestamp,
+    updatedAt: timestamp,
+    lastSeenAt: timestamp,
+  });
+
+  const user = getImessageUser(handle);
+  if (!user) {
+    throw new Error("Failed to touch iMessage user record");
+  }
+  return user;
+}
+
+export function updateImessageUser(
+  handle: string,
+  patch: Partial<{
+    stage: ImessageOnboardingStage;
+    fullName: string | null;
+    dob: string | null;
+    patientId: string | null;
+    onboardingRecordDraft: string | null;
+  }>,
+): ImessageUser {
+  const db = getDb();
+  const fields: string[] = [];
+  const values: Record<string, unknown> = {
+    handle,
+    updatedAt: nowIso(),
+    lastSeenAt: nowIso(),
+  };
+
+  const mapping: Record<string, string> = {
+    stage: "stage",
+    fullName: "full_name",
+    dob: "dob",
+    patientId: "patient_id",
+    onboardingRecordDraft: "onboarding_record_draft",
+  };
+
+  for (const [key, column] of Object.entries(mapping)) {
+    if (key in patch) {
+      fields.push(`${column} = @${key}`);
+      values[key] = patch[key as keyof typeof patch];
+    }
+  }
+
+  fields.push("updated_at = @updatedAt");
+  fields.push("last_seen_at = @lastSeenAt");
+
+  db.prepare(
+    `UPDATE imessage_users SET ${fields.join(", ")} WHERE handle = @handle`,
+  ).run(values);
+
+  const user = getImessageUser(handle);
+  if (!user) {
+    throw new Error("Failed to update iMessage user record");
+  }
+  return user;
 }

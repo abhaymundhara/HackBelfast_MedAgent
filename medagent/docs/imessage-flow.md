@@ -2,13 +2,14 @@
 
 ## Architecture
 ```
-iMessage (Mac) → BlueBubbles → Webhook POST → MedAgent Workflow → Bridge sendText → iMessage
+iMessage (Mac) → Local poller (chat.db) → Webhook POST → MedAgent Workflow → Messages.app bridge sendText → iMessage
 ```
 
 ## Sequence: Tier 1 (Same-jurisdiction verified)
 1. Clinician sends iMessage to MedAgent number
-2. BlueBubbles fires webhook to `/api/imessage/webhook`
-3. Webhook parses inbound, resolves handle → dr-murphy (HSE)
+2. Local poller reads new row from `~/Library/Messages/chat.db`
+3. Poller posts webhook event to `/api/imessage/webhook`
+4. Webhook parses inbound, resolves handle → dr-murphy (HSE)
 4. Classifies intent: freeform_clinician, patientHint=sarah-bennett
 5. Sends ack: "MedAgent received your request, working..."
 6. Calls `runAccessRequest({ patientId, requesterId, ... })`
@@ -25,7 +26,7 @@ iMessage (Mac) → BlueBubbles → Webhook POST → MedAgent Workflow → Bridge
 4. Clinician receives "pending patient approval" message
 5. Patient receives approval prompt via iMessage
 6. Patient replies YES
-7. BlueBubbles fires webhook with YES text
+7. Local poller forwards patient's YES reply via webhook
 8. Webhook: intent=approval, decision=approve
 9. Calls `resumeApprovedRequest(requestId)`
 10. Workflow resumes → Tier 2 grant

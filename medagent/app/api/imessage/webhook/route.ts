@@ -1,23 +1,64 @@
 import { NextResponse } from "next/server";
 import { parseInbound } from "@/lib/imessage/inbound";
-import { classifyIntent } from "@/lib/imessage/intents";
+import { classifyIntent, stripActivationKeyword } from "@/lib/imessage/intents";
 import { resolveHandle, listHandleMappings } from "@/lib/imessage/handles";
-import { loadConversation, saveConversation, clearActiveRequest } from "@/lib/imessage/conversationState";
-import { formatOutbound, formatApprovalPrompt, formatPatientConfirmation, formatHelp, formatAskPatientId, formatAskApproval, formatAck, formatFollowUpAnswer } from "@/lib/imessage/outbound";
+import {
+  loadConversation,
+  saveConversation,
+  clearActiveRequest,
+} from "@/lib/imessage/conversationState";
+import {
+  formatOutbound,
+  formatApprovalPrompt,
+  formatPatientConfirmation,
+  formatHelp,
+  formatAskPatientId,
+  formatAskApproval,
+  formatAck,
+  formatFollowUpAnswer,
+} from "@/lib/imessage/outbound";
 import { getBridge } from "@/lib/imessage/bridge";
 import { runAccessRequest } from "@/lib/agent/runAccessRequest";
-import { resumeApprovedRequest, denyApprovedRequest, answerFollowUpQuestion } from "@/lib/agent/medagent";
+import {
+  resumeApprovedRequest,
+  denyApprovedRequest,
+  answerFollowUpQuestion,
+} from "@/lib/agent/medagent";
 import { getDemoClinician } from "@/lib/ips/seed";
+import {
+  listPatientsSafe,
+  getPatientSummary,
+  touchImessageUser,
+  updateImessageUser,
+  type ImessageOnboardingStage,
+} from "@/lib/db";
+import { parseNameDobInput } from "@/lib/imessage/onboardingNlp";
 import type { ConversationState } from "@/lib/imessage/conversationState";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+function isDebugEnabled(): boolean {
+  const raw = (process.env.IMESSAGE_DEBUG ?? "").trim().toLowerCase();
+  return ["1", "true", "yes", "on"].includes(raw);
+}
+
+function debugLog(message: string, data?: unknown) {
+  if (!isDebugEnabled()) return;
+  if (data === undefined) {
+    console.log(`[imessage/webhook] ${message}`);
+    return;
+  }
+  console.log(`[imessage/webhook] ${message}`, data);
+}
+
 export async function POST(request: Request) {
   // 1. Auth check
   const secret = process.env.IMESSAGE_WEBHOOK_SECRET;
   if (secret) {
-    const authHeader = request.headers.get("authorization") ?? request.headers.get("x-webhook-secret");
+    const authHeader =
+      request.headers.get("authorization") ??
+      request.headers.get("x-webhook-secret");
     if (authHeader !== secret && authHeader !== `Bearer ${secret}`) {
       return NextResponse.json({ error: "unauthorized" }, { status: 401 });
     }
@@ -28,16 +69,24 @@ export async function POST(request: Request) {
   try {
     body = await request.json();
   } catch {
+    debugLog("ignored invalid_json");
     return NextResponse.json({ ignored: true, reason: "invalid_json" });
   }
 
   const message = parseInbound(body);
   if (!message) {
+    debugLog("ignored filtered inbound");
     return NextResponse.json({ ignored: true, reason: "filtered" });
   }
 
   const bridge = getBridge();
   const { chatGuid, handle, text } = message;
+  debugLog("inbound accepted", {
+    handle,
+    chatGuid,
+    textPreview: text.slice(0, 200),
+  });
+  await markInboundSeen(bridge, chatGuid);
 
   // 3. Resolve identity
   const handleMapping = resolveHandle(handle);
@@ -45,12 +94,14 @@ export async function POST(request: Request) {
 
   // Check for persona override in metadata
   let identityId = handleMapping?.identityId ?? "unknown-emergency";
-  let identityKind = handleMapping?.identityKind ?? "clinician" as const;
+  let identityKind = handleMapping?.identityKind ?? ("clinician" as const);
   let label = handleMapping?.label ?? "Unknown";
 
   if (conv?.metadata?.personaOverride) {
     const override = conv.metadata.personaOverride as string;
-    const overrideMapping = listHandleMappings().find(m => m.identityId === override);
+    const overrideMapping = listHandleMappings().find(
+      (m) => m.identityId === override,
+    );
     if (overrideMapping) {
       identityId = overrideMapping.identityId;
       identityKind = overrideMapping.identityKind;
@@ -73,34 +124,477 @@ export async function POST(request: Request) {
   conv.identityId = identityId;
   conv.identityKind = identityKind;
 
+  const imessageUser = touchImessageUser(handle);
+  debugLog("loaded user stage", {
+    handle,
+    stage: imessageUser.stage,
+    awaiting: conv.awaiting,
+  });
+  if (!conv.awaiting) {
+    if (imessageUser.stage === "awaiting_name_dob")
+      conv.awaiting = "onboarding_name_dob";
+    if (imessageUser.stage === "awaiting_ready_yes_no")
+      conv.awaiting = "onboarding_ready_yes_no";
+    if (imessageUser.stage === "awaiting_new_user_record")
+      conv.awaiting = "onboarding_new_user_record";
+  }
+
+  // Activation keyword should not reset completed onboarding. It resumes current stage only.
+  const activationReset = stripActivationKeyword(text);
+  if (activationReset.activated && !activationReset.cleanedText) {
+    debugLog("activation keyword detected", { stage: imessageUser.stage });
+    if (imessageUser.stage === "onboarded") {
+      await bridge.sendText({
+        chatGuid,
+        text: 'You\'re already onboarded. Tell me what you need, for example: "hey baymax! access patient SARAHB".',
+      });
+    } else if (imessageUser.stage === "new") {
+      await startBaymaxOnboarding(conv, handle, chatGuid, bridge);
+    } else {
+      await promptOnboardingStage(imessageUser.stage, chatGuid, bridge);
+    }
+    saveConversation(conv);
+    return NextResponse.json({ ok: true });
+  }
+
   // 4. Classify intent
   const intent = classifyIntent(text, conv.awaiting);
+  debugLog("intent classified", {
+    kind: intent.kind,
+    awaiting: conv.awaiting,
+    identityKind,
+  });
 
   // 5. Dispatch
   try {
     if (intent.kind === "slash") {
-      await handleSlashCommand(intent.command, intent.args, conv, chatGuid, bridge);
+      await handleSlashCommand(
+        intent.command,
+        intent.args,
+        conv,
+        chatGuid,
+        bridge,
+      );
     } else if (intent.kind === "approval") {
       await handleApproval(intent.decision, conv, chatGuid, bridge);
-    } else if (intent.kind === "freeform_clinician" && identityKind === "clinician") {
-      await handleClinicianRequest(text, intent, conv, chatGuid, bridge);
+    } else if (conv.awaiting === "onboarding_name_dob") {
+      await handleOnboardingNameDob(text, handle, conv, chatGuid, bridge);
+    } else if (conv.awaiting === "onboarding_ready_yes_no") {
+      await handleOnboardingReadyReply(text, handle, conv, chatGuid, bridge);
+    } else if (conv.awaiting === "onboarding_new_user_record") {
+      await handleOnboardingNewUserRecord(text, handle, conv, chatGuid, bridge);
+    } else if (
+      intent.kind === "freeform_clinician" &&
+      identityKind === "clinician"
+    ) {
+      const activation = stripActivationKeyword(text);
+      const canSkipActivation = conv.awaiting === "patient_id";
+      if (!activation.activated && !canSkipActivation) {
+        await bridge.sendText({
+          chatGuid,
+          text: `Start your message with "${activation.keyword}" to trigger MedAgent. Example: "${activation.keyword} access patient SARAHB".`,
+        });
+      } else {
+        const routedText = activation.activated ? activation.cleanedText : text;
+        const routedIntent = classifyIntent(routedText, conv.awaiting);
+        if (routedIntent.kind !== "freeform_clinician") {
+          await bridge.sendText({
+            chatGuid,
+            text: `Reply /help for commands or start with "${activation.keyword}".`,
+          });
+        } else {
+          await handleClinicianRequest(
+            routedText,
+            routedIntent,
+            conv,
+            chatGuid,
+            bridge,
+          );
+        }
+      }
     } else if (conv.awaiting === "patient_id") {
       // Treat freeform as patient ID response
       const patientHint = text.trim().toLowerCase();
-      await handleClinicianRequest(text, { kind: "freeform_clinician", patientHint, emergencyMode: false }, conv, chatGuid, bridge);
+      await handleClinicianRequest(
+        text,
+        { kind: "freeform_clinician", patientHint, emergencyMode: false },
+        conv,
+        chatGuid,
+        bridge,
+      );
     } else {
       await bridge.sendText({ chatGuid, text: formatAskApproval() });
     }
   } catch (err) {
     console.error("[webhook] dispatch error:", err);
-    await bridge.sendText({ chatGuid, text: "MedAgent encountered an error. Please try again." }).catch(() => {});
+    await bridge
+      .sendText({
+        chatGuid,
+        text: "MedAgent encountered an error. Please try again.",
+      })
+      .catch(() => {});
   }
 
   saveConversation(conv);
+  debugLog("conversation saved", {
+    handle: conv.handle,
+    awaiting: conv.awaiting,
+    activeRequestId: conv.activeRequestId,
+  });
   return NextResponse.json({ ok: true });
 }
 
-async function handleSlashCommand(command: string, args: string[], conv: ConversationState, chatGuid: string, bridge: ReturnType<typeof getBridge>) {
+function normalizeName(input: string): string {
+  return input
+    .trim()
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}\s'-]+/gu, " ")
+    .replace(/\s+/g, " ");
+}
+
+type PatientLookupEntry = {
+  patientId: string;
+  summary: NonNullable<ReturnType<typeof getPatientSummary>>;
+  normalizedName: string;
+  dob: string;
+};
+
+function buildPatientLookupEntries(): PatientLookupEntry[] {
+  return listPatientsSafe().flatMap((candidate) => {
+    const summary = getPatientSummary(candidate.patientId);
+    if (!summary) return [];
+    return [
+      {
+        patientId: candidate.patientId,
+        summary,
+        normalizedName: normalizeName(summary.demographics.name),
+        dob: summary.demographics.dob,
+      },
+    ];
+  });
+}
+
+function findPatientByNameDob(
+  name: string,
+  dob: string,
+): {
+  patientId: string;
+  summary: ReturnType<typeof getPatientSummary>;
+} | null {
+  const normalizedName = normalizeName(name);
+  const match = buildPatientLookupEntries().find(
+    (candidate) =>
+      candidate.normalizedName === normalizedName && candidate.dob === dob,
+  );
+  if (!match) return null;
+  return { patientId: match.patientId, summary: match.summary };
+}
+
+function buildSetupPreviewMessage(input: {
+  patientId: string;
+  summary: NonNullable<ReturnType<typeof getPatientSummary>>;
+}): string {
+  const { summary } = input;
+  const allergies = summary.allergies?.slice(0, 3) ?? [];
+  const conditions = summary.conditions?.slice(0, 3) ?? [];
+
+  const lines = [
+    "Great, I found your medical profile.",
+    `• Name: ${summary.demographics.name}`,
+    `• DOB: ${summary.demographics.dob}`,
+    summary.demographics.bloodType
+      ? `• Blood type: ${summary.demographics.bloodType}`
+      : "",
+    allergies.length
+      ? `• Allergies: ${allergies.map((a) => `${a.substance} (${a.severity})`).join(", ")}`
+      : "• Allergies: none recorded",
+    conditions.length
+      ? `• Key conditions: ${conditions.map((c) => c.label).join(", ")}`
+      : "• Key conditions: none recorded",
+    "",
+    "Ready to set up emergency sharing for cross-border care?",
+    "Reply YES to continue or NO to cancel.",
+  ];
+
+  return lines.filter(Boolean).join("\n");
+}
+
+function buildNewUserSetupMessage(input: {
+  name: string;
+  dob: string;
+}): string {
+  const lines = [
+    "Thanks — I’ve got your details.",
+    `• Name: ${input.name}`,
+    `• DOB: ${input.dob}`,
+    "",
+    "Would you like to set up your emergency profile now?",
+    "Reply YES to continue or NO to cancel.",
+  ];
+  return lines.filter(Boolean).join("\n");
+}
+
+async function startBaymaxOnboarding(
+  conv: ConversationState,
+  handle: string,
+  chatGuid: string,
+  bridge: ReturnType<typeof getBridge>,
+) {
+  debugLog("start onboarding", { handle });
+  conv.awaiting = "onboarding_name_dob";
+  conv.metadata.onboardingMode = "unknown";
+  conv.metadata.onboardingPatientId = null;
+  conv.metadata.onboardingName = null;
+  conv.metadata.onboardingDob = null;
+  updateImessageUser(handle, {
+    stage: "awaiting_name_dob",
+    fullName: null,
+    dob: null,
+    patientId: null,
+    onboardingRecordDraft: null,
+  });
+  await bridge.sendText({
+    chatGuid,
+    text: "Hi, I'm BayMax — your secure emergency medical summary helper for cross-border care on the island of Ireland. This is private and auditable.",
+  });
+  await bridge.sendText({
+    chatGuid,
+    text: "To get started, reply with your full name and DOB in YYYY-MM-DD format. Example: Sarah Bennett 1991-08-14",
+  });
+}
+
+async function markInboundSeen(
+  bridge: ReturnType<typeof getBridge>,
+  chatGuid: string,
+) {
+  try {
+    const result = await bridge.markChatRead({ chatGuid });
+    debugLog("mark chat read", result);
+  } catch (err) {
+    debugLog("mark chat read failed", err instanceof Error ? err.message : err);
+  }
+}
+
+async function pulseTypingIndicator(
+  bridge: ReturnType<typeof getBridge>,
+  chatGuid: string,
+) {
+  try {
+    const result = await bridge.showTypingIndicator({ chatGuid });
+    debugLog("typing indicator", result);
+  } catch (err) {
+    debugLog("typing indicator failed", err instanceof Error ? err.message : err);
+  }
+}
+
+async function handleOnboardingNameDob(
+  text: string,
+  handle: string,
+  conv: ConversationState,
+  chatGuid: string,
+  bridge: ReturnType<typeof getBridge>,
+) {
+  debugLog("onboarding name/dob input", {
+    handle,
+    textPreview: text.slice(0, 200),
+  });
+  await pulseTypingIndicator(bridge, chatGuid);
+  const parsed = await parseNameDobInput(text);
+  if (!parsed) {
+    debugLog("name/dob parse failed", { handle });
+    await bridge.sendText({
+      chatGuid,
+      text: "I couldn't read that yet. Please reply with your full name and DOB (for example: Sarah Bennett 1991-08-14 or Sarah Bennett 14/08/1991).",
+    });
+    return;
+  }
+
+  const patient = findPatientByNameDob(parsed.name, parsed.dob);
+  if (!patient?.summary) {
+    debugLog("no existing profile matched; new user path", { handle, parsed });
+    conv.awaiting = "onboarding_ready_yes_no";
+    conv.metadata.onboardingMode = "new_user";
+    conv.metadata.onboardingName = parsed.name;
+    conv.metadata.onboardingDob = parsed.dob;
+    conv.metadata.onboardingPatientId = null;
+    updateImessageUser(handle, {
+      stage: "awaiting_ready_yes_no",
+      fullName: parsed.name,
+      dob: parsed.dob,
+      patientId: null,
+    });
+    await bridge.sendText({
+      chatGuid,
+      text: buildNewUserSetupMessage({
+        name: parsed.name,
+        dob: parsed.dob,
+      }),
+    });
+    return;
+  }
+
+  conv.awaiting = "onboarding_ready_yes_no";
+  debugLog("existing profile matched", {
+    handle,
+    patientId: patient.patientId,
+    parsed,
+  });
+  conv.metadata.onboardingMode = "existing_user";
+  conv.metadata.onboardingPatientId = patient.patientId;
+  conv.metadata.onboardingName = patient.summary.demographics.name;
+  conv.metadata.onboardingDob = patient.summary.demographics.dob;
+  updateImessageUser(handle, {
+    stage: "awaiting_ready_yes_no",
+    fullName: patient.summary.demographics.name,
+    dob: patient.summary.demographics.dob,
+    patientId: patient.patientId,
+  });
+  await bridge.sendText({
+    chatGuid,
+    text: buildSetupPreviewMessage({
+      patientId: patient.patientId,
+      summary: patient.summary,
+    }),
+  });
+}
+
+async function handleOnboardingReadyReply(
+  text: string,
+  handle: string,
+  conv: ConversationState,
+  chatGuid: string,
+  bridge: ReturnType<typeof getBridge>,
+) {
+  const normalized = text
+    .replace(/^[^\w]+/, "")
+    .trim()
+    .toUpperCase();
+  const onboardingMode = String(
+    conv.metadata.onboardingMode ?? "existing_user",
+  );
+  debugLog("onboarding ready reply", { handle, normalized, onboardingMode });
+  if (["YES", "Y", "READY", "OK"].includes(normalized)) {
+    if (onboardingMode === "new_user") {
+      conv.awaiting = "onboarding_new_user_record";
+      updateImessageUser(handle, {
+        stage: "awaiting_new_user_record",
+      });
+      await bridge.sendText({
+        chatGuid,
+        text: "Great. Please reply with your emergency details in one message:\n• Allergies\n• Current medications\n• Major conditions\n• Emergency contact name + phone",
+      });
+    } else {
+      conv.awaiting = null;
+      updateImessageUser(handle, {
+        stage: "onboarded",
+      });
+      await bridge.sendText({
+        chatGuid,
+        text: 'Perfect. Setup is ready. To request emergency access next time, start with "hey baymax!" and describe the case.',
+      });
+    }
+    return;
+  }
+  if (["NO", "N", "CANCEL"].includes(normalized)) {
+    conv.awaiting = null;
+    updateImessageUser(handle, {
+      stage: "new",
+    });
+    await bridge.sendText({
+      chatGuid,
+      text: 'No problem. Setup cancelled. Message "hey baymax!" whenever you want to start again.',
+    });
+    return;
+  }
+  await bridge.sendText({
+    chatGuid,
+    text: "Please reply YES to continue setup or NO to cancel.",
+  });
+}
+
+async function handleOnboardingNewUserRecord(
+  text: string,
+  handle: string,
+  conv: ConversationState,
+  chatGuid: string,
+  bridge: ReturnType<typeof getBridge>,
+) {
+  const details = text.trim();
+  debugLog("onboarding new-user record input", {
+    handle,
+    length: details.length,
+  });
+  if (!details) {
+    await bridge.sendText({
+      chatGuid,
+      text: "Please send your emergency details so I can finish setup.",
+    });
+    return;
+  }
+
+  conv.metadata.onboardingRecordDraft = details;
+  conv.awaiting = null;
+  updateImessageUser(handle, {
+    stage: "onboarded",
+    onboardingRecordDraft: details,
+  });
+
+  const name = String(conv.metadata.onboardingName ?? "your profile");
+  const dob = String(conv.metadata.onboardingDob ?? "unknown");
+
+  await bridge.sendText({
+    chatGuid,
+    text: [
+      `Thanks ${name}. I captured your onboarding details.`,
+      `• DOB: ${dob}`,
+      "• Status: emergency profile draft saved",
+      "",
+      'You\'re ready to continue setup. Start with "hey baymax!" any time.',
+    ].join("\n"),
+  });
+}
+
+async function promptOnboardingStage(
+  stage: ImessageOnboardingStage,
+  chatGuid: string,
+  bridge: ReturnType<typeof getBridge>,
+) {
+  if (stage === "awaiting_name_dob") {
+    await bridge.sendText({
+      chatGuid,
+      text: "Let's continue setup. Reply with your full name and DOB in YYYY-MM-DD format.",
+    });
+    return;
+  }
+  if (stage === "awaiting_ready_yes_no") {
+    await bridge.sendText({
+      chatGuid,
+      text: "Ready to continue setup? Reply YES or NO.",
+    });
+    return;
+  }
+  if (stage === "awaiting_new_user_record") {
+    await bridge.sendText({
+      chatGuid,
+      text: "Let's continue setup. Please send your emergency details (allergies, meds, conditions, emergency contact).",
+    });
+    return;
+  }
+
+  debugLog("unknown onboarding stage", { stage, chatGuid });
+  await bridge.sendText({
+    chatGuid,
+    text: `I couldn't determine your setup step (${stage}). Reply "hey baymax!" to continue onboarding.`,
+  });
+}
+
+async function handleSlashCommand(
+  command: string,
+  args: string[],
+  conv: ConversationState,
+  chatGuid: string,
+  bridge: ReturnType<typeof getBridge>,
+) {
   switch (command) {
     case "help":
       await bridge.sendText({ chatGuid, text: formatHelp() });
@@ -111,7 +605,10 @@ async function handleSlashCommand(command: string, args: string[], conv: Convers
         await bridge.sendText({ chatGuid, text: "Persona reset to default." });
       } else if (args[0]) {
         conv.metadata.personaOverride = args[0];
-        await bridge.sendText({ chatGuid, text: `Persona set to ${args[0]}. Reply /persona reset to clear.` });
+        await bridge.sendText({
+          chatGuid,
+          text: `Persona set to ${args[0]}. Reply /persona reset to clear.`,
+        });
       }
       break;
     }
@@ -123,8 +620,14 @@ async function handleSlashCommand(command: string, args: string[], conv: Convers
       }
       await handleClinicianRequest(
         `Access request for patient ${args[0]}`,
-        { kind: "freeform_clinician", patientHint: args[0], emergencyMode: false },
-        conv, chatGuid, bridge
+        {
+          kind: "freeform_clinician",
+          patientHint: args[0],
+          emergencyMode: false,
+        },
+        conv,
+        chatGuid,
+        bridge,
       );
       break;
     }
@@ -135,7 +638,12 @@ async function handleSlashCommand(command: string, args: string[], conv: Convers
       await handleApproval("deny", conv, chatGuid, bridge);
       break;
     case "status":
-      await bridge.sendText({ chatGuid, text: conv.activeRequestId ? `Active request: ${conv.activeRequestId}` : "No active request." });
+      await bridge.sendText({
+        chatGuid,
+        text: conv.activeRequestId
+          ? `Active request: ${conv.activeRequestId}`
+          : "No active request.",
+      });
       break;
     case "end":
       clearActiveRequest(conv.handle);
@@ -146,17 +654,31 @@ async function handleSlashCommand(command: string, args: string[], conv: Convers
     case "audit": {
       const appUrl = process.env.APP_BASE_URL ?? "http://localhost:3000";
       const patientId = args[0]?.toLowerCase() ?? "sarah-bennett";
-      await bridge.sendText({ chatGuid, text: `View audit log: ${appUrl}/audit/${patientId}` });
+      await bridge.sendText({
+        chatGuid,
+        text: `View audit log: ${appUrl}/audit/${patientId}`,
+      });
       break;
     }
     default:
-      await bridge.sendText({ chatGuid, text: `Unknown command: /${command}. Reply /help for available commands.` });
+      await bridge.sendText({
+        chatGuid,
+        text: `Unknown command: /${command}. Reply /help for available commands.`,
+      });
   }
 }
 
-async function handleApproval(decision: "approve" | "deny", conv: ConversationState, chatGuid: string, bridge: ReturnType<typeof getBridge>) {
+async function handleApproval(
+  decision: "approve" | "deny",
+  conv: ConversationState,
+  chatGuid: string,
+  bridge: ReturnType<typeof getBridge>,
+) {
   if (!conv.activeRequestId) {
-    await bridge.sendText({ chatGuid, text: "No pending approval to respond to." });
+    await bridge.sendText({
+      chatGuid,
+      text: "No pending approval to respond to.",
+    });
     return;
   }
 
@@ -165,11 +687,16 @@ async function handleApproval(decision: "approve" | "deny", conv: ConversationSt
       const outcome = await resumeApprovedRequest(conv.activeRequestId);
 
       // Send grant to the clinician (find their handle)
-      const clinicianHandle = findClinicianHandleForRequest(conv.activeRequestId);
+      const clinicianHandle = findClinicianHandleForRequest(
+        conv.activeRequestId,
+      );
       if (clinicianHandle) {
         const messages = formatOutbound({ outcome, identityKind: "clinician" });
         for (const msg of messages) {
-          await bridge.sendText({ chatGuid: `iMessage;-;${clinicianHandle}`, text: msg });
+          await bridge.sendText({
+            chatGuid: `iMessage;-;${clinicianHandle}`,
+            text: msg,
+          });
         }
         // Update clinician conversation state
         const clinicianConv = loadConversation(clinicianHandle);
@@ -182,7 +709,8 @@ async function handleApproval(decision: "approve" | "deny", conv: ConversationSt
 
       // Confirm to patient
       const appUrl = process.env.APP_BASE_URL ?? "http://localhost:3000";
-      const requesterLabel = outcome.verification?.requesterLabel ?? "The clinician";
+      const requesterLabel =
+        outcome.verification?.requesterLabel ?? "The clinician";
       const ttlMinutes = Math.round(outcome.ttlSeconds / 60);
       await bridge.sendText({
         chatGuid,
@@ -195,10 +723,15 @@ async function handleApproval(decision: "approve" | "deny", conv: ConversationSt
       });
     } else {
       await denyApprovedRequest(conv.activeRequestId);
-      await bridge.sendText({ chatGuid, text: "Approval denied. No data was released." });
+      await bridge.sendText({
+        chatGuid,
+        text: "Approval denied. No data was released.",
+      });
 
       // Notify clinician
-      const clinicianHandle = findClinicianHandleForRequest(conv.activeRequestId);
+      const clinicianHandle = findClinicianHandleForRequest(
+        conv.activeRequestId,
+      );
       if (clinicianHandle) {
         await bridge.sendText({
           chatGuid: `iMessage;-;${clinicianHandle}`,
@@ -208,7 +741,10 @@ async function handleApproval(decision: "approve" | "deny", conv: ConversationSt
     }
   } catch (err) {
     console.error("[webhook] approval error:", err);
-    await bridge.sendText({ chatGuid, text: "Error processing approval. Please try again." });
+    await bridge.sendText({
+      chatGuid,
+      text: "Error processing approval. Please try again.",
+    });
   }
 
   conv.activeRequestId = null;
@@ -232,7 +768,11 @@ const PATIENT_SHORTCODES: Record<string, string> = {
 
 async function handleClinicianRequest(
   rawText: string,
-  intent: { kind: "freeform_clinician"; patientHint: string | null; emergencyMode: boolean },
+  intent: {
+    kind: "freeform_clinician";
+    patientHint: string | null;
+    emergencyMode: boolean;
+  },
   conv: ConversationState,
   chatGuid: string,
   bridge: ReturnType<typeof getBridge>,
@@ -258,11 +798,15 @@ async function handleClinicianRequest(
 
   // Send ack immediately
   await bridge.sendText({ chatGuid, text: formatAck() });
+  await pulseTypingIndicator(bridge, chatGuid);
 
   // Check if this is a follow-up on an active session
   if (conv.activeRequestId && !intent.emergencyMode) {
     try {
-      const answer = await answerFollowUpQuestion(conv.activeRequestId, rawText);
+      const answer = await answerFollowUpQuestion(
+        conv.activeRequestId,
+        rawText,
+      );
       await bridge.sendText({
         chatGuid,
         text: formatFollowUpAnswer({
@@ -306,7 +850,7 @@ async function handleClinicianRequest(
 
       // Find patient handle
       const patientHandles = listHandleMappings().filter(
-        h => h.identityId === patientId && h.identityKind === "patient"
+        (h) => h.identityId === patientId && h.identityKind === "patient",
       );
       const patientHandle = patientHandles[0];
 
@@ -346,6 +890,11 @@ async function handleClinicianRequest(
     saveConversation(conv);
   } catch (err) {
     console.error("[webhook] workflow error:", err);
-    await bridge.sendText({ chatGuid, text: "MedAgent workflow failed. Please try again." }).catch(() => {});
+    await bridge
+      .sendText({
+        chatGuid,
+        text: "MedAgent workflow failed. Please try again.",
+      })
+      .catch(() => {});
   }
 }
