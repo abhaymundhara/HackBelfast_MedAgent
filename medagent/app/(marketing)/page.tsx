@@ -5,11 +5,17 @@ import { IntegrationsStrip } from "@/components/landing/integrations-strip";
 import { QrCard } from "@/components/landing/qr-card";
 import { ShowcaseOverlap } from "@/components/landing/showcase-overlap";
 import { StickyNotes } from "@/components/landing/sticky-notes";
+import { TextMedAgentButton } from "@/components/landing/text-medagent-button";
 import { WorkflowDiagram } from "@/components/landing/workflow-diagram";
+import { getMedAgentPhone } from "@/lib/contactPhone";
 
 export const dynamic = "force-static";
 
-const SMS_HREF = "sms:+447700900099?body=Emergency%20access%20request";
+const MEDAGENT_PHONE = getMedAgentPhone();
+const MEDAGENT_PHONE_DISPLAY = MEDAGENT_PHONE.replace(
+  /^(\+\d{2})(\d{4})(\d{6})$/,
+  "$1 $2 $3",
+);
 
 const ArrowRight = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
@@ -44,10 +50,10 @@ export default function HomePage() {
             Solana — auditable, PHI-free.
           </p>
           <div className="hero-ctas">
-            <Link className="btn btn-primary btn-lg" href={SMS_HREF}>
+            <TextMedAgentButton className="btn btn-primary btn-lg">
               Text MedAgent now
               <ArrowRight />
-            </Link>
+            </TextMedAgentButton>
             <Link className="btn btn-ghost btn-lg" href="/how-it-works">
               See how it works
             </Link>
@@ -119,7 +125,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="sec" style={{ paddingTop: 32 }}>
+      <section className="sec" id="qr" style={{ paddingTop: 32, scrollMarginTop: 80 }}>
         <div className="container">
           <div className="start">
             <div>
@@ -133,16 +139,16 @@ export default function HomePage() {
               <div className="num-display">
                 <div>
                   <div className="label">MedAgent · iMessage / SMS</div>
-                  <div className="number">+44 7700 900099</div>
+                  <div className="number">{MEDAGENT_PHONE_DISPLAY}</div>
                 </div>
               </div>
 
               <div className="start-actions">
-                <Link className="btn btn-imsg btn-lg" href={SMS_HREF}>
+                <TextMedAgentButton className="btn btn-imsg btn-lg">
                   <ImsgIcon />
                   Text MedAgent
-                </Link>
-                <CopyNumberButton value="+447700900099" className="btn btn-ghost btn-lg">
+                </TextMedAgentButton>
+                <CopyNumberButton value={MEDAGENT_PHONE} className="btn btn-ghost btn-lg">
                   Copy number
                 </CopyNumberButton>
               </div>
@@ -164,10 +170,10 @@ export default function HomePage() {
             learning curve.
           </p>
           <div className="actions">
-            <Link className="btn btn-primary btn-lg" href={SMS_HREF}>
+            <TextMedAgentButton className="btn btn-primary btn-lg">
               Text MedAgent
               <ArrowRight />
-            </Link>
+            </TextMedAgentButton>
             <Link className="btn btn-ghost btn-lg" href="/how-it-works">
               See how it works
             </Link>

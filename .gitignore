@@ -77,3 +77,4 @@ medagent/data/
 .zencoder/
 skills/
 skills-lock.json
+.vercel

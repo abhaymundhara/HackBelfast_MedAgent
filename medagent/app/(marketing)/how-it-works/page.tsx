@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { TextMedAgentButton } from "@/components/landing/text-medagent-button";
 import { WorkflowDiagram } from "@/components/landing/workflow-diagram";
 
 export const metadata = {
@@ -66,9 +67,9 @@ export default function HowItWorksPage() {
           <h2 className="display-md">Try it live.</h2>
           <p>The whole thing runs over the messaging app already on your phone.</p>
           <div className="actions">
-            <Link className="btn btn-primary btn-lg" href="sms:+447700900099?body=Emergency%20access%20request">
+            <TextMedAgentButton className="btn btn-primary btn-lg">
               Text MedAgent
-            </Link>
+            </TextMedAgentButton>
             <Link className="btn btn-ghost btn-lg" href="/use-cases">
               See use cases
             </Link>

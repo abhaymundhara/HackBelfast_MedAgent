@@ -1,5 +1,7 @@
 import QRCode from "qrcode";
 
+import { DEFAULT_SMS_BODY, getMedAgentPhone } from "@/lib/contactPhone";
+
 export type SmsQrOptions = {
   phone?: string;
   body?: string;
@@ -7,8 +9,8 @@ export type SmsQrOptions = {
 };
 
 export async function getSmsQrDataUrl({
-  phone = "+447700900099",
-  body = "Emergency access request",
+  phone = getMedAgentPhone(),
+  body = DEFAULT_SMS_BODY,
   width = 480,
 }: SmsQrOptions = {}): Promise<string> {
   const target = `sms:${phone}?body=${encodeURIComponent(body)}`;
