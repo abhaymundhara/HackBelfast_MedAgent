@@ -856,17 +856,17 @@ async function handleApproval(
       });
 
       // Notify clinician
-      const clinicianInfo2 = getClinicianHandleForRequest(
+      const deniedClinicianInfo = getClinicianHandleForRequest(
         conv.activeRequestId,
       );
-      if (clinicianInfo2) {
+      if (deniedClinicianInfo) {
         await bridge.sendText({
-          chatGuid: clinicianInfo2.chatGuid,
+          chatGuid: deniedClinicianInfo.chatGuid,
           text: "✗ MedAgent · Patient DENIED your access request.\n\nNo data was released. If this is a life-threatening emergency, reply BREAK GLASS.",
         });
         logMessageEvent({
           messageId,
-          handle: clinicianInfo2.handle,
+          handle: deniedClinicianInfo.handle,
           direction: "outbound",
           linkedRequestId: conv.activeRequestId,
           eventType: "approval_deny_sent_to_clinician",
