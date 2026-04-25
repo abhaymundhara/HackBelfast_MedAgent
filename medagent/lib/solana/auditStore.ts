@@ -36,6 +36,9 @@ type MedagentAuditIdl = {
 };
 
 export interface AuditStore {
+  initializePatientLog(input: {
+    patientHash: string;
+  }): Promise<{ pda: string | null; status: "initialized" | "exists" | "skipped_missing_config" | "failed"; error?: string }>;
   writeAuditEvent(input: {
     requestId: string;
     patientId: string;
@@ -337,6 +340,10 @@ async function submitViaAnchor(event: AuditEvent): Promise<AuditWriteResult> {
       decision: event.decision,
       tokenExpiry: event.token_expiry,
       timestamp: event.timestamp,
+      interactionType: event.interaction_type ?? null,
+      summaryHash: event.summary_hash ?? null,
+      fieldsAccessed: event.fields_accessed ?? null,
+      durationSeconds: event.duration_seconds ?? null,
     })
     .accounts({
       auditLog: auditLogPda,
@@ -362,6 +369,62 @@ async function submitViaAnchor(event: AuditEvent): Promise<AuditWriteResult> {
     chainFeeLamports: chainFeeLamports ?? undefined,
     estimatedCostUsd: estimateChainWriteCostUsd(chainFeeLamports),
   };
+}
+
+async function initializePatientLogViaAnchor(patientHash: string): Promise<{
+  pda: string | null;
+  status: "initialized" | "exists" | "skipped_missing_config" | "failed";
+  error?: string;
+}> {
+  const forceLocalAudit =
+    process.env.MEDAGENT_FORCE_LOCAL_AUDIT === "1" ||
+    process.env.MEDAGENT_FORCE_LOCAL_AUDIT === "true";
+  const signer = getSignerKeypair();
+  if (forceLocalAudit || !signer) {
+    return { pda: null, status: "skipped_missing_config" };
+  }
+
+  try {
+    const connection = getSolanaConnection();
+    await ensureSignerHasLamports(connection, signer);
+    const wallet = getAnchorCompatibleWallet(signer) as Wallet;
+    const provider = new AnchorProvider(connection, wallet, {
+      commitment: "confirmed",
+      preflightCommitment: "confirmed",
+    });
+    const { idl, programId } = loadProgramIdAndIdl();
+    const program = new Program(idl as never, provider);
+
+    const selectedSeed = deriveAuditSeedSha256(patientHash);
+    const auditLogPda = PublicKey.findProgramAddressSync(
+      [AUDIT_SEED_PREFIX, Buffer.from(selectedSeed)],
+      programId,
+    )[0];
+    const auditLogInfo = await connection.getAccountInfo(auditLogPda, {
+      commitment: "confirmed",
+    });
+
+    if (auditLogInfo) {
+      return { pda: auditLogPda.toBase58(), status: "exists" };
+    }
+
+    await program.methods
+      .initializeAuditLog(patientHash, toFixedArray(selectedSeed))
+      .accounts({
+        auditLog: auditLogPda,
+        authority: signer.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    return { pda: auditLogPda.toBase58(), status: "initialized" };
+  } catch (error) {
+    return {
+      pda: null,
+      status: "failed",
+      error: error instanceof Error ? error.message : String(error),
+    };
+  }
 }
 
 async function submitEventOnChain(
@@ -418,6 +481,10 @@ async function runDryRunWriteCheck(): Promise<{
 }
 
 export const solanaAuditStore: AuditStore = {
+  async initializePatientLog(input) {
+    return initializePatientLogViaAnchor(input.patientHash);
+  },
+
   async writeAuditEvent(input) {
     const existingByRequestAndType = getAuditEventByRequestAndType(
       input.requestId,

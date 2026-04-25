@@ -395,6 +395,8 @@ async function runSingleConfig(input: {
 }): Promise<EvalAggregateReport> {
   if (input.runConfig.mode === "cold_start") {
     clearForColdStart();
+  } else if (input.runConfig.mode !== "cached") {
+    clearRetrievalCacheForTests();
   }
 
     const requestMetrics: EvalPerRequestMetrics[] = [];

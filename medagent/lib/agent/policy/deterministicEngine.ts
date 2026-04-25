@@ -1,10 +1,8 @@
-import {
-  getIssuerByRequesterId,
-  getPatientPolicy,
-} from "@/lib/db";
+import { getPatientPolicy } from "@/lib/db";
 import { AgentStateType, PolicyContext } from "@/lib/agent/state";
-import { PatientPolicy } from "@/lib/types";
 import { addTraceStep } from "@/lib/agent/traceHelpers";
+import { getDemoClinician } from "@/lib/ips/seed";
+import { lookupDoctor } from "@/lib/verification/lookupDoctor";
 
 // All fields are always released — no tier-based filtering.
 const ALL_FIELDS = [
@@ -23,14 +21,17 @@ export async function runDeterministicPolicyEngine(
   const { requestContext, trace } = state;
   const { patientId, requesterId } = requestContext;
 
-  const registryEntry = await getIssuerByRequesterId(requesterId);
   const resolvedPatientPolicy = await getPatientPolicy(patientId);
 
   if (!resolvedPatientPolicy) {
     throw new Error(`Policy not found for patient ${patientId}`);
   }
 
-  const verified = Boolean(registryEntry?.trusted);
+  const persona = getDemoClinician(requesterId);
+  const verified = Boolean(
+    lookupDoctor(requesterId) ??
+      (persona ? lookupDoctor(persona.requesterId) : null),
+  );
 
   // Simplified model: always grant full access and audit on Solana.
   const decision: PolicyContext["decision"] = "granted";

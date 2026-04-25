@@ -120,6 +120,10 @@ export const AuditEventSchema = z.object({
   decision: z.enum(["allow", "deny"]).nullable(),
   token_expiry: z.string().nullable(),
   timestamp: z.string(),
+  interaction_type: z.string().optional(),
+  summary_hash: z.string().optional(),
+  fields_accessed: z.string().optional(),
+  duration_seconds: z.number().optional(),
 });
 
 export type EmergencySummary = z.infer<typeof EmergencySummary>;

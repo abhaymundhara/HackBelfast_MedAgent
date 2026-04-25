@@ -26,6 +26,10 @@ export function buildAuditEvent(input: {
   decision: "granted" | "denied" | "awaiting_human";
   tokenExpiry: string | null;
   jurisdiction: string;
+  interactionType?: string;
+  summaryHash?: string;
+  fieldsAccessed?: string;
+  durationSeconds?: number;
 }) {
   const patient = getPatientRow(input.patientId);
   if (!patient) {
@@ -44,6 +48,10 @@ export function buildAuditEvent(input: {
         : mapDecision(input.decision),
     token_expiry: input.tokenExpiry,
     timestamp: new Date().toISOString(),
+    interaction_type: input.interactionType,
+    summary_hash: input.summaryHash,
+    fields_accessed: input.fieldsAccessed,
+    duration_seconds: input.durationSeconds,
   } satisfies AuditEvent);
 }
 

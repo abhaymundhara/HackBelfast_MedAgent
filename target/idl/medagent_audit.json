@@ -157,6 +157,30 @@
           {
             "name": "timestamp",
             "type": "string"
+          },
+          {
+            "name": "interactionType",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "summaryHash",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "fieldsAccessed",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "durationSeconds",
+            "type": {
+              "option": "u32"
+            }
           }
         ]
       }
@@ -201,6 +225,30 @@
           {
             "name": "timestamp",
             "type": "string"
+          },
+          {
+            "name": "interactionType",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "summaryHash",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "fieldsAccessed",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "durationSeconds",
+            "type": {
+              "option": "u32"
+            }
           },
           {
             "name": "slot",
@@ -256,6 +304,34 @@
         {
           "name": "timestamp",
           "type": "string",
+          "index": false
+        },
+        {
+          "name": "interactionType",
+          "type": {
+            "option": "string"
+          },
+          "index": false
+        },
+        {
+          "name": "summaryHash",
+          "type": {
+            "option": "string"
+          },
+          "index": false
+        },
+        {
+          "name": "fieldsAccessed",
+          "type": {
+            "option": "string"
+          },
+          "index": false
+        },
+        {
+          "name": "durationSeconds",
+          "type": {
+            "option": "u32"
+          },
           "index": false
         },
         {

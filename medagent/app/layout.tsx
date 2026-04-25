@@ -35,6 +35,8 @@ export default function RootLayout({
               MedAgent
             </Link>
             <div className="flex items-center gap-6 text-sm text-muted-foreground">
+              <Link href="/doctor/login" className="transition hover:text-foreground">Doctor</Link>
+              <Link href="/patient/login" className="transition hover:text-foreground">Patient</Link>
               <Link href="/audit/sarah-bennett" className="transition hover:text-foreground">Audit</Link>
             </div>
           </div>

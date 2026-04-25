@@ -9,8 +9,7 @@ import {
 export const DEMO_CLINICIANS: ClinicianPersona[] = [
   ClinicianPersonaSchema.parse({
     id: "dr-murphy",
-    requesterId:
-      "did:solana:testnet:7YwL6mUFr9s6qQ2VwT4Qf3V3wq2f9m9p2B7qQn1vR8kH",
+    requesterId: "MC12345",
     requesterLabel: "Dr. Aoife Murphy",
     issuerId: "did:solana:testnet:9mDqM2kX4LJ9Gf1V7rQxS3yQ5bF2pN8tH6uP4kR1xCwZ",
     issuerLabel: "HSE Ireland (St. James's Hospital, Dublin)",
@@ -19,8 +18,7 @@ export const DEMO_CLINICIANS: ClinicianPersona[] = [
   }),
   ClinicianPersonaSchema.parse({
     id: "dr-okonkwo",
-    requesterId:
-      "did:solana:testnet:6qWmZ8pR3HkN5fT2xV7cD1jL9sB4uY3nQ8rP2mK6tFvA",
+    requesterId: "GMC7953798",
     requesterLabel: "Dr. Chidi Okonkwo",
     issuerId: "did:solana:testnet:C3vK8pN2mQ7tR5xL1fH9wD4sY6uB2jP8qM5nT1rV4kZx",
     issuerLabel: "NHS Northern Ireland (Royal Victoria Hospital, Belfast)",
@@ -29,8 +27,7 @@ export const DEMO_CLINICIANS: ClinicianPersona[] = [
   }),
   ClinicianPersonaSchema.parse({
     id: "unknown-emergency",
-    requesterId:
-      "did:solana:testnet:4xQmN7tV2kR9pH5fL1wD8sY3uB6jP2qM5nT4rC7vK1z",
+    requesterId: "unknown-emergency",
     requesterLabel: "Emergency Doctor / Unknown Clinician",
     issuerId: "did:solana:testnet:B7kP2mQ5tR8xL1fH4wD9sY6uN3jV2qM5nT4rC7vK1zXp",
     issuerLabel: "Unverified Emergency Department",
@@ -239,6 +236,36 @@ export const DEMO_PATIENTS: PatientSeed[] = [
         patientApprovedForTier1Or2: true,
       },
     ],
+  },
+];
+
+export const DEMO_DOCTORS = [
+  {
+    regNumber: "MC12345",
+    regBody: "IMC" as const,
+    name: "Dr. Aoife Murphy",
+    email: "aoife.murphy@stjames.ie",
+    specialty: "Emergency Medicine",
+    hospital: "St. James's Hospital, Dublin",
+    jurisdiction: "ROI",
+  },
+  {
+    regNumber: "GMC7953798",
+    regBody: "GMC" as const,
+    name: "Dr. Chidi Okonkwo",
+    email: "chidi.okonkwo@belfasttrust.hscni.net",
+    specialty: "A&E",
+    hospital: "Royal Victoria Hospital, Belfast",
+    jurisdiction: "NI",
+  },
+  {
+    regNumber: "MC99999",
+    regBody: "IMC" as const,
+    name: "Dr. Siobhan Kelly",
+    email: "siobhan.kelly@hse.ie",
+    specialty: "General Practice",
+    hospital: "Dundalk Health Centre",
+    jurisdiction: "ROI",
   },
 ];
 

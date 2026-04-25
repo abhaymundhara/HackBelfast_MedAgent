@@ -11,28 +11,28 @@ beforeAll(async () => {
 });
 
 describe("requester verification", () => {
-  it("marks the trusted demo clinician as a trusted requester", async () => {
+  it("verifies the HSE demo clinician via IMC registration", async () => {
     const result = await verifyRequester({
       requesterId: DEMO_CLINICIANS[0].requesterId,
     });
 
     expect(result.verified).toBe(true);
     expect(result.trustLevel).toBe("trusted_requester");
-    expect(result.registryAnchored).toBe(true);
+    expect(result.verificationMode).toBe("doctor_registry");
+    expect(result.verificationReason).toContain("IMC");
   });
 
-  it("marks a trusted cross-jurisdiction clinician as verified", async () => {
-    const result = await verifyRequester({
-      requesterId: DEMO_CLINICIANS[1].requesterId,
-    });
+  it("maps iMessage persona IDs to board registration records", async () => {
+    const result = await verifyRequester({ requesterId: "dr-okonkwo" });
 
     expect(result.verified).toBe(true);
-    expect(result.trustLevel).toBe("trusted_requester");
+    expect(result.requesterLabel).toBe("Dr. Chidi Okonkwo");
+    expect(result.verificationReason).toContain("GMC7953798");
   });
 
-  it("recognizes a credential that points to a trusted issuer without upgrading the requester", async () => {
+  it("recognizes a credential issuer hint without using legacy DID trust for verification", async () => {
     const result = await verifyRequester({
-      requesterId: "did:solana:3yPCnb5XQAJcvqmVz1xjUrL9iE24oUAX6LkycfWw5NKX",
+      requesterId: "did:solana:3yPCnb5XQAJcvqmVz1xjUrL9sB4uY3nQ8rP2mK6tFvA",
       presentedCredential:
         "Issuer: HSE Ireland (St. James's Hospital, Dublin); badge-owner: temporary-locum",
     });

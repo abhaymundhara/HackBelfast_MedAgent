@@ -1,15 +1,15 @@
 # MedAgent
 
-MedAgent is a deterministic emergency medical access system for cross-border healthcare on the island of Ireland. Designed for HackBelfast 2026's *Belfast 2036* problem statement, it gives clinicians on either side of the NI/ROI border narrow, time-limited access to a traveler's emergency summary, with non-PHI audit trails on Solana. The clinician and patient interface is iMessage, powered by a BlueBubbles bridge.
+MedAgent is a deterministic emergency medical access system for cross-border healthcare on the island of Ireland. Designed for HackBelfast 2026's *Belfast 2036* problem statement, it gives verified clinicians on either side of the NI/ROI border time-limited access to a traveler's emergency summary, with non-PHI interaction audit trails on Solana. The demo combines IMC/GMC doctor verification, patient dashboards, and an iMessage bridge powered by BlueBubbles.
 
 ## Product Model
 
-MedAgent uses a deterministic three-tier access policy:
+MedAgent v2 uses deterministic access and board-backed identity:
 
-- `Tier 1`: trusted clinician + patient auto-access
-- `Tier 2`: patient-approved access after a pause/resume step
-- `Tier 3`: break-glass critical-only access
-- `Denied`: no release, no session token, audit still recorded
+- Doctors verify with an IMC/GMC registration number seeded in `doctor_registry`.
+- Web doctor login sends a 6-digit OTP through Resend and issues a 4-hour doctor JWT.
+- Demo iMessage handles map to pre-verified personas for the live SMS/iMessage flow.
+- Hackathon demo access currently grants the full emergency summary and records every release in the audit trail.
 
 The AI layer does not decide access. The model is used for request interpretation, translation, briefing, and constrained follow-up answers after authorization. Policy decisions stay deterministic and outside the LLM.
 
@@ -34,6 +34,10 @@ Current audit event shape:
 - `decision`
 - `token_expiry`
 - `timestamp`
+- `interaction_type`
+- `summary_hash`
+- `fields_accessed`
+- `duration_seconds`
 
 ## Architecture
 
@@ -177,6 +181,10 @@ ENCRYPTION_PEPPER=...
 BLUEBUBBLES_URL=http://localhost:1234
 BLUEBUBBLES_PASSWORD=...
 IMESSAGE_WEBHOOK_SECRET=...
+RESEND_API_KEY=re_...
+RESEND_FROM_EMAIL=noreply@medagent.dev
+DOCTOR_SESSION_SECRET=...
+PATIENT_SESSION_SECRET=...
 APP_BASE_URL=http://localhost:3000
 ```
 
@@ -230,17 +238,16 @@ NO_DNA=1 anchor build
 Recommended demo path:
 
 1. Run `npm run demo:readiness`
-2. Open `/clinician`
-3. Trigger Tier 1 with `Dr. Aoife Murphy`
-4. Trigger Tier 2 with `Dr. Patel` and approve from `/patient/dashboard`
-5. Trigger Tier 3 with the unknown emergency clinician
-6. Open `/audit/sarah-bennett`
+2. Open `/doctor/login` and verify `MC12345` or `GMC7953798` with the emailed/dev-console OTP.
+3. Use the iMessage bridge demo handle for Dr. Aoife Murphy or Dr. Chidi Okonkwo to request Sarah Bennett.
+4. Open `/patient/login` or `/patient/register`, then `/patient/dashboard` to inspect the patient's interaction timeline.
+5. Open `/audit/sarah-bennett` for the Solana-backed audit viewer.
 
 What to point out:
 
-- deterministic tiering
-- HITL pause/resume on the same request
-- released vs withheld data
+- deterministic board-backed doctor verification
+- patient-owned interaction dashboard
+- full emergency-summary release for the hackathon flow
 - short-lived session
 - workflow trace
 - Solana slot + transaction signature + Solscan link in the audit view

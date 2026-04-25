@@ -31,6 +31,28 @@ type PatientRow = {
   updated_at: string;
 };
 
+type PatientAccountRow = {
+  id: string;
+  patient_id: string;
+  email: string;
+  phone: string | null;
+  password_hash: string;
+  solana_log_pda: string | null;
+  created_at: string;
+  last_login_at: string | null;
+};
+
+type DoctorRegistryRow = {
+  reg_number: string;
+  reg_body: string;
+  name: string;
+  email: string;
+  specialty: string | null;
+  hospital: string | null;
+  jurisdiction: string;
+  status: string;
+};
+
 type PolicyRow = {
   patient_id: string;
   emergency_auto_access: number;
@@ -386,6 +408,47 @@ export function initDb() {
     );
     CREATE INDEX IF NOT EXISTS imessage_conversations_request
       ON imessage_conversations(active_request_id);
+
+    CREATE TABLE IF NOT EXISTS doctor_registry (
+      reg_number TEXT PRIMARY KEY,
+      reg_body TEXT NOT NULL,
+      name TEXT NOT NULL,
+      email TEXT NOT NULL,
+      specialty TEXT,
+      hospital TEXT,
+      jurisdiction TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'active'
+    );
+
+    CREATE TABLE IF NOT EXISTS doctor_otps (
+      id TEXT PRIMARY KEY,
+      reg_number TEXT NOT NULL,
+      otp_code TEXT NOT NULL,
+      email TEXT NOT NULL,
+      created_at TEXT NOT NULL,
+      expires_at TEXT NOT NULL,
+      verified INTEGER NOT NULL DEFAULT 0
+    );
+
+    CREATE TABLE IF NOT EXISTS doctor_sessions (
+      id TEXT PRIMARY KEY,
+      reg_number TEXT NOT NULL,
+      name TEXT NOT NULL,
+      jwt TEXT NOT NULL,
+      created_at TEXT NOT NULL,
+      expires_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS patient_accounts (
+      id TEXT PRIMARY KEY,
+      patient_id TEXT NOT NULL UNIQUE,
+      email TEXT NOT NULL UNIQUE,
+      phone TEXT,
+      password_hash TEXT NOT NULL,
+      solana_log_pda TEXT,
+      created_at TEXT NOT NULL,
+      last_login_at TEXT
+    );
   `);
 
   // Lightweight forward-compatible migration for branches that already have old schemas.
@@ -401,6 +464,7 @@ export function initDb() {
   ensureColumn(db, "issuer_registry", "registry_account_id", "TEXT");
   ensureColumn(db, "issuer_registry", "jurisdiction", "TEXT");
   ensureColumn(db, "issuer_registry", "requires_cross_system_approval", "INTEGER");
+  ensureColumn(db, "patient_accounts", "solana_log_pda", "TEXT");
 
   if (!database) {
     db.close();
@@ -412,8 +476,10 @@ export function resetDatabase() {
     database.close();
     database = null;
   }
-  if (fs.existsSync(DB_PATH)) {
-    fs.rmSync(DB_PATH, { force: true });
+  for (const filePath of [DB_PATH, `${DB_PATH}-wal`, `${DB_PATH}-shm`]) {
+    if (fs.existsSync(filePath)) {
+      fs.rmSync(filePath, { force: true });
+    }
   }
   if (fs.existsSync(DOC_DIR)) {
     fs.rmSync(DOC_DIR, { recursive: true, force: true });
@@ -677,6 +743,30 @@ export function getPatientPolicy(patientId: string): PatientPolicy | null {
 export function getPatientSummary(patientId: string): EmergencySummary | null {
   const row = getPatientRow(patientId);
   return row ? decryptJson<EmergencySummary>(row.encrypted_summary) : null;
+}
+
+export function getPatientAccountByPatientId(patientId: string) {
+  const db = getDb();
+  return db
+    .prepare("SELECT * FROM patient_accounts WHERE patient_id = ? LIMIT 1")
+    .get(patientId) as PatientAccountRow | undefined;
+}
+
+export function listDoctorRegistry() {
+  const db = getDb();
+  return db
+    .prepare("SELECT * FROM doctor_registry ORDER BY name")
+    .all() as DoctorRegistryRow[];
+}
+
+export function setPatientAccountSolanaLogPda(
+  patientId: string,
+  solanaLogPda: string | null,
+) {
+  const db = getDb();
+  db.prepare(
+    "UPDATE patient_accounts SET solana_log_pda = ? WHERE patient_id = ?",
+  ).run(solanaLogPda, patientId);
 }
 
 export function listPatientDocuments(patientId: string) {

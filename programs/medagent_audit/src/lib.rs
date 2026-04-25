@@ -42,6 +42,18 @@ pub mod medagent_audit {
                 .token_expiry
                 .as_ref()
                 .is_some_and(|value| value.as_bytes().len() > AuditRecord::TOKEN_EXPIRY_MAX)
+            || params
+                .interaction_type
+                .as_ref()
+                .is_some_and(|value| value.as_bytes().len() > AuditRecord::INTERACTION_TYPE_MAX)
+            || params
+                .summary_hash
+                .as_ref()
+                .is_some_and(|value| value.as_bytes().len() > AuditRecord::SUMMARY_HASH_MAX)
+            || params
+                .fields_accessed
+                .as_ref()
+                .is_some_and(|value| value.as_bytes().len() > AuditRecord::FIELDS_ACCESSED_MAX)
         {
             return Err(error!(ErrorCode::DataTooLarge));
         }
@@ -82,6 +94,10 @@ pub mod medagent_audit {
             decision: params.decision.clone(),
             token_expiry: params.token_expiry.clone(),
             timestamp: params.timestamp.clone(),
+            interaction_type: params.interaction_type.clone(),
+            summary_hash: params.summary_hash.clone(),
+            fields_accessed: params.fields_accessed.clone(),
+            duration_seconds: params.duration_seconds,
             slot,
         };
 
@@ -97,6 +113,10 @@ pub mod medagent_audit {
             decision: params.decision,
             token_expiry: params.token_expiry,
             timestamp: params.timestamp,
+            interaction_type: params.interaction_type,
+            summary_hash: params.summary_hash,
+            fields_accessed: params.fields_accessed,
+            duration_seconds: params.duration_seconds,
             slot,
         });
 
@@ -118,6 +138,10 @@ pub struct AuditEventParams {
     pub decision: Option<String>,
     pub token_expiry: Option<String>,
     pub timestamp: String,
+    pub interaction_type: Option<String>,
+    pub summary_hash: Option<String>,
+    pub fields_accessed: Option<String>,
+    pub duration_seconds: Option<u32>,
 }
 
 #[derive(Accounts)]
@@ -195,6 +219,10 @@ pub struct AuditRecord {
     pub decision: Option<String>,
     pub token_expiry: Option<String>,
     pub timestamp: String,
+    pub interaction_type: Option<String>,
+    pub summary_hash: Option<String>,
+    pub fields_accessed: Option<String>,
+    pub duration_seconds: Option<u32>,
     pub slot: u64,
 }
 
@@ -206,6 +234,9 @@ impl AuditRecord {
     const DECISION_MAX: usize = 64;
     const TOKEN_EXPIRY_MAX: usize = 32;
     const TIMESTAMP_MAX: usize = 40;
+    const INTERACTION_TYPE_MAX: usize = 32;
+    const SUMMARY_HASH_MAX: usize = 71;
+    const FIELDS_ACCESSED_MAX: usize = 256;
 
     pub const MAX_SIZE: usize =
             (4 + Self::EVENT_TYPE_MAX)
@@ -216,6 +247,10 @@ impl AuditRecord {
             + (1 + 4 + Self::DECISION_MAX)
             + (1 + 4 + Self::TOKEN_EXPIRY_MAX)
             + (4 + Self::TIMESTAMP_MAX)
+            + (1 + 4 + Self::INTERACTION_TYPE_MAX)
+            + (1 + 4 + Self::SUMMARY_HASH_MAX)
+            + (1 + 4 + Self::FIELDS_ACCESSED_MAX)
+            + (1 + 4)  // Option<u32> for duration_seconds
         + 8;
 }
 
@@ -237,6 +272,10 @@ pub struct AuditEventEmitted {
     pub decision: Option<String>,
     pub token_expiry: Option<String>,
     pub timestamp: String,
+    pub interaction_type: Option<String>,
+    pub summary_hash: Option<String>,
+    pub fields_accessed: Option<String>,
+    pub duration_seconds: Option<u32>,
     pub slot: u64,
 }
 

@@ -21,6 +21,12 @@ export default function HomePage() {
 
         <div className="flex flex-wrap justify-center gap-3">
           <Button asChild size="lg" className="rounded-full px-8">
+            <Link href="/doctor/login">Doctor Login</Link>
+          </Button>
+          <Button asChild size="lg" variant="outline" className="rounded-full px-8">
+            <Link href="/patient/login">Patient Login</Link>
+          </Button>
+          <Button asChild size="lg" variant="outline" className="rounded-full px-8">
             <Link href="/audit/sarah-bennett">View audit log</Link>
           </Button>
         </div>

@@ -5,6 +5,7 @@ import {
   logAuditOnChain,
 } from "@/lib/agent/tools/logAuditOnChain";
 import { addTraceStep, completeTraceStep } from "@/lib/agent/traceHelpers";
+import { sha256Hash } from "@/lib/crypto";
 import { updateAccessRequest } from "@/lib/db";
 import { AuditEventType } from "@/lib/types";
 import { AgentStateType } from "@/lib/agent/state";
@@ -123,6 +124,13 @@ export async function runAuditAgent(
   let auditLog: NormalizedAuditLog;
 
   try {
+    const fieldsAccessed = policyContext.fieldsAllowed?.join(",") || undefined;
+    const summaryHash = responseContext.clinicianBrief
+      ? sha256Hash(responseContext.clinicianBrief)
+      : requestContext.naturalLanguageRequest
+        ? sha256Hash(requestContext.naturalLanguageRequest)
+      : undefined;
+
     const event = buildAuditEvent({
       eventType,
       requestId: requestContext.requestId,
@@ -131,6 +139,10 @@ export async function runAuditAgent(
       decision: normalizedDecision,
       tokenExpiry,
       jurisdiction: resolveAuditJurisdiction(requestContext.targetLocale),
+      interactionType: "access",
+      summaryHash,
+      fieldsAccessed,
+      durationSeconds: 0,
     });
 
     const result = await logAuditOnChain({

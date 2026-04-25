@@ -12,7 +12,7 @@ import {
   writeEncryptedDocument,
 } from "@/lib/db";
 import { encryptBuffer, encryptJson, sha256Hash } from "@/lib/crypto";
-import { DEMO_CLINICIANS, DEMO_PATIENTS } from "@/lib/ips/seed";
+import { DEMO_CLINICIANS, DEMO_DOCTORS, DEMO_PATIENTS } from "@/lib/ips/seed";
 
 config({ path: ".env.local" });
 config();
@@ -65,6 +65,21 @@ export async function seedDemo() {
         patientApproved: doc.patientApprovedForTier1Or2,
       });
     }
+  }
+
+  for (const doctor of DEMO_DOCTORS) {
+    db.prepare(
+      `INSERT INTO doctor_registry (reg_number, reg_body, name, email, specialty, hospital, jurisdiction, status)
+       VALUES (@regNumber, @regBody, @name, @email, @specialty, @hospital, @jurisdiction, 'active')
+       ON CONFLICT(reg_number) DO UPDATE SET
+         reg_body = excluded.reg_body,
+         name = excluded.name,
+         email = excluded.email,
+         specialty = excluded.specialty,
+         hospital = excluded.hospital,
+         jurisdiction = excluded.jurisdiction,
+         status = excluded.status`
+    ).run(doctor);
   }
 
   setAppConfig("demo.seededAt", new Date().toISOString());

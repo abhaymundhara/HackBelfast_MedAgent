@@ -1,6 +1,7 @@
 import { getIssuerByRequesterId, listIssuerRegistry } from "@/lib/db";
 import { getDemoClinician } from "@/lib/ips/seed";
 import { VerificationResult, VerificationTrustLevel } from "@/lib/types";
+import { lookupDoctor } from "@/lib/verification/lookupDoctor";
 
 function findCredentialIssuerHint(presentedCredential?: string) {
   if (!presentedCredential) {
@@ -23,8 +24,31 @@ export async function verifyRequester(input: {
   requesterId: string;
   presentedCredential?: string;
 }): Promise<VerificationResult> {
-  const registryEntry = getIssuerByRequesterId(input.requesterId);
   const persona = getDemoClinician(input.requesterId);
+  // Try doctor_registry lookup first (IMC/GMC reg number verification). Demo
+  // handle IDs such as "dr-murphy" map through the seeded persona to a board
+  // registration number; Solana DID trust is no longer an access verifier.
+  const doctorRecord =
+    lookupDoctor(input.requesterId) ??
+    (persona ? lookupDoctor(persona.requesterId) : null);
+  if (doctorRecord) {
+    return {
+      verified: true,
+      issuerLabel: `${doctorRecord.regBody} (${doctorRecord.hospital ?? "Unknown hospital"})`,
+      requesterLabel: doctorRecord.name,
+      trustLevel: "trusted_requester",
+      verificationMode: "doctor_registry",
+      verificationReason: `Doctor verified via ${doctorRecord.regBody} registration number ${doctorRecord.regNumber}.`,
+      registryAnchored: true,
+      registryAccountId: null,
+      presentedCredential: false,
+      reason: `Doctor verified via ${doctorRecord.regBody} registration number ${doctorRecord.regNumber}.`,
+    };
+  }
+
+  // Backward-compatible labels from the old registry are retained for audit/UI
+  // context only; the legacy trusted flag no longer verifies access.
+  const registryEntry = getIssuerByRequesterId(input.requesterId);
   const credentialIssuerHint = findCredentialIssuerHint(input.presentedCredential);
 
   const requesterLabel =
@@ -37,7 +61,7 @@ export async function verifyRequester(input: {
     persona?.issuerLabel ??
     "Unknown issuer";
 
-  const verified = Boolean(registryEntry?.trusted);
+  const verified = false;
   const registryAnchored = Boolean(registryEntry || credentialIssuerHint);
   const registryAccountId =
     registryEntry?.registry_account_id ?? credentialIssuerHint?.registry_account_id ?? null;
@@ -46,11 +70,7 @@ export async function verifyRequester(input: {
   let verificationReason =
     "Requester is not recognized in the trusted registry and no credential evidence was provided.";
 
-  if (verified) {
-    trustLevel = "trusted_requester";
-    verificationReason =
-      "Requester matches a trusted registry entry in the cross-border issuer registry.";
-  } else if (credentialIssuerHint) {
+  if (credentialIssuerHint) {
     trustLevel = "trusted_issuer_unrecognized_requester";
     verificationReason =
       "A credential references a trusted issuer, but the requester is not a strongly verified registry match for auto-access.";
