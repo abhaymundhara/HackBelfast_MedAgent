@@ -1,6 +1,7 @@
 "use strict";
 
 import type { MedAgentOutcome } from "@/lib/types";
+import { DEFAULT_ACTIVATION_KEYWORD } from "./intents";
 
 export interface OutboundContext {
   outcome: MedAgentOutcome;
@@ -284,7 +285,7 @@ export function formatPatientConfirmation(input: {
 
 export function formatHelp(): string {
   const activationKeyword =
-    process.env.IMESSAGE_ACTIVATION_KEYWORD ?? "hey baymax!";
+    process.env.IMESSAGE_ACTIVATION_KEYWORD ?? DEFAULT_ACTIVATION_KEYWORD;
   return [
     "Hi — I’m MedAgent.",
     `To wake me up, say: ${activationKeyword}`,

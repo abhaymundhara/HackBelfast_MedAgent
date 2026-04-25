@@ -7,9 +7,15 @@ export const dynamic = "force-dynamic";
 export async function GET(request: Request) {
   const secret = process.env.IMESSAGE_WEBHOOK_SECRET;
   if (secret) {
-    const authHeader =
-      request.headers.get("authorization") ?? request.headers.get("x-webhook-secret");
-    if (authHeader !== secret && authHeader !== `Bearer ${secret}`) {
+    const authorizationHeader = request.headers.get("authorization");
+    const webhookHeader = request.headers.get("x-webhook-secret");
+    const bearerSecret = `Bearer ${secret}`;
+    const isAuthorized =
+      authorizationHeader === secret ||
+      authorizationHeader === bearerSecret ||
+      webhookHeader === secret ||
+      webhookHeader === bearerSecret;
+    if (!isAuthorized) {
       return NextResponse.json({ error: "unauthorized" }, { status: 401 });
     }
   }

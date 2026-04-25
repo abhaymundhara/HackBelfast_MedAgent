@@ -1,6 +1,7 @@
 "use strict";
 
-import { execFileSync } from "child_process";
+import { execFile } from "child_process";
+import { promisify } from "util";
 
 export interface BridgeAdapter {
   sendText(input: {
@@ -12,6 +13,7 @@ export interface BridgeAdapter {
 }
 
 const BRIDGE_KIND_MACOS_LOCAL = "macos-local";
+const execFileAsync = promisify(execFile);
 
 function parseHandleFromChatGuid(chatGuid: string): string {
   const raw = chatGuid.trim();
@@ -49,16 +51,24 @@ end run
 `;
 
     try {
-      execFileSync(
+      await execFileAsync(
         "osascript",
         ["-e", script, handle, input.text],
-        { stdio: "pipe", timeout: 5000 },
+        { timeout: 5000, maxBuffer: 1024 * 32 },
       );
       return { messageGuid: input.tempGuid ?? crypto.randomUUID(), status: "sent" };
     } catch (err) {
-      const message = err instanceof Error ? err.message : String(err);
-      console.error("[MacOSLocalBridge] sendText exception", message);
-      return { messageGuid: "", status: "failed", error: message };
+      const error = err as NodeJS.ErrnoException;
+      const errorName = error?.name ?? "Error";
+      const errorCode =
+        typeof error?.code === "string" || typeof error?.code === "number"
+          ? String(error.code)
+          : "unknown";
+      console.error("[MacOSLocalBridge] sendText failed", {
+        errorName,
+        errorCode,
+      });
+      return { messageGuid: "", status: "failed", error: "failed to send message" };
     }
   }
 
@@ -72,21 +82,26 @@ tell application "Messages"
   set _svc to 1st service whose service type = iMessage
   return "ok"
 end tell
-`;
+    `;
 
     try {
-      const output = execFileSync(
+      const { stdout } = await execFileAsync(
         "osascript",
         ["-e", script],
-        { encoding: "utf8", stdio: "pipe", timeout: 3000 },
+        { encoding: "utf8", timeout: 3000, maxBuffer: 1024 * 32 },
       );
+      const output = typeof stdout === "string" ? stdout : String(stdout);
       if (output.trim().toLowerCase() !== "ok") {
         return { healthy: false, detail: `unexpected Messages check output: ${output.trim()}` };
       }
       return { healthy: true, detail: "Messages.app iMessage service reachable" };
     } catch (err) {
-      const message = err instanceof Error ? err.message : String(err);
-      return { healthy: false, detail: message };
+      const error = err as NodeJS.ErrnoException;
+      const code =
+        typeof error?.code === "string" || typeof error?.code === "number"
+          ? ` (${String(error.code)})`
+          : "";
+      return { healthy: false, detail: `Messages check failed${code}` };
     }
   }
 }

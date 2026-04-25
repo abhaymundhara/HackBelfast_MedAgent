@@ -1,5 +1,3 @@
-"use strict";
-
 export type ParsedNameDob = {
   name: string;
   dob: string; // YYYY-MM-DD
@@ -209,18 +207,39 @@ async function parseWithOllama(input: string): Promise<ParsedNameDob | null> {
     `User text: "${input}"`,
   ].join("\n");
 
-  const response = await fetch(`${host.replace(/\/+$/, "")}/api/generate`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model,
-      prompt,
-      stream: false,
-      options: {
-        temperature: 0,
-      },
-    }),
-  });
+  const parsedTimeoutMs = Number(process.env.IMESSAGE_OLLAMA_TIMEOUT_MS ?? 10_000);
+  const timeoutMs =
+    Number.isFinite(parsedTimeoutMs) && parsedTimeoutMs > 0
+      ? parsedTimeoutMs
+      : 10_000;
+  const controller = new AbortController();
+  const timeoutHandle = setTimeout(() => controller.abort(), timeoutMs);
+
+  let response: Response;
+  try {
+    response = await fetch(`${host.replace(/\/+$/, "")}/api/generate`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      signal: controller.signal,
+      body: JSON.stringify({
+        model,
+        prompt,
+        stream: false,
+        options: {
+          temperature: 0,
+        },
+      }),
+    });
+  } catch (err) {
+    if (err instanceof Error && err.name === "AbortError") {
+      debugLog("ollama parse timed out", { timeoutMs });
+      return null;
+    }
+    throw err;
+  } finally {
+    clearTimeout(timeoutHandle);
+  }
+
   if (!response.ok) {
     debugLog("ollama parse failed: non-OK response", {
       status: response.status,

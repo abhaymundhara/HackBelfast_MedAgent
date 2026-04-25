@@ -38,6 +38,7 @@ const DEFAULT_INTERVAL_MS = 2000;
 const DEFAULT_BATCH_SIZE = 25;
 const DEFAULT_BOOTSTRAP_MODE = "latest";
 const DEFAULT_SKIP_HISTORY_ON_START = true;
+const WEBHOOK_TIMEOUT_MS = 30_000;
 
 function readState(statePath: string): PollerState {
   try {
@@ -122,11 +123,27 @@ async function forwardMessage(
   };
   if (secret) headers["x-webhook-secret"] = secret;
 
-  const response = await fetch(webhookUrl, {
-    method: "POST",
-    headers,
-    body: JSON.stringify(payload),
-  });
+  const controller = new AbortController();
+  const timeoutHandle = setTimeout(
+    () => controller.abort(),
+    WEBHOOK_TIMEOUT_MS,
+  );
+  let response: Response;
+  try {
+    response = await fetch(webhookUrl, {
+      method: "POST",
+      headers,
+      signal: controller.signal,
+      body: JSON.stringify(payload),
+    });
+  } catch (err) {
+    if (err instanceof Error && err.name === "AbortError") {
+      throw new Error("Webhook POST timed out after 30s");
+    }
+    throw err;
+  } finally {
+    clearTimeout(timeoutHandle);
+  }
 
   if (!response.ok) {
     const body = await response.text().catch(() => "");
@@ -246,57 +263,83 @@ async function main() {
     console.log("[imessage-poller] handle filter disabled (all senders allowed)");
   }
 
-  while (true) {
-    const rows = query.all({
-      afterRowId: state.lastRowId,
-      limit: batchSize,
-    }) as MessageRow[];
+  let shutdownRequested = false;
+  let cleanedUp = false;
 
-    for (const row of rows) {
-      // Messages with no handle/chat are ignored to avoid malformed webhook payloads.
-      if (!row.handle && !row.chat_guid) {
-        debugLog("skip row: missing handle/chat", { rowid: row.rowid });
-        state.lastRowId = row.rowid;
-        writeState(statePath, state);
-        continue;
-      }
-      if (onlyIMessageService && row.service.toLowerCase() !== "imessage") {
-        debugLog("skip row: non-iMessage service", {
-          rowid: row.rowid,
-          service: row.service,
-          handle: row.handle,
-        });
-        state.lastRowId = row.rowid;
-        writeState(statePath, state);
-        continue;
-      }
-      if (allowedHandles.size > 0 && !allowedHandles.has(row.handle)) {
-        debugLog("skip row: handle not allowlisted", {
-          rowid: row.rowid,
-          handle: row.handle,
-        });
-        state.lastRowId = row.rowid;
-        writeState(statePath, state);
-        continue;
+  const cleanup = () => {
+    if (cleanedUp) return;
+    cleanedUp = true;
+    writeState(statePath, state);
+    db.close();
+  };
+
+  const requestShutdown = (signal: string) => {
+    if (shutdownRequested) return;
+    shutdownRequested = true;
+    console.log(`[imessage-poller] received ${signal}, shutting down...`);
+  };
+
+  process.on("SIGINT", () => requestShutdown("SIGINT"));
+  process.on("SIGTERM", () => requestShutdown("SIGTERM"));
+
+  try {
+    while (!shutdownRequested) {
+      const rows = query.all({
+        afterRowId: state.lastRowId,
+        limit: batchSize,
+      }) as MessageRow[];
+
+      for (const row of rows) {
+        if (shutdownRequested) break;
+
+        // Messages with no handle/chat are ignored to avoid malformed webhook payloads.
+        if (!row.handle && !row.chat_guid) {
+          debugLog("skip row: missing handle/chat", { rowid: row.rowid });
+          state.lastRowId = row.rowid;
+          writeState(statePath, state);
+          continue;
+        }
+        if (onlyIMessageService && row.service.toLowerCase() !== "imessage") {
+          debugLog("skip row: non-iMessage service", {
+            rowid: row.rowid,
+            service: row.service,
+            handle: row.handle,
+          });
+          state.lastRowId = row.rowid;
+          writeState(statePath, state);
+          continue;
+        }
+        if (allowedHandles.size > 0 && !allowedHandles.has(row.handle)) {
+          debugLog("skip row: handle not allowlisted", {
+            rowid: row.rowid,
+            handle: row.handle,
+          });
+          state.lastRowId = row.rowid;
+          writeState(statePath, state);
+          continue;
+        }
+
+        try {
+          await forwardMessage(appBaseUrl, secret, row);
+          state.lastRowId = row.rowid;
+          writeState(statePath, state);
+          console.log(
+            `[imessage-poller] forwarded row=${row.rowid} fromMe=${row.is_from_me === 1} handle=${row.handle}`,
+          );
+        } catch (err) {
+          const message = err instanceof Error ? err.message : String(err);
+          console.error(
+            `[imessage-poller] forward failed row=${row.rowid}; will retry: ${message}`,
+          );
+          break;
+        }
       }
 
-      try {
-        await forwardMessage(appBaseUrl, secret, row);
-        state.lastRowId = row.rowid;
-        writeState(statePath, state);
-        console.log(
-          `[imessage-poller] forwarded row=${row.rowid} fromMe=${row.is_from_me === 1} handle=${row.handle}`,
-        );
-      } catch (err) {
-        const message = err instanceof Error ? err.message : String(err);
-        console.error(
-          `[imessage-poller] forward failed row=${row.rowid}; will retry: ${message}`,
-        );
-        break;
-      }
+      if (shutdownRequested) break;
+      await new Promise((resolve) => setTimeout(resolve, intervalMs));
     }
-
-    await new Promise((resolve) => setTimeout(resolve, intervalMs));
+  } finally {
+    cleanup();
   }
 }
 

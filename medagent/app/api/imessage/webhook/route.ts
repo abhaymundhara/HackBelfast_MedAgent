@@ -193,8 +193,6 @@ export async function POST(request: Request) {
           chatGuid,
           text: `Start your message with "${activation.keyword}" to trigger MedAgent. Example: "${activation.keyword} access patient SARAHB".`,
         });
-      } else if (activation.activated && !activation.cleanedText) {
-        await startBaymaxOnboarding(conv, handle, chatGuid, bridge);
       } else {
         const routedText = activation.activated ? activation.cleanedText : text;
         const routedIntent = classifyIntent(routedText, conv.awaiting);
@@ -253,6 +251,28 @@ function normalizeName(input: string): string {
     .replace(/\s+/g, " ");
 }
 
+type PatientLookupEntry = {
+  patientId: string;
+  summary: NonNullable<ReturnType<typeof getPatientSummary>>;
+  normalizedName: string;
+  dob: string;
+};
+
+function buildPatientLookupEntries(): PatientLookupEntry[] {
+  return listPatientsSafe().flatMap((candidate) => {
+    const summary = getPatientSummary(candidate.patientId);
+    if (!summary) return [];
+    return [
+      {
+        patientId: candidate.patientId,
+        summary,
+        normalizedName: normalizeName(summary.demographics.name),
+        dob: summary.demographics.dob,
+      },
+    ];
+  });
+}
+
 function findPatientByNameDob(
   name: string,
   dob: string,
@@ -260,19 +280,13 @@ function findPatientByNameDob(
   patientId: string;
   summary: ReturnType<typeof getPatientSummary>;
 } | null {
-  const candidates = listPatientsSafe();
   const normalizedName = normalizeName(name);
-  for (const candidate of candidates) {
-    if (normalizeName(candidate.name) !== normalizedName) {
-      continue;
-    }
-    const summary = getPatientSummary(candidate.patientId);
-    if (!summary) continue;
-    if (summary.demographics.dob === dob) {
-      return { patientId: candidate.patientId, summary };
-    }
-  }
-  return null;
+  const match = buildPatientLookupEntries().find(
+    (candidate) =>
+      candidate.normalizedName === normalizedName && candidate.dob === dob,
+  );
+  if (!match) return null;
+  return { patientId: match.patientId, summary: match.summary };
 }
 
 function buildSetupPreviewMessage(input: {
@@ -538,7 +552,14 @@ async function promptOnboardingStage(
       chatGuid,
       text: "Let's continue setup. Please send your emergency details (allergies, meds, conditions, emergency contact).",
     });
+    return;
   }
+
+  debugLog("unknown onboarding stage", { stage, chatGuid });
+  await bridge.sendText({
+    chatGuid,
+    text: `I couldn't determine your setup step (${stage}). Reply "hey baymax!" to continue onboarding.`,
+  });
 }
 
 async function handleSlashCommand(
