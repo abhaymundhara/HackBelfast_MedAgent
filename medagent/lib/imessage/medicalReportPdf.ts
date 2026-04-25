@@ -19,9 +19,10 @@ const OCR_MIN_TEXT_LENGTH = 40;
 const SECTION_BOUNDARY_PATTERN =
   "allergies?|known allergies?|adverse reactions?|current medications?|medications?|medicines|active conditions?|major conditions?|conditions?|diagnoses|problems|emergency contact|next of kin|blood type|recent discharge|emergency alerts?|alerts?";
 
-type PdfTextExtractor = (filePath: string) => Promise<string>;
+type ExtractionResult = { text: string; method: string };
+type PdfTextExtractor = (filePath: string) => Promise<ExtractionResult>;
 
-let pdfTextExtractor: PdfTextExtractor = extractTextWithNativeMacTools;
+let pdfTextExtractor: PdfTextExtractor = extractTextWithNativeMacToolsTracked;
 
 export type MedicalReportProfile = {
   patientId: string;
@@ -63,7 +64,10 @@ export async function processMedicalReportPdfOnboarding(input: {
     throw new Error("The uploaded PDF is not available on this Mac yet.");
   }
 
-  const rawText = await pdfTextExtractor(pdfPath);
+  const extraction = await pdfTextExtractor(pdfPath);
+  const rawText = extraction.text;
+  const extractionMethod = extraction.method;
+  const pdfMeta = await extractPdfMetadata(pdfPath);
   const summary = buildEmergencySummaryFromReport({
     patientId: buildPatientId(input.fullName, input.dob, input.handle),
     fullName: input.fullName,
@@ -103,6 +107,14 @@ export async function processMedicalReportPdfOnboarding(input: {
     mimeType: "application/pdf",
     storagePath,
     patientApproved: true,
+    fileSizeBytes: pdfMeta.fileSizeBytes,
+    pageCount: pdfMeta.pageCount,
+    pdfAuthor: pdfMeta.pdfAuthor,
+    pdfCreationDate: pdfMeta.pdfCreationDate,
+    pdfProducer: pdfMeta.pdfProducer,
+    pdfKeywords: pdfMeta.pdfKeywords,
+    extractionMethod,
+    extractedTextLength: rawText.length,
   });
 
   return { patientId: summary.patientId, summary, documentId };
@@ -223,12 +235,95 @@ function buildDocumentTitle(attachment: InboundAttachment) {
   return title || "Medical report PDF";
 }
 
-async function extractTextWithNativeMacTools(filePath: string) {
+async function extractTextWithNativeMacToolsTracked(
+  filePath: string,
+): Promise<ExtractionResult> {
   const spotlightText = await extractTextWithSpotlight(filePath);
   if (spotlightText.trim().length >= OCR_MIN_TEXT_LENGTH) {
-    return spotlightText;
+    return { text: spotlightText, method: "spotlight" };
   }
-  return extractTextWithVision(filePath);
+  const visionText = await extractTextWithVision(filePath);
+  return { text: visionText, method: "vision-ocr" };
+}
+
+export type PdfMetadata = {
+  fileSizeBytes: number;
+  pageCount: number | null;
+  pdfAuthor: string | null;
+  pdfCreationDate: string | null;
+  pdfProducer: string | null;
+  pdfKeywords: string | null;
+};
+
+export async function extractPdfMetadata(
+  filePath: string,
+): Promise<PdfMetadata> {
+  const fileSizeBytes = fs.statSync(filePath).size;
+
+  if (process.platform !== "darwin") {
+    return {
+      fileSizeBytes,
+      pageCount: null,
+      pdfAuthor: null,
+      pdfCreationDate: null,
+      pdfProducer: null,
+      pdfKeywords: null,
+    };
+  }
+
+  try {
+    const { stdout } = await execFileAsync(
+      "/usr/bin/mdls",
+      [
+        "-name", "kMDItemNumberOfPages",
+        "-name", "kMDItemAuthors",
+        "-name", "kMDItemCreator",
+        "-name", "kMDItemKeywords",
+        "-name", "kMDItemContentCreationDate",
+        filePath,
+      ],
+      { encoding: "utf8", timeout: 10_000, maxBuffer: 1024 * 1024 },
+    );
+
+    const get = (key: string): string | null => {
+      const match = stdout.match(new RegExp(`${key}\\s*=\\s*(.+)`));
+      if (!match) return null;
+      const val = match[1].trim();
+      if (val === "(null)" || val === "") return null;
+      return val.replace(/^"(.*)"$/, "$1");
+    };
+
+    const getArray = (key: string): string | null => {
+      const match = stdout.match(
+        new RegExp(`${key}\\s*=\\s*\\(([^)]*?)\\)`, "s"),
+      );
+      if (!match) return null;
+      const items = match[1]
+        .split(",")
+        .map((s) => s.trim().replace(/^"(.*)"$/, "$1"))
+        .filter(Boolean);
+      return items.length > 0 ? items.join(", ") : null;
+    };
+
+    const pageCountRaw = get("kMDItemNumberOfPages");
+    return {
+      fileSizeBytes,
+      pageCount: pageCountRaw ? parseInt(pageCountRaw, 10) || null : null,
+      pdfAuthor: getArray("kMDItemAuthors"),
+      pdfCreationDate: get("kMDItemContentCreationDate"),
+      pdfProducer: get("kMDItemCreator"),
+      pdfKeywords: getArray("kMDItemKeywords"),
+    };
+  } catch {
+    return {
+      fileSizeBytes,
+      pageCount: null,
+      pdfAuthor: null,
+      pdfCreationDate: null,
+      pdfProducer: null,
+      pdfKeywords: null,
+    };
+  }
 }
 
 async function extractTextWithSpotlight(filePath: string) {
@@ -573,7 +668,18 @@ print(allText.joined(separator: "\\n\\n"))
 `;
 
 export function __setPdfTextExtractorForTests(
-  extractor: PdfTextExtractor | null,
+  extractor: PdfTextExtractor | ((filePath: string) => Promise<string>) | null,
 ) {
-  pdfTextExtractor = extractor ?? extractTextWithNativeMacTools;
+  if (!extractor) {
+    pdfTextExtractor = extractTextWithNativeMacToolsTracked;
+    return;
+  }
+  // Wrap legacy string-returning extractors for backward compatibility
+  pdfTextExtractor = async (filePath: string) => {
+    const result = await extractor(filePath);
+    if (typeof result === "string") {
+      return { text: result, method: "test" };
+    }
+    return result;
+  };
 }

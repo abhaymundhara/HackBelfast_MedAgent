@@ -104,6 +104,14 @@ type DocumentRow = {
   storage_path: string;
   patient_approved: number;
   created_at: string;
+  file_size_bytes: number | null;
+  page_count: number | null;
+  pdf_author: string | null;
+  pdf_creation_date: string | null;
+  pdf_producer: string | null;
+  pdf_keywords: string | null;
+  extraction_method: string | null;
+  extracted_text_length: number | null;
 };
 
 type AccessRequestRow = {
@@ -622,6 +630,14 @@ export function initDb() {
   ensureColumn(db, "access_requests", "clinician_chat_guid", "TEXT");
   ensureColumn(db, "audit_events", "source_message_id", "TEXT");
   ensureColumn(db, "pending_audit_events", "source_message_id", "TEXT");
+  ensureColumn(db, "patient_documents", "file_size_bytes", "INTEGER");
+  ensureColumn(db, "patient_documents", "page_count", "INTEGER");
+  ensureColumn(db, "patient_documents", "pdf_author", "TEXT");
+  ensureColumn(db, "patient_documents", "pdf_creation_date", "TEXT");
+  ensureColumn(db, "patient_documents", "pdf_producer", "TEXT");
+  ensureColumn(db, "patient_documents", "pdf_keywords", "TEXT");
+  ensureColumn(db, "patient_documents", "extraction_method", "TEXT");
+  ensureColumn(db, "patient_documents", "extracted_text_length", "INTEGER");
 
   if (!database) {
     db.close();
@@ -826,20 +842,40 @@ export function savePatientDocumentMetadata(input: {
   mimeType: string;
   storagePath: string;
   patientApproved: boolean;
+  fileSizeBytes?: number | null;
+  pageCount?: number | null;
+  pdfAuthor?: string | null;
+  pdfCreationDate?: string | null;
+  pdfProducer?: string | null;
+  pdfKeywords?: string | null;
+  extractionMethod?: string | null;
+  extractedTextLength?: number | null;
 }) {
   const db = getDb();
   db.prepare(
     `
     INSERT INTO patient_documents (
-      id, patient_id, title, mime_type, storage_path, patient_approved, created_at
+      id, patient_id, title, mime_type, storage_path, patient_approved, created_at,
+      file_size_bytes, page_count, pdf_author, pdf_creation_date, pdf_producer,
+      pdf_keywords, extraction_method, extracted_text_length
     ) VALUES (
-      @id, @patientId, @title, @mimeType, @storagePath, @patientApproved, @createdAt
+      @id, @patientId, @title, @mimeType, @storagePath, @patientApproved, @createdAt,
+      @fileSizeBytes, @pageCount, @pdfAuthor, @pdfCreationDate, @pdfProducer,
+      @pdfKeywords, @extractionMethod, @extractedTextLength
     )
     ON CONFLICT(id) DO UPDATE SET
       title = excluded.title,
       mime_type = excluded.mime_type,
       storage_path = excluded.storage_path,
-      patient_approved = excluded.patient_approved
+      patient_approved = excluded.patient_approved,
+      file_size_bytes = excluded.file_size_bytes,
+      page_count = excluded.page_count,
+      pdf_author = excluded.pdf_author,
+      pdf_creation_date = excluded.pdf_creation_date,
+      pdf_producer = excluded.pdf_producer,
+      pdf_keywords = excluded.pdf_keywords,
+      extraction_method = excluded.extraction_method,
+      extracted_text_length = excluded.extracted_text_length
   `,
   ).run({
     id: input.id,
@@ -849,6 +885,14 @@ export function savePatientDocumentMetadata(input: {
     storagePath: input.storagePath,
     patientApproved: input.patientApproved ? 1 : 0,
     createdAt: nowIso(),
+    fileSizeBytes: input.fileSizeBytes ?? null,
+    pageCount: input.pageCount ?? null,
+    pdfAuthor: input.pdfAuthor ?? null,
+    pdfCreationDate: input.pdfCreationDate ?? null,
+    pdfProducer: input.pdfProducer ?? null,
+    pdfKeywords: input.pdfKeywords ?? null,
+    extractionMethod: input.extractionMethod ?? null,
+    extractedTextLength: input.extractedTextLength ?? null,
   });
 }
 
