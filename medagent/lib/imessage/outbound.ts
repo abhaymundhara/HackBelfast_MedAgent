@@ -311,7 +311,7 @@ export function formatAskApproval(): string {
 }
 
 export function formatAck(): string {
-  return "Thanks — I’ve received your request and I’m checking this now.";
+  return "Thanks — I’ve received your request and I’m working on it now.";
 }
 
 export function formatFollowUpAnswer(input: {

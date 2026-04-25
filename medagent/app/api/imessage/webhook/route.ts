@@ -86,6 +86,7 @@ export async function POST(request: Request) {
     chatGuid,
     textPreview: text.slice(0, 200),
   });
+  await markInboundSeen(bridge, chatGuid);
 
   // 3. Resolve identity
   const handleMapping = resolveHandle(handle);
@@ -362,6 +363,30 @@ async function startBaymaxOnboarding(
   });
 }
 
+async function markInboundSeen(
+  bridge: ReturnType<typeof getBridge>,
+  chatGuid: string,
+) {
+  try {
+    const result = await bridge.markChatRead({ chatGuid });
+    debugLog("mark chat read", result);
+  } catch (err) {
+    debugLog("mark chat read failed", err instanceof Error ? err.message : err);
+  }
+}
+
+async function pulseTypingIndicator(
+  bridge: ReturnType<typeof getBridge>,
+  chatGuid: string,
+) {
+  try {
+    const result = await bridge.showTypingIndicator({ chatGuid });
+    debugLog("typing indicator", result);
+  } catch (err) {
+    debugLog("typing indicator failed", err instanceof Error ? err.message : err);
+  }
+}
+
 async function handleOnboardingNameDob(
   text: string,
   handle: string,
@@ -373,6 +398,7 @@ async function handleOnboardingNameDob(
     handle,
     textPreview: text.slice(0, 200),
   });
+  await pulseTypingIndicator(bridge, chatGuid);
   const parsed = await parseNameDobInput(text);
   if (!parsed) {
     debugLog("name/dob parse failed", { handle });
@@ -772,6 +798,7 @@ async function handleClinicianRequest(
 
   // Send ack immediately
   await bridge.sendText({ chatGuid, text: formatAck() });
+  await pulseTypingIndicator(bridge, chatGuid);
 
   // Check if this is a follow-up on an active session
   if (conv.activeRequestId && !intent.emergencyMode) {
