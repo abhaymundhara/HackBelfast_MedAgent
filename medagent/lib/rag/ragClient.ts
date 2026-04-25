@@ -333,6 +333,102 @@ export function resetRagForTests() {
   seeded = false;
 }
 
+/**
+ * Index a patient's uploaded document into the live RAG index.
+ * Called after PDF onboarding to make the patient's record queryable.
+ */
+export function indexPatientDocument(input: {
+  patientHash: string;
+  rawText: string;
+  patientId: string;
+  documentId: string;
+}) {
+  ensureSeeded();
+
+  const sections = chunkMedicalText(input.rawText, input.patientHash);
+  for (const chunk of sections) {
+    index.addChunk(chunk);
+  }
+}
+
+/**
+ * Split medical report text into typed RAG chunks by detected sections.
+ */
+function chunkMedicalText(
+  rawText: string,
+  patientHash: string,
+): CanonicalEvidenceItem[] {
+  const chunks: CanonicalEvidenceItem[] = [];
+  const now = new Date().toISOString();
+
+  const sectionMap: Array<{
+    labels: RegExp;
+    noteType: string;
+  }> = [
+    { labels: /\b(?:allerg(?:ies|y)|adverse reactions?)\b/i, noteType: "allergy" },
+    { labels: /\b(?:current )?medications?\b|medicines\b/i, noteType: "medication_safety" },
+    { labels: /\b(?:active |major )?conditions?\b|diagnoses|problems\b/i, noteType: "chronic_condition" },
+    { labels: /\bemergency (?:contact|alerts?)\b/i, noteType: "care_plan" },
+    { labels: /\brecent discharge\b/i, noteType: "procedure_history" },
+    { labels: /\bblood type\b/i, noteType: "lab_trend" },
+  ];
+
+  // Extract sections by splitting on known headings
+  const headingPattern =
+    /\n\s*((?:allergies?|known allergies?|adverse reactions?|current medications?|medications?|medicines|active conditions?|major conditions?|conditions?|diagnoses|problems|emergency contact|next of kin|blood type|recent discharge|emergency alerts?|alerts?)\s*:?)/gi;
+
+  const lines = rawText.split("\n");
+  let currentSection = "general";
+  let currentLines: string[] = [];
+  const sectionChunks: Array<{ heading: string; text: string }> = [];
+
+  for (const line of lines) {
+    const match = headingPattern.exec(line);
+    if (match) {
+      if (currentLines.length > 0) {
+        sectionChunks.push({
+          heading: currentSection,
+          text: currentLines.join("\n").trim(),
+        });
+      }
+      currentSection = match[1].replace(/\s*:?\s*$/, "").trim().toLowerCase();
+      currentLines = [line.replace(match[1], "").trim()].filter(Boolean);
+      headingPattern.lastIndex = 0;
+    } else {
+      currentLines.push(line);
+    }
+  }
+  if (currentLines.length > 0) {
+    sectionChunks.push({
+      heading: currentSection,
+      text: currentLines.join("\n").trim(),
+    });
+  }
+
+  for (const section of sectionChunks) {
+    if (!section.text || section.text.length < 10) continue;
+
+    let noteType = "care_plan";
+    for (const mapping of sectionMap) {
+      if (mapping.labels.test(section.heading)) {
+        noteType = mapping.noteType;
+        break;
+      }
+    }
+
+    chunks.push(
+      toCanonicalItem(patientHash, noteType, section.text, now),
+    );
+  }
+
+  // If no sections were detected, index the whole text as a single chunk
+  if (chunks.length === 0 && rawText.trim().length >= 40) {
+    chunks.push(toCanonicalItem(patientHash, "care_plan", rawText.trim(), now));
+  }
+
+  return chunks;
+}
+
 if (process.env.NODE_ENV !== "test") {
   setImmediate(() => {
     if (!seeded) {

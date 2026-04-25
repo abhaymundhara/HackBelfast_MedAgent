@@ -12,6 +12,7 @@ import {
   writeEncryptedDocument,
 } from "@/lib/db";
 import type { InboundAttachment } from "@/lib/imessage/inbound";
+import { indexPatientDocument } from "@/lib/rag/ragClient";
 import { EMERGENCY_ALERTS, EmergencySummary, PatientPolicy } from "@/lib/types";
 
 const execFileAsync = promisify(execFile);
@@ -115,6 +116,14 @@ export async function processMedicalReportPdfOnboarding(input: {
     pdfKeywords: pdfMeta.pdfKeywords,
     extractionMethod,
     extractedTextLength: rawText.length,
+  });
+
+  // Index extracted text into the RAG system so the patient can query their record
+  indexPatientDocument({
+    patientHash,
+    rawText,
+    patientId: summary.patientId,
+    documentId,
   });
 
   return { patientId: summary.patientId, summary, documentId };

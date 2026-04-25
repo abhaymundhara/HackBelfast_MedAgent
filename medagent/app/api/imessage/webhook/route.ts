@@ -28,6 +28,7 @@ import {
   resumeApprovedRequest,
   denyApprovedRequest,
   answerFollowUpQuestion,
+  answerPatientRecordQuery,
 } from "@/lib/agent/medagent";
 import { getDemoClinician } from "@/lib/ips/seed";
 import { searchAppointmentSlots } from "@/lib/appointments/availability";
@@ -216,6 +217,16 @@ export async function POST(request: Request) {
       );
     } else if (intent.kind === "approval") {
       await handleApproval(intent.decision, conv, chatGuid, bridge, messageId);
+    } else if (
+      identityKind === "patient" &&
+      intent.kind === "patient_query"
+    ) {
+      await handlePatientRecordQuery(
+        intent.query,
+        conv,
+        chatGuid,
+        bridge,
+      );
     } else if (
       identityKind === "patient" &&
       (intent.kind === "appointment_search" ||
@@ -1010,6 +1021,39 @@ async function handlePatientAppointmentIntent(
       dashboardUrl: `${appBaseUrl}/patient/dashboard`,
     }),
   });
+}
+
+async function handlePatientRecordQuery(
+  query: string,
+  conv: ConversationState,
+  chatGuid: string,
+  bridge: ReturnType<typeof getBridge>,
+) {
+  const patientId = conv.identityId;
+  if (!patientId || conv.identityKind !== "patient") {
+    await bridge.sendText({
+      chatGuid,
+      text: "Please finish onboarding before querying your medical record.",
+    });
+    return;
+  }
+
+  await pulseTypingIndicator(bridge, chatGuid);
+
+  try {
+    const result = await answerPatientRecordQuery(patientId, query);
+    const lines = [result.answer];
+    if (result.sources.length > 0) {
+      lines.push("", `Sources: ${[...new Set(result.sources)].join(", ")}`);
+    }
+    await bridge.sendText({ chatGuid, text: lines.join("\n") });
+  } catch (err) {
+    debugLog("patient query error", err instanceof Error ? err.message : err);
+    await bridge.sendText({
+      chatGuid,
+      text: "I couldn't retrieve that information right now. Please try again.",
+    });
+  }
 }
 
 const PATIENT_SHORTCODES: Record<string, string> = {

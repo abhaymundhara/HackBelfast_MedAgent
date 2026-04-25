@@ -6,6 +6,7 @@ export type ParsedIntent =
   | { kind: "appointment_search"; requestedDate: string | null }
   | { kind: "appointment_slot_selection"; selection: number }
   | { kind: "appointment_share"; decision: "approve" | "deny" }
+  | { kind: "patient_query"; query: string }
   | { kind: "freeform_clinician"; patientHint: string | null; emergencyMode: boolean }
   | { kind: "unknown" };
 
@@ -37,6 +38,32 @@ const APPOINTMENT_KEYWORDS = [
   "pain",
   "belfast",
   "near me",
+];
+
+const PATIENT_QUERY_KEYWORDS = [
+  "what are my",
+  "what is my",
+  "do i have",
+  "am i allergic",
+  "my allergies",
+  "my medications",
+  "my conditions",
+  "my blood type",
+  "my emergency contact",
+  "my medical",
+  "my record",
+  "my health",
+  "tell me about my",
+  "show me my",
+  "what medication",
+  "what condition",
+  "what allergy",
+  "what drugs",
+  "my prescriptions",
+  "my diagnosis",
+  "my discharge",
+  "any allergies",
+  "my summary",
 ];
 
 function normalizeKeyword(value: string): string {
@@ -117,6 +144,12 @@ export function classifyIntent(text: string, awaiting: string | null): ParsedInt
     const command = tokens[0].slice(1).toLowerCase();
     const args = tokens.slice(1);
     return { kind: "slash", command, args };
+  }
+
+  // Patient record query detection (before appointment, since "my knee" could be a query)
+  const lowerForQuery = text.toLowerCase();
+  if (PATIENT_QUERY_KEYWORDS.some((keyword) => lowerForQuery.includes(keyword))) {
+    return { kind: "patient_query", query: text.trim() };
   }
 
   const dateMatch = DATE_RE.exec(text);
