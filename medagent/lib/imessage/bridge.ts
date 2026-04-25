@@ -8,7 +8,11 @@ export interface BridgeAdapter {
     chatGuid: string;
     text: string;
     tempGuid?: string;
-  }): Promise<{ messageGuid: string; status: "sent" | "queued" | "failed"; error?: string }>;
+  }): Promise<{
+    messageGuid: string;
+    status: "sent" | "queued" | "failed";
+    error?: string;
+  }>;
   markChatRead(input: { chatGuid: string }): Promise<BridgeActionResult>;
   showTypingIndicator(input: { chatGuid: string }): Promise<BridgeActionResult>;
   isHealthy(): Promise<{ healthy: boolean; detail: string }>;
@@ -64,14 +68,26 @@ class MacOSLocalBridge implements BridgeAdapter {
     chatGuid: string;
     text: string;
     tempGuid?: string;
-  }): Promise<{ messageGuid: string; status: "sent" | "queued" | "failed"; error?: string }> {
+  }): Promise<{
+    messageGuid: string;
+    status: "sent" | "queued" | "failed";
+    error?: string;
+  }> {
     if (process.platform !== "darwin") {
-      return { messageGuid: "", status: "failed", error: "macOS local iMessage bridge requires darwin host" };
+      return {
+        messageGuid: "",
+        status: "failed",
+        error: "macOS local iMessage bridge requires darwin host",
+      };
     }
 
     const handle = parseHandleFromChatGuid(input.chatGuid);
     if (!handle) {
-      return { messageGuid: "", status: "failed", error: "invalid chatGuid: unable to resolve iMessage handle" };
+      return {
+        messageGuid: "",
+        status: "failed",
+        error: "invalid chatGuid: unable to resolve iMessage handle",
+      };
     }
 
     const script = `
@@ -87,12 +103,14 @@ end run
 `;
 
     try {
-      await execFileAsync(
-        "osascript",
-        ["-e", script, handle, input.text],
-        { timeout: 5000, maxBuffer: 1024 * 32 },
-      );
-      return { messageGuid: input.tempGuid ?? crypto.randomUUID(), status: "sent" };
+      await execFileAsync("osascript", ["-e", script, handle, input.text], {
+        timeout: 5000,
+        maxBuffer: 1024 * 32,
+      });
+      return {
+        messageGuid: input.tempGuid ?? crypto.randomUUID(),
+        status: "sent",
+      };
     } catch (err) {
       const error = err as NodeJS.ErrnoException;
       const errorName = error?.name ?? "Error";
@@ -104,13 +122,20 @@ end run
         errorName,
         errorCode,
       });
-      return { messageGuid: "", status: "failed", error: "failed to send message" };
+      return {
+        messageGuid: "",
+        status: "failed",
+        error: "failed to send message",
+      };
     }
   }
 
   async markChatRead(input: { chatGuid: string }): Promise<BridgeActionResult> {
     if (process.platform !== "darwin") {
-      return { status: "skipped", detail: "macOS local iMessage bridge requires darwin host" };
+      return {
+        status: "skipped",
+        detail: "macOS local iMessage bridge requires darwin host",
+      };
     }
     if (isMacAutomationDisabled()) {
       return { status: "skipped", detail: "Messages UI automation disabled" };
@@ -118,7 +143,10 @@ end run
 
     const imessageUrl = buildImessageUrl(input.chatGuid);
     if (!imessageUrl) {
-      return { status: "failed", detail: "invalid chatGuid: unable to resolve iMessage handle" };
+      return {
+        status: "failed",
+        detail: "invalid chatGuid: unable to resolve iMessage handle",
+      };
     }
 
     const script = `
@@ -136,14 +164,22 @@ end run
       });
       return { status: "ok" };
     } catch (err) {
-      console.error("[MacOSLocalBridge] markChatRead failed", toSafeErrorLog(err));
+      console.error(
+        "[MacOSLocalBridge] markChatRead failed",
+        toSafeErrorLog(err),
+      );
       return { status: "failed", detail: "failed to mark chat read" };
     }
   }
 
-  async showTypingIndicator(input: { chatGuid: string }): Promise<BridgeActionResult> {
+  async showTypingIndicator(input: {
+    chatGuid: string;
+  }): Promise<BridgeActionResult> {
     if (process.platform !== "darwin") {
-      return { status: "skipped", detail: "macOS local iMessage bridge requires darwin host" };
+      return {
+        status: "skipped",
+        detail: "macOS local iMessage bridge requires darwin host",
+      };
     }
     if (isMacAutomationDisabled()) {
       return { status: "skipped", detail: "Messages UI automation disabled" };
@@ -151,7 +187,10 @@ end run
 
     const imessageUrl = buildImessageUrl(input.chatGuid);
     if (!imessageUrl) {
-      return { status: "failed", detail: "invalid chatGuid: unable to resolve iMessage handle" };
+      return {
+        status: "failed",
+        detail: "invalid chatGuid: unable to resolve iMessage handle",
+      };
     }
 
     const script = `
@@ -195,6 +234,21 @@ on composerHasText()
 end composerHasText
 `;
 
+    const fallbackScript = `
+on run argv
+  set targetUrl to item 1 of argv
+  tell application "Messages" to activate
+  open location targetUrl
+  delay 0.6
+  tell application "System Events"
+    keystroke space
+    delay 0.2
+    key code 51
+  end tell
+  return "ok"
+end run
+`;
+
     try {
       const { stdout } = await appleScriptRunner(script, [imessageUrl], {
         timeout: 3000,
@@ -202,18 +256,40 @@ end composerHasText
       });
       const output = typeof stdout === "string" ? stdout.trim() : "";
       if (output === "skipped_non_empty_composer") {
-        return { status: "skipped", detail: "Messages composer already has draft text" };
+        return {
+          status: "skipped",
+          detail: "Messages composer already has draft text",
+        };
       }
       return { status: "ok" };
     } catch (err) {
-      console.error("[MacOSLocalBridge] showTypingIndicator failed", toSafeErrorLog(err));
-      return { status: "failed", detail: "failed to show typing indicator" };
+      console.error(
+        "[MacOSLocalBridge] showTypingIndicator failed (primary)",
+        toSafeErrorLog(err),
+      );
+
+      try {
+        await appleScriptRunner(fallbackScript, [imessageUrl], {
+          timeout: 3000,
+          maxBuffer: 1024 * 16,
+        });
+        return { status: "ok", detail: "typing pulse sent via fallback" };
+      } catch (fallbackErr) {
+        console.error(
+          "[MacOSLocalBridge] showTypingIndicator failed (fallback)",
+          toSafeErrorLog(fallbackErr),
+        );
+        return { status: "failed", detail: "failed to show typing indicator" };
+      }
     }
   }
 
   async isHealthy(): Promise<{ healthy: boolean; detail: string }> {
     if (process.platform !== "darwin") {
-      return { healthy: false, detail: "macOS local iMessage bridge requires darwin host" };
+      return {
+        healthy: false,
+        detail: "macOS local iMessage bridge requires darwin host",
+      };
     }
 
     const script = `
@@ -224,16 +300,22 @@ end tell
     `;
 
     try {
-      const { stdout } = await execFileAsync(
-        "osascript",
-        ["-e", script],
-        { encoding: "utf8", timeout: 3000, maxBuffer: 1024 * 32 },
-      );
+      const { stdout } = await execFileAsync("osascript", ["-e", script], {
+        encoding: "utf8",
+        timeout: 3000,
+        maxBuffer: 1024 * 32,
+      });
       const output = typeof stdout === "string" ? stdout : String(stdout);
       if (output.trim().toLowerCase() !== "ok") {
-        return { healthy: false, detail: `unexpected Messages check output: ${output.trim()}` };
+        return {
+          healthy: false,
+          detail: `unexpected Messages check output: ${output.trim()}`,
+        };
       }
-      return { healthy: true, detail: "Messages.app iMessage service reachable" };
+      return {
+        healthy: true,
+        detail: "Messages.app iMessage service reachable",
+      };
     } catch (err) {
       const error = err as NodeJS.ErrnoException;
       const code =
@@ -258,7 +340,9 @@ function toSafeErrorLog(err: unknown): Record<string, string> {
 let bridgeInstance: BridgeAdapter | null = null;
 
 function buildMacOSLocalBridge(): MacOSLocalBridge {
-  const kind = (process.env.IMESSAGE_BRIDGE_KIND ?? BRIDGE_KIND_MACOS_LOCAL).trim().toLowerCase();
+  const kind = (process.env.IMESSAGE_BRIDGE_KIND ?? BRIDGE_KIND_MACOS_LOCAL)
+    .trim()
+    .toLowerCase();
   if (kind !== BRIDGE_KIND_MACOS_LOCAL) {
     throw new Error(
       `[iMessage bridge] Unsupported IMESSAGE_BRIDGE_KIND="${kind}". BlueBubbles and mock bridge are disabled; use "macos-local".`,
