@@ -39,6 +39,33 @@ describe("parseInbound", () => {
     expect(result).toBeNull();
   });
 
+  it("accepts a PDF attachment event with no text", () => {
+    const result = parseInbound({
+      ...validPayload,
+      data: {
+        ...validPayload.data,
+        text: "",
+        attachments: [
+          {
+            filename: "/Users/test/Library/Messages/Attachments/report.pdf",
+            mimeType: "application/pdf",
+            transferName: "report.pdf",
+          },
+        ],
+      },
+    });
+
+    expect(result).not.toBeNull();
+    expect(result!.text).toBe("");
+    expect(result!.attachments).toEqual([
+      {
+        filename: "/Users/test/Library/Messages/Attachments/report.pdf",
+        mimeType: "application/pdf",
+        transferName: "report.pdf",
+      },
+    ]);
+  });
+
   it("rejects events older than 5 minutes", () => {
     const result = parseInbound({
       ...validPayload,

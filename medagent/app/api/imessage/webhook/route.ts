@@ -33,6 +33,11 @@ import {
   type ImessageOnboardingStage,
 } from "@/lib/db";
 import { parseNameDobInput } from "@/lib/imessage/onboardingNlp";
+import {
+  isPdfAttachment,
+  processMedicalReportPdfOnboarding,
+} from "@/lib/imessage/medicalReportPdf";
+import type { InboundAttachment } from "@/lib/imessage/inbound";
 import type { ConversationState } from "@/lib/imessage/conversationState";
 
 export const runtime = "nodejs";
@@ -80,11 +85,12 @@ export async function POST(request: Request) {
   }
 
   const bridge = getBridge();
-  const { chatGuid, handle, text } = message;
+  const { chatGuid, handle, text, attachments } = message;
   debugLog("inbound accepted", {
     handle,
     chatGuid,
     textPreview: text.slice(0, 200),
+    attachmentCount: attachments.length,
   });
   await markInboundSeen(bridge, chatGuid);
 
@@ -125,6 +131,13 @@ export async function POST(request: Request) {
   conv.identityKind = identityKind;
 
   const imessageUser = touchImessageUser(handle);
+  if (imessageUser.stage === "onboarded" && imessageUser.patientId) {
+    identityId = imessageUser.patientId;
+    identityKind = "patient";
+    label = imessageUser.fullName ?? label;
+    conv.identityId = identityId;
+    conv.identityKind = identityKind;
+  }
   debugLog("loaded user stage", {
     handle,
     stage: imessageUser.stage,
@@ -146,7 +159,7 @@ export async function POST(request: Request) {
     if (imessageUser.stage === "onboarded") {
       await bridge.sendText({
         chatGuid,
-        text: 'You\'re already onboarded. Tell me what you need, for example: "hey baymax! access patient SARAHB".',
+        text: "You're already onboarded. Your emergency profile is ready for audited clinician access when needed.",
       });
     } else if (imessageUser.stage === "new") {
       await startBaymaxOnboarding(conv, handle, chatGuid, bridge);
@@ -182,7 +195,13 @@ export async function POST(request: Request) {
     } else if (conv.awaiting === "onboarding_ready_yes_no") {
       await handleOnboardingReadyReply(text, handle, conv, chatGuid, bridge);
     } else if (conv.awaiting === "onboarding_new_user_record") {
-      await handleOnboardingNewUserRecord(text, handle, conv, chatGuid, bridge);
+      await handleOnboardingMedicalReportUpload(
+        attachments,
+        handle,
+        conv,
+        chatGuid,
+        bridge,
+      );
     } else if (
       intent.kind === "freeform_clinician" &&
       identityKind === "clinician"
@@ -411,7 +430,11 @@ async function handleOnboardingNameDob(
 
   const patient = findPatientByNameDob(parsed.name, parsed.dob);
   if (!patient?.summary) {
-    debugLog("no existing profile matched; new user path", { handle, parsed });
+    debugLog("no existing profile matched; new user path", {
+      handle,
+      hasName: Boolean(parsed.name),
+      hasDob: Boolean(parsed.dob),
+    });
     conv.awaiting = "onboarding_ready_yes_no";
     conv.metadata.onboardingMode = "new_user";
     conv.metadata.onboardingName = parsed.name;
@@ -437,7 +460,8 @@ async function handleOnboardingNameDob(
   debugLog("existing profile matched", {
     handle,
     patientId: patient.patientId,
-    parsed,
+    hasName: Boolean(parsed.name),
+    hasDob: Boolean(parsed.dob),
   });
   conv.metadata.onboardingMode = "existing_user";
   conv.metadata.onboardingPatientId = patient.patientId;
@@ -481,7 +505,7 @@ async function handleOnboardingReadyReply(
       });
       await bridge.sendText({
         chatGuid,
-        text: "Great. Please reply with your emergency details in one message:\n• Allergies\n• Current medications\n• Major conditions\n• Emergency contact name + phone",
+        text: "Great. Please upload your medical report PDF here in iMessage. I'll read it on this Mac, extract your emergency details, and store them in your MedAgent profile.",
       });
     } else {
       conv.awaiting = null;
@@ -512,46 +536,88 @@ async function handleOnboardingReadyReply(
   });
 }
 
-async function handleOnboardingNewUserRecord(
-  text: string,
+async function handleOnboardingMedicalReportUpload(
+  attachments: InboundAttachment[],
   handle: string,
   conv: ConversationState,
   chatGuid: string,
   bridge: ReturnType<typeof getBridge>,
 ) {
-  const details = text.trim();
-  debugLog("onboarding new-user record input", {
+  const pdfAttachment = attachments.find(isPdfAttachment);
+  debugLog("onboarding pdf upload input", {
     handle,
-    length: details.length,
+    attachmentCount: attachments.length,
+    hasPdf: Boolean(pdfAttachment),
   });
-  if (!details) {
+  if (!pdfAttachment) {
     await bridge.sendText({
       chatGuid,
-      text: "Please send your emergency details so I can finish setup.",
+      text: "Please upload your medical report as a PDF attachment so I can finish your emergency profile.",
     });
     return;
   }
 
-  conv.metadata.onboardingRecordDraft = details;
-  conv.awaiting = null;
-  updateImessageUser(handle, {
-    stage: "onboarded",
-    onboardingRecordDraft: details,
-  });
+  const name =
+    typeof conv.metadata.onboardingName === "string"
+      ? conv.metadata.onboardingName
+      : "";
+  const dob =
+    typeof conv.metadata.onboardingDob === "string"
+      ? conv.metadata.onboardingDob
+      : "";
+  if (!name || !dob) {
+    conv.awaiting = "onboarding_name_dob";
+    updateImessageUser(handle, { stage: "awaiting_name_dob" });
+    await bridge.sendText({
+      chatGuid,
+      text: "I need your name and DOB before I can attach this PDF to a profile. Reply with your full name and DOB in YYYY-MM-DD format.",
+    });
+    return;
+  }
 
-  const name = String(conv.metadata.onboardingName ?? "your profile");
-  const dob = String(conv.metadata.onboardingDob ?? "unknown");
+  await pulseTypingIndicator(bridge, chatGuid);
+  try {
+    const profile = await processMedicalReportPdfOnboarding({
+      attachment: pdfAttachment,
+      fullName: name,
+      dob,
+      handle,
+    });
 
-  await bridge.sendText({
-    chatGuid,
-    text: [
-      `Thanks ${name}. I captured your onboarding details.`,
-      `• DOB: ${dob}`,
-      "• Status: emergency profile draft saved",
-      "",
-      'You\'re ready to continue setup. Start with "hey baymax!" any time.',
-    ].join("\n"),
-  });
+    conv.metadata.onboardingPatientId = profile.patientId;
+    conv.metadata.onboardingRecordDraft = `pdf:${profile.documentId}`;
+    conv.awaiting = null;
+    conv.identityId = profile.patientId;
+    conv.identityKind = "patient";
+    updateImessageUser(handle, {
+      stage: "onboarded",
+      fullName: profile.summary.demographics.name,
+      dob: profile.summary.demographics.dob,
+      patientId: profile.patientId,
+      onboardingRecordDraft: `pdf:${profile.documentId}`,
+    });
+
+    await bridge.sendText({
+      chatGuid,
+      text: [
+        `Thanks ${profile.summary.demographics.name}. I read your medical report PDF and created your emergency profile.`,
+        `• Patient ID: ${profile.patientId}`,
+        `• Allergies: ${profile.summary.allergies.length}`,
+        `• Medications: ${profile.summary.medications.length}`,
+        `• Major conditions: ${profile.summary.conditions.length}`,
+        "Your profile is ready for audited emergency sharing.",
+      ].join("\n"),
+    });
+  } catch (error) {
+    debugLog("pdf onboarding failed", {
+      handle,
+      reason: error instanceof Error ? error.message : "unknown",
+    });
+    await bridge.sendText({
+      chatGuid,
+      text: "I couldn't read enough emergency information from that PDF. Please upload a medical report PDF that includes allergies, medications, conditions, and an emergency contact.",
+    });
+  }
 }
 
 async function promptOnboardingStage(
@@ -576,7 +642,7 @@ async function promptOnboardingStage(
   if (stage === "awaiting_new_user_record") {
     await bridge.sendText({
       chatGuid,
-      text: "Let's continue setup. Please send your emergency details (allergies, meds, conditions, emergency contact).",
+      text: "Let's continue setup. Please upload your medical report PDF here in iMessage.",
     });
     return;
   }
