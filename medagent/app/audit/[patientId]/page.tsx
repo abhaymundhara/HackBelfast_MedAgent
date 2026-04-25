@@ -182,8 +182,8 @@ export default async function AuditPage({
                         {shortenSignature(row.chainRef)}
                       </Link>
                     ) : (
-                      <span className="text-xs text-amber-700">
-                        Local fallback
+                      <span className="text-xs text-amber-600">
+                        Pending confirmation
                       </span>
                     )}
                   </TableCell>

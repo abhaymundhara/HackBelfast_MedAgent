@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 
 import { TierBadge } from "@/components/app/tier-badge";
+import { WorkflowSteps } from "@/components/app/workflow-steps";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
@@ -273,6 +274,7 @@ export function ClinicianConsole({ patients }: { patients: PatientOption[] }) {
         </div>
         <Switch checked={emergencyMode} onCheckedChange={setEmergencyMode} />
       </label>
+      <WorkflowSteps active={busy} />
       <Button disabled={busy} onClick={submitRequest} className="w-full shadow-[0_4px_14px_rgba(13,115,119,0.3)] hover:shadow-[0_6px_20px_rgba(13,115,119,0.4)] hover:-translate-y-px">
         {busy ? (
           <span className="flex items-center gap-2">

@@ -29,12 +29,12 @@ export default function DoctorDashboardPage() {
         <div className="rounded-xl border bg-white p-6 shadow-sm">
           <h2 className="text-base font-medium">Demo actions</h2>
           <p className="mt-2 text-sm text-slate-600">
-            Continue through the iMessage bridge for patient access requests, then
-            review Sarah Bennett&apos;s Solana-backed audit trail.
+            Submit an access request through the clinician console, or
+            review the Solana-backed audit trail for any patient.
           </p>
           <div className="mt-4 flex flex-wrap gap-3">
             <Button asChild>
-              <Link href="/audit/sarah-bennett">Open audit log</Link>
+              <Link href="/clinician">Clinician console</Link>
             </Button>
             <Button asChild variant="outline">
               <Link href="/patient/dashboard">Patient dashboard</Link>

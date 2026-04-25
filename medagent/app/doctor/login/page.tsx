@@ -17,6 +17,7 @@ export default function DoctorLoginPage() {
   const [otpCode, setOtpCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [devOtp, setDevOtp] = useState("");
 
   async function handleLookup() {
     setLoading(true);
@@ -56,6 +57,9 @@ export default function DoctorLoginPage() {
       if (!res.ok) {
         setError(data.error ?? "Failed to send verification code.");
         return;
+      }
+      if (data.devOtp) {
+        setDevOtp(data.devOtp);
       }
       setStep("verify");
     } catch {
@@ -154,6 +158,12 @@ export default function DoctorLoginPage() {
               <div className="rounded-lg bg-green-50 p-3 text-sm text-green-800">
                 Verification code sent to {maskedEmail}
               </div>
+              {devOtp && (
+                <div className="rounded-lg bg-amber-50 border border-amber-200 p-3 text-sm text-amber-800">
+                  <span className="font-semibold">Demo mode:</span> Your code is{" "}
+                  <span className="font-mono font-bold tracking-widest">{devOtp}</span>
+                </div>
+              )}
               <label className="block text-sm font-medium text-slate-700">
                 Enter 6-digit code
               </label>

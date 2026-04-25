@@ -11,14 +11,14 @@ export async function sendOtp(
   email: string,
   otp: string,
   doctorName: string,
-): Promise<{ sent: boolean; error?: string }> {
+): Promise<{ sent: boolean; error?: string; devOtp?: string }> {
   const apiKey = process.env.RESEND_API_KEY;
   const fromEmail = process.env.RESEND_FROM_EMAIL ?? "noreply@medagent.dev";
 
   if (!apiKey) {
     console.warn("RESEND_API_KEY not configured — OTP not sent via email");
     console.log(`[DEV] OTP for ${doctorName} (${email}): ${otp}`);
-    return { sent: true };
+    return { sent: true, devOtp: otp };
   }
 
   try {
