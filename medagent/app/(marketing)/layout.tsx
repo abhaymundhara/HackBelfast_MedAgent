@@ -1,5 +1,5 @@
 import { SiteFooter } from "@/components/landing/site-footer";
-import { SiteNav } from "@/components/landing/site-nav";
+import { AnimatedNav } from "@/components/landing/animated-nav";
 
 export default function MarketingLayout({
   children,
@@ -8,7 +8,7 @@ export default function MarketingLayout({
 }>) {
   return (
     <div className="landing-root">
-      <SiteNav />
+      <AnimatedNav />
       <main>{children}</main>
       <SiteFooter />
     </div>

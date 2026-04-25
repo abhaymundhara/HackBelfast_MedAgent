@@ -143,6 +143,7 @@ export async function runAuditAgent(
       summaryHash,
       fieldsAccessed,
       durationSeconds: 0,
+      sourceMessageId: requestContext.sourceMessageId,
     });
 
     const result = await logAuditOnChain({

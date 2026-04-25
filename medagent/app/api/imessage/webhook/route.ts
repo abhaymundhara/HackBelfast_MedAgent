@@ -30,6 +30,8 @@ import {
   getPatientSummary,
   touchImessageUser,
   updateImessageUser,
+  logMessageEvent,
+  getClinicianHandleForRequest,
   type ImessageOnboardingStage,
 } from "@/lib/db";
 import { parseNameDobInput } from "@/lib/imessage/onboardingNlp";
@@ -85,14 +87,24 @@ export async function POST(request: Request) {
   }
 
   const bridge = getBridge();
-  const { chatGuid, handle, text, attachments } = message;
+  const { chatGuid, handle, text, attachments, bridgeMessageGuid: messageId } = message;
   debugLog("inbound accepted", {
     handle,
     chatGuid,
+    messageId,
     textPreview: text.slice(0, 200),
     attachmentCount: attachments.length,
   });
   await markInboundSeen(bridge, chatGuid);
+
+  // Log inbound message event for correlation
+  logMessageEvent({
+    messageId,
+    handle,
+    direction: "inbound",
+    eventType: "message_received",
+    metadata: { textPreview: text.slice(0, 100) },
+  });
 
   // 3. Resolve identity
   const handleMapping = resolveHandle(handle);
@@ -187,9 +199,10 @@ export async function POST(request: Request) {
         conv,
         chatGuid,
         bridge,
+        messageId,
       );
     } else if (intent.kind === "approval") {
-      await handleApproval(intent.decision, conv, chatGuid, bridge);
+      await handleApproval(intent.decision, conv, chatGuid, bridge, messageId);
     } else if (conv.awaiting === "onboarding_name_dob") {
       await handleOnboardingNameDob(text, handle, conv, chatGuid, bridge);
     } else if (conv.awaiting === "onboarding_ready_yes_no") {
@@ -228,6 +241,7 @@ export async function POST(request: Request) {
             conv,
             chatGuid,
             bridge,
+            messageId,
           );
         }
       }
@@ -240,6 +254,7 @@ export async function POST(request: Request) {
         conv,
         chatGuid,
         bridge,
+        messageId,
       );
     } else {
       await bridge.sendText({ chatGuid, text: formatAskApproval() });
@@ -660,6 +675,7 @@ async function handleSlashCommand(
   conv: ConversationState,
   chatGuid: string,
   bridge: ReturnType<typeof getBridge>,
+  messageId: string,
 ) {
   switch (command) {
     case "help":
@@ -694,14 +710,15 @@ async function handleSlashCommand(
         conv,
         chatGuid,
         bridge,
+        messageId,
       );
       break;
     }
     case "approve":
-      await handleApproval("approve", conv, chatGuid, bridge);
+      await handleApproval("approve", conv, chatGuid, bridge, messageId);
       break;
     case "deny":
-      await handleApproval("deny", conv, chatGuid, bridge);
+      await handleApproval("deny", conv, chatGuid, bridge, messageId);
       break;
     case "status":
       await bridge.sendText({
@@ -739,6 +756,7 @@ async function handleApproval(
   conv: ConversationState,
   chatGuid: string,
   bridge: ReturnType<typeof getBridge>,
+  messageId: string,
 ) {
   if (!conv.activeRequestId) {
     await bridge.sendText({
@@ -748,24 +766,41 @@ async function handleApproval(
     return;
   }
 
+  logMessageEvent({
+    messageId,
+    handle: conv.handle,
+    direction: "inbound",
+    linkedRequestId: conv.activeRequestId,
+    eventType: `approval_${decision}`,
+  });
+
   try {
     if (decision === "approve") {
       const outcome = await resumeApprovedRequest(conv.activeRequestId);
 
-      // Send grant to the clinician (find their handle)
-      const clinicianHandle = findClinicianHandleForRequest(
+      // Send grant to the clinician (find their handle from DB)
+      const clinicianInfo = getClinicianHandleForRequest(
         conv.activeRequestId,
       );
-      if (clinicianHandle) {
+      if (clinicianInfo) {
         const messages = formatOutbound({ outcome, identityKind: "clinician" });
         for (const msg of messages) {
           await bridge.sendText({
-            chatGuid: `iMessage;-;${clinicianHandle}`,
+            chatGuid: clinicianInfo.chatGuid,
             text: msg,
           });
         }
+        // Log outbound to clinician
+        logMessageEvent({
+          messageId,
+          handle: clinicianInfo.handle,
+          direction: "outbound",
+          linkedRequestId: conv.activeRequestId,
+          linkedChainRef: outcome.auditLog?.chainRef,
+          eventType: "approval_grant_sent_to_clinician",
+        });
         // Update clinician conversation state
-        const clinicianConv = loadConversation(clinicianHandle);
+        const clinicianConv = loadConversation(clinicianInfo.handle);
         if (clinicianConv) {
           clinicianConv.activeRequestId = null;
           clinicianConv.awaiting = null;
@@ -795,13 +830,20 @@ async function handleApproval(
       });
 
       // Notify clinician
-      const clinicianHandle = findClinicianHandleForRequest(
+      const clinicianInfo2 = getClinicianHandleForRequest(
         conv.activeRequestId,
       );
-      if (clinicianHandle) {
+      if (clinicianInfo2) {
         await bridge.sendText({
-          chatGuid: `iMessage;-;${clinicianHandle}`,
+          chatGuid: clinicianInfo2.chatGuid,
           text: "✗ MedAgent · Patient DENIED your access request.\n\nNo data was released. If this is a life-threatening emergency, reply BREAK GLASS.",
+        });
+        logMessageEvent({
+          messageId,
+          handle: clinicianInfo2.handle,
+          direction: "outbound",
+          linkedRequestId: conv.activeRequestId,
+          eventType: "approval_deny_sent_to_clinician",
         });
       }
     }
@@ -815,15 +857,6 @@ async function handleApproval(
 
   conv.activeRequestId = null;
   conv.awaiting = null;
-}
-
-// Helper to find the clinician handle associated with a request
-function findClinicianHandleForRequest(_requestId: string): string | null {
-  // In the demo, we look through active conversations to find the clinician
-  // who initiated this request. For hackathon scope, return null and the
-  // clinician notification will be skipped.
-  // TODO: store clinician handle in request metadata for proper routing
-  return null;
 }
 
 const PATIENT_SHORTCODES: Record<string, string> = {
@@ -842,6 +875,7 @@ async function handleClinicianRequest(
   conv: ConversationState,
   chatGuid: string,
   bridge: ReturnType<typeof getBridge>,
+  messageId: string,
 ) {
   let patientId = intent.patientHint;
 
@@ -891,12 +925,23 @@ async function handleClinicianRequest(
   // Run the workflow asynchronously
   const requesterId = conv.identityId;
 
+  logMessageEvent({
+    messageId,
+    handle: conv.handle,
+    direction: "inbound",
+    eventType: "access_request_initiated",
+    metadata: { patientId, requesterId },
+  });
+
   // Use setImmediate to avoid blocking — Next.js nodejs runtime keeps the process alive
   const workflowPromise = runAccessRequest({
     patientId,
     requesterId,
     naturalLanguageRequest: rawText,
     emergencyMode: intent.emergencyMode,
+    sourceMessageId: messageId,
+    clinicianHandle: conv.handle,
+    clinicianChatGuid: chatGuid,
   });
 
   try {
@@ -905,6 +950,17 @@ async function handleClinicianRequest(
     for (const msg of messages) {
       await bridge.sendText({ chatGuid, text: msg });
     }
+
+    // Log outbound with chain correlation
+    logMessageEvent({
+      messageId,
+      handle: conv.handle,
+      direction: "outbound",
+      linkedRequestId: outcome.requestId,
+      linkedChainRef: outcome.auditLog?.chainRef,
+      eventType: "access_response_sent",
+      metadata: { decision: outcome.decision, tier: outcome.tier },
+    });
 
     if (outcome.sessionId) {
       conv.activeRequestId = outcome.sessionId;

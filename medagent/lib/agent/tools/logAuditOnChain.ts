@@ -30,6 +30,7 @@ export function buildAuditEvent(input: {
   summaryHash?: string;
   fieldsAccessed?: string;
   durationSeconds?: number;
+  sourceMessageId?: string;
 }) {
   const patient = getPatientRow(input.patientId);
   if (!patient) {
@@ -52,6 +53,7 @@ export function buildAuditEvent(input: {
     summary_hash: input.summaryHash,
     fields_accessed: input.fieldsAccessed,
     duration_seconds: input.durationSeconds,
+    source_message_id: input.sourceMessageId,
   } satisfies AuditEvent);
 }
 
