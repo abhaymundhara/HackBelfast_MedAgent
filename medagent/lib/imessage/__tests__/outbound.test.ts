@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { formatOutbound, formatApprovalPrompt, formatPatientConfirmation, formatHelp, formatAck, formatFollowUpAnswer } from "../outbound";
+import { formatOutbound, formatHelp, formatAck, formatFollowUpAnswer } from "../outbound";
 import type { MedAgentOutcome } from "@/lib/types";
 
 function makeOutcome(overrides: Partial<MedAgentOutcome>): MedAgentOutcome {
@@ -11,21 +11,22 @@ function makeOutcome(overrides: Partial<MedAgentOutcome>): MedAgentOutcome {
     tier: 1,
     ttlSeconds: 1800,
     fieldsAllowed: ["allergies", "medications", "conditions", "alerts", "emergencyContact", "recentDischarge", "documents"],
-    justification: "Verified clinician. Tier 1 granted.",
+    justification: "Full access granted and audited on Solana.",
     trace: { requestId: "req_test123", patientId: "sarah-bennett", requesterId: "dr-murphy", steps: [] },
     auditLog: {
-      chainRef: "5xYz...abc",
+      chainRef: "5xYzAbc123",
       chainSequence: 12345,
       chainTimestamp: new Date().toISOString(),
       status: "submitted",
     },
     summarySubset: {
-      demographics: { name: "Sarah Bennett", dob: "1991-08-14", sex: "female", bloodType: "O-" },
+      demographics: { name: "Sarah Bennett", dob: "1991-08-14", sex: "female", bloodType: "O-", homeCountry: "United Kingdom" },
       allergies: [{ substance: "Penicillin", severity: "life-threatening", reaction: "Anaphylaxis" }],
       medications: [{ name: "Warfarin", dose: "5 mg", frequency: "Once daily", critical: true }],
       conditions: [{ label: "Atrial fibrillation", major: true }],
       alerts: ["anticoagulants"],
       emergencyContact: { name: "J. Bennett", relation: "Brother", phone: "+44 7700 900 111" },
+      recentDischarge: "Belfast City Hospital — A&E discharge 2025-11-14",
     },
     expiresAt: new Date(Date.now() + 1800000).toISOString(),
     ...overrides,
@@ -33,51 +34,18 @@ function makeOutcome(overrides: Partial<MedAgentOutcome>): MedAgentOutcome {
 }
 
 describe("formatOutbound", () => {
-  it("formats Tier 1 grant under 1000 chars", () => {
+  it("formats access grant with patient data", () => {
     const messages = formatOutbound({ outcome: makeOutcome({}), identityKind: "clinician" });
     expect(messages.length).toBeGreaterThan(0);
     for (const msg of messages) {
       expect(msg.length).toBeLessThanOrEqual(1000);
     }
-    expect(messages[0]).toContain("Tier 1");
-    expect(messages[0]).toContain("GRANTED");
-  });
-
-  it("formats Tier 2 grant with withheld note", () => {
-    const messages = formatOutbound({
-      outcome: makeOutcome({ tier: 2, ttlSeconds: 900, fieldsAllowed: ["allergies", "medications", "conditions", "alerts", "emergencyContact", "documents"] }),
-      identityKind: "clinician",
-    });
     const combined = messages.join("\n");
-    expect(combined).toContain("Tier 2");
-    expect(combined).toContain("Withheld");
-  });
-
-  it("formats Tier 3 break-glass", () => {
-    const messages = formatOutbound({
-      outcome: makeOutcome({ tier: 3, ttlSeconds: 1200, fieldsAllowed: ["allergies", "medications", "conditions", "alerts", "emergencyContact"] }),
-      identityKind: "clinician",
-    });
-    const combined = messages.join("\n");
-    expect(combined).toContain("Tier 3");
-    expect(combined).toContain("BREAK-GLASS");
-  });
-
-  it("formats denial", () => {
-    const messages = formatOutbound({
-      outcome: makeOutcome({ decision: "denied", tier: null, ttlSeconds: 0, fieldsAllowed: [] }),
-      identityKind: "clinician",
-    });
-    expect(messages[0]).toContain("DENIED");
-    expect(messages[0]).toContain("BREAK GLASS");
-  });
-
-  it("formats awaiting_human for clinician", () => {
-    const messages = formatOutbound({
-      outcome: makeOutcome({ decision: "awaiting_human", tier: 2, ttlSeconds: 900 }),
-      identityKind: "clinician",
-    });
-    expect(messages[0]).toContain("pending patient approval");
+    expect(combined).toContain("GRANTED");
+    expect(combined).toContain("Sarah Bennett");
+    expect(combined).toContain("Penicillin");
+    expect(combined).toContain("Warfarin");
+    expect(combined).toContain("anticoagulants");
   });
 
   it("includes Solscan URL for real chain refs", () => {
@@ -94,41 +62,12 @@ describe("formatOutbound", () => {
     });
     const combined = messages.join("\n");
     expect(combined).not.toContain("solscan.io");
-  });
-});
-
-describe("formatApprovalPrompt", () => {
-  it("formats approval prompt under 1000 chars", () => {
-    const text = formatApprovalPrompt({
-      requesterLabel: "Dr. Chidi Okonkwo",
-      issuerLabel: "NHS Northern Ireland",
-      fieldsRequested: ["allergies", "medications"],
-      ttlMinutes: 15,
-      requestId: "req_short",
-    });
-    expect(text.length).toBeLessThanOrEqual(1000);
-    expect(text).toContain("Approval needed");
-    expect(text).toContain("YES");
-    expect(text).toContain("NO");
-  });
-});
-
-describe("formatPatientConfirmation", () => {
-  it("confirms approval was recorded", () => {
-    const text = formatPatientConfirmation({
-      requesterLabel: "Dr. Chidi Okonkwo",
-      ttlMinutes: 15,
-      patientId: "sarah-bennett",
-      appBaseUrl: "http://localhost:3000",
-    });
-    expect(text).toContain("Approval recorded");
-    expect(text).toContain("15 minutes");
-    expect(text).toContain("/audit/sarah-bennett");
+    expect(combined).toContain("logged locally");
   });
 });
 
 describe("formatHelp", () => {
-  it("lists slash commands", () => {
+  it("lists commands", () => {
     const text = formatHelp();
     expect(text).toContain("/access");
     expect(text).toContain("/help");

@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { decideTier } from "@/lib/agent/tools/decideTier";
 
 describe("deterministic tier logic", () => {
-  it("grants Tier 1 to a verified clinician with auto-access", async () => {
+  it("always grants full access for verified clinicians", async () => {
     const result = await decideTier({
       verified: true,
       patientPolicy: {
@@ -17,28 +17,30 @@ describe("deterministic tier logic", () => {
     });
 
     expect(result.decision).toBe("granted");
-    expect(result.tier).toBe(1);
-    expect(result.ttlSeconds).toBe(1800);
+    expect(result.fieldsAllowed).toContain("allergies");
+    expect(result.fieldsAllowed).toContain("medications");
+    expect(result.fieldsAllowed).toContain("recentDischarge");
+    expect(result.fieldsAllowed).toContain("documents");
   });
 
-  it("pauses for Tier 2 approval when verification is weak", async () => {
+  it("always grants full access for unverified clinicians", async () => {
     const result = await decideTier({
       verified: false,
       patientPolicy: {
-        emergencyAutoAccess: true,
-        allowPatientApprovalRequests: true,
-        breakGlassAllowed: true,
+        emergencyAutoAccess: false,
+        allowPatientApprovalRequests: false,
+        breakGlassAllowed: false,
         shareableDocumentIds: [],
       },
       patientApprovalPresent: false,
       emergencyMode: false,
     });
 
-    expect(result.decision).toBe("awaiting_human");
-    expect(result.tier).toBe(2);
+    expect(result.decision).toBe("granted");
+    expect(result.fieldsAllowed.length).toBe(7);
   });
 
-  it("grants Tier 3 on break-glass when policy allows it", async () => {
+  it("always grants full access in emergency mode", async () => {
     const result = await decideTier({
       verified: false,
       patientPolicy: {
@@ -52,7 +54,6 @@ describe("deterministic tier logic", () => {
     });
 
     expect(result.decision).toBe("granted");
-    expect(result.tier).toBe(3);
-    expect(result.ttlSeconds).toBe(1200);
+    expect(result.fieldsAllowed.length).toBe(7);
   });
 });

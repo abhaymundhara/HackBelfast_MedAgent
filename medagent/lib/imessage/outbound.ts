@@ -17,7 +17,6 @@ function splitMessages(text: string): string[] {
   const parts: string[] = [];
   let remaining = text;
   while (remaining.length > MAX_MSG_LEN) {
-    // Try to split at a newline boundary near the limit
     let cutAt = remaining.lastIndexOf("\n", MAX_MSG_LEN);
     if (cutAt < MAX_MSG_LEN / 2) cutAt = MAX_MSG_LEN;
     parts.push(remaining.slice(0, cutAt));
@@ -29,62 +28,31 @@ function splitMessages(text: string): string[] {
 
 function solscanLine(chainRef: string | null | undefined): string {
   if (!chainRef) return "";
-  if (chainRef.startsWith("local-solana:")) return "• Audit logged locally";
-  return `• Audit: https://solscan.io/tx/${chainRef}?cluster=devnet`;
+  if (chainRef.startsWith("local-solana:")) return "Audit logged locally";
+  return `Solana audit: https://solscan.io/tx/${chainRef}?cluster=devnet`;
 }
 
-function tier1Card(ctx: OutboundContext): string {
-  const { outcome, requesterLabel, patientLabel } = ctx;
+function grantCard(ctx: OutboundContext): string {
+  const { outcome } = ctx;
   const subset = outcome.summarySubset ?? {};
-  const lines: string[] = [
-    `✓ Access GRANTED — Tier 1`,
-    patientLabel ? `• Patient: ${patientLabel}` : "",
-    requesterLabel ? `• Clinician: ${requesterLabel}` : "",
-    `• TTL: ${Math.round(outcome.ttlSeconds / 60)} min`,
-    "",
-  ];
+  const lines: string[] = ["✓ MedAgent · ACCESS GRANTED", ""];
 
   const demographics = subset.demographics as Record<string, unknown> | undefined;
   if (demographics) {
-    lines.push(`DEMOGRAPHICS`);
-    if (demographics.name) lines.push(`• Name: ${String(demographics.name)}`);
-    if (demographics.dob) lines.push(`• DOB: ${String(demographics.dob)}`);
-    if (demographics.bloodType) lines.push(`• Blood: ${String(demographics.bloodType)}`);
-    if (demographics.languages) lines.push(`• Languages: ${(demographics.languages as string[]).join(", ")}`);
+    const parts = [demographics.name, demographics.dob, demographics.bloodType].filter(Boolean);
+    if (parts.length) lines.push(`Patient: ${parts.join(", ")}`);
+    if (demographics.homeCountry) lines.push(`Home: ${String(demographics.homeCountry)}`);
     lines.push("");
   }
 
   const allergies = subset.allergies as Array<Record<string, unknown>> | undefined;
   if (allergies?.length) {
-    lines.push("ALLERGIES");
+    lines.push("⚠️ ALLERGIES");
     for (const a of allergies) {
       lines.push(`• ${String(a.substance)} (${String(a.severity)})${a.reaction ? " — " + String(a.reaction) : ""}`);
     }
     lines.push("");
   }
-
-  const alerts = subset.alerts as string[] | undefined;
-  if (alerts?.length) {
-    lines.push(`⚠️ ALERTS: ${alerts.join(", ")}`);
-    lines.push("");
-  }
-
-  const auditLine = solscanLine(outcome.auditLog?.chainRef);
-  if (auditLine) lines.push(auditLine);
-
-  return lines.filter((l) => l !== undefined).join("\n").trim();
-}
-
-function tier2Card(ctx: OutboundContext): string {
-  const { outcome, requesterLabel, patientLabel } = ctx;
-  const subset = outcome.summarySubset ?? {};
-  const lines: string[] = [
-    `✓ Access GRANTED — Tier 2`,
-    patientLabel ? `• Patient: ${patientLabel}` : "",
-    requesterLabel ? `• Clinician: ${requesterLabel}` : "",
-    `• TTL: ${Math.round(outcome.ttlSeconds / 60)} min`,
-    "",
-  ];
 
   const medications = subset.medications as Array<Record<string, unknown>> | undefined;
   if (medications?.length) {
@@ -105,51 +73,6 @@ function tier2Card(ctx: OutboundContext): string {
     lines.push("");
   }
 
-  lines.push("• Withheld in this tier: fields not authorized for Tier 2");
-
-  const auditLine = solscanLine(outcome.auditLog?.chainRef);
-  if (auditLine) lines.push(auditLine);
-
-  return lines.filter((l) => l !== undefined).join("\n").trim();
-}
-
-function tier3Card(ctx: OutboundContext): string {
-  const { outcome, requesterLabel, patientLabel } = ctx;
-  const subset = outcome.summarySubset ?? {};
-  const lines: string[] = [
-    `⚠️ BREAK-GLASS — Tier 3 Emergency Access`,
-    patientLabel ? `• Patient: ${patientLabel}` : "",
-    requesterLabel ? `• Clinician: ${requesterLabel}` : "",
-    `• TTL: ${Math.round(outcome.ttlSeconds / 60)} min`,
-    "",
-  ];
-
-  const demographics = subset.demographics as Record<string, unknown> | undefined;
-  if (demographics) {
-    if (demographics.name) lines.push(`• Name: ${String(demographics.name)}`);
-    if (demographics.bloodType) lines.push(`• Blood: ${String(demographics.bloodType)}`);
-    lines.push("");
-  }
-
-  const allergies = subset.allergies as Array<Record<string, unknown>> | undefined;
-  if (allergies?.length) {
-    lines.push("ALLERGIES");
-    for (const a of allergies) {
-      lines.push(`• ${String(a.substance)} (${String(a.severity)})`);
-    }
-    lines.push("");
-  }
-
-  const medications = subset.medications as Array<Record<string, unknown>> | undefined;
-  if (medications?.length) {
-    lines.push("MEDICATIONS");
-    for (const m of medications) {
-      if (m.critical) lines.push(`• ⚠️ ${String(m.name)} ${String(m.dose)}`);
-      else lines.push(`• ${String(m.name)} ${String(m.dose)}`);
-    }
-    lines.push("");
-  }
-
   const alerts = subset.alerts as string[] | undefined;
   if (alerts?.length) {
     lines.push(`⚠️ ALERTS: ${alerts.join(", ")}`);
@@ -158,62 +81,30 @@ function tier3Card(ctx: OutboundContext): string {
 
   const emergencyContact = subset.emergencyContact as Record<string, unknown> | undefined;
   if (emergencyContact) {
-    lines.push(`🔔 Emergency Contact: ${String(emergencyContact.name)} (${String(emergencyContact.relation)}) ${String(emergencyContact.phone)}`);
+    lines.push(`Emergency contact: ${String(emergencyContact.name)} (${String(emergencyContact.relation)}) ${String(emergencyContact.phone)}`);
     lines.push("");
   }
 
   const recentDischarge = subset.recentDischarge as string | undefined;
   if (recentDischarge) {
-    lines.push(`• Recent discharge: ${recentDischarge}`);
+    lines.push(`Recent discharge: ${recentDischarge}`);
     lines.push("");
   }
 
-  lines.push("⚠️ This access is fully audited.");
   const auditLine = solscanLine(outcome.auditLog?.chainRef);
   if (auditLine) lines.push(auditLine);
 
-  return lines.filter((l) => l !== undefined).join("\n").trim();
-}
+  if (outcome.expiresAt) {
+    lines.push(`Session expires: ${outcome.expiresAt}`);
+  }
+  lines.push("Reply with a question to query fields. Reply /end to close.");
 
-function denialMessage(ctx: OutboundContext): string {
-  const lines = [
-    `✗ Access DENIED`,
-    `• Reason: ${ctx.outcome.justification}`,
-    "",
-    "If this is an emergency, reply BREAK GLASS to request emergency override.",
-  ];
-  return lines.join("\n");
-}
-
-function awaitingHumanMessage(ctx: OutboundContext): string {
-  const lines = [
-    `⏸ Access request is pending patient approval`,
-    `• Reason: ${ctx.outcome.justification}`,
-    "",
-    "Awaiting patient or supervisor approval. You will be notified when a decision is made.",
-  ];
-  return lines.join("\n");
+  return lines.join("\n").trim();
 }
 
 export function formatOutbound(ctx: OutboundContext): string[] {
-  const { outcome } = ctx;
-  let text: string;
-
-  if (outcome.decision === "granted") {
-    if (outcome.tier === 1) {
-      text = tier1Card(ctx);
-    } else if (outcome.tier === 2) {
-      text = tier2Card(ctx);
-    } else {
-      text = tier3Card(ctx);
-    }
-  } else if (outcome.decision === "denied") {
-    text = denialMessage(ctx);
-  } else {
-    text = awaitingHumanMessage(ctx);
-  }
-
-  return splitMessages(text);
+  // Simplified: always granted, one format
+  return splitMessages(grantCard(ctx));
 }
 
 export function formatApprovalPrompt(input: {
@@ -224,12 +115,8 @@ export function formatApprovalPrompt(input: {
   requestId: string;
 }): string {
   return [
-    `🔔 Approval needed: ${input.requesterLabel} (${input.issuerLabel}) is requesting access`,
-    `• Fields: ${input.fieldsRequested.join(", ")}`,
-    `• Valid for: ${input.ttlMinutes} min`,
-    `• Request ID: ${input.requestId}`,
-    "",
-    "Reply YES to approve, NO to deny.",
+    `🔔 ${input.requesterLabel} (${input.issuerLabel}) is requesting access to your record.`,
+    `Request ID: ${input.requestId}`,
   ].join("\n");
 }
 
@@ -240,23 +127,20 @@ export function formatPatientConfirmation(input: {
   appBaseUrl: string;
 }): string {
   return [
-    `✓ Approval recorded for ${input.requesterLabel}.`,
-    `• Valid for: ${input.ttlMinutes} minutes`,
-    `• View details: ${input.appBaseUrl}/audit/${input.patientId}`,
+    `✓ Access granted to ${input.requesterLabel}.`,
+    `View audit: ${input.appBaseUrl}/audit/${input.patientId}`,
   ].join("\n");
 }
 
 export function formatHelp(): string {
   return [
-    "MedAgent slash commands:",
-    "• /access — request patient record access",
-    "• /approve — approve a pending request",
-    "• /deny — deny a pending request",
-    "• /persona — view or set your clinician persona",
-    "• /status — check active request status",
-    "• /audit — view recent audit log",
+    "MedAgent commands:",
+    "• /access <patient> — request record access",
+    "• /status — check active request",
+    "• /audit <patient> — view audit log",
+    "• /persona <id> — set clinician persona",
+    "• /end — end session",
     "• /help — show this message",
-    "• /end — end the current session",
   ].join("\n");
 }
 
@@ -279,7 +163,7 @@ export function formatFollowUpAnswer(input: {
 }): string {
   const lines = [input.answer];
   if (input.citedFields.length > 0) {
-    lines.push("", `• Sources: ${input.citedFields.join(", ")}`);
+    lines.push("", `Sources: ${input.citedFields.join(", ")}`);
   }
   return lines.join("\n");
 }

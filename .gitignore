@@ -7,6 +7,8 @@
 **/.next/
 **/next-env.d.ts
 target/
+!target/idl/
+!target/idl/medagent_audit.json
 
 # Logs
 *.log
@@ -43,3 +45,35 @@ medagent/data/
 
 # OMC / plugin state (per-directory)
 **/.omc/
+.agents/
+.adal/
+.claude/skills/
+.augment/
+.bob/
+.codebuddy/
+.commandcode/
+.continue/
+.cortex/
+.crush/
+.factory/
+.goose/
+.iflow/
+.junie/
+.kilocode/
+.kiro/
+.kode/
+.mcpjam/
+.mux/
+.neovate/
+.openhands/
+.pi/
+.pochi/
+.qoder/
+.qwen/
+.roo/
+.trae/
+.vibe/
+.windsurf/
+.zencoder/
+skills/
+skills-lock.json

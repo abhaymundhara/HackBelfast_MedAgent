@@ -1,0 +1,284 @@
+{
+  "address": "3yPCnb5XQAJcvqmVz1xjUrL9iE24oUAX6LkycfWw5NKX",
+  "version": "0.1.0",
+  "name": "medagent_audit",
+  "instructions": [
+    {
+      "name": "initializeAuditLog",
+      "accounts": [
+        {
+          "name": "auditLog",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "patientHash",
+          "type": "string"
+        },
+        {
+          "name": "seed",
+          "type": {
+            "array": ["u8", 32]
+          }
+        }
+      ]
+    },
+    {
+      "name": "logAuditEvent",
+      "accounts": [
+        {
+          "name": "auditLog",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "AuditEventParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "closeAuditLog",
+      "accounts": [
+        {
+          "name": "auditLog",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    {
+      "name": "AuditLog",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "patientHash",
+            "type": "string"
+          },
+          {
+            "name": "seed",
+            "type": {
+              "array": ["u8", 32]
+            }
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "records",
+            "type": {
+              "vec": {
+                "defined": "AuditRecord"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "types": [
+    {
+      "name": "AuditEventParams",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "eventType",
+            "type": "string"
+          },
+          {
+            "name": "requestId",
+            "type": "string"
+          },
+          {
+            "name": "doctorHash",
+            "type": "string"
+          },
+          {
+            "name": "patientHash",
+            "type": "string"
+          },
+          {
+            "name": "jurisdiction",
+            "type": "string"
+          },
+          {
+            "name": "decision",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "tokenExpiry",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "timestamp",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "AuditRecord",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "eventType",
+            "type": "string"
+          },
+          {
+            "name": "requestId",
+            "type": "string"
+          },
+          {
+            "name": "doctorHash",
+            "type": "string"
+          },
+          {
+            "name": "patientHash",
+            "type": "string"
+          },
+          {
+            "name": "jurisdiction",
+            "type": "string"
+          },
+          {
+            "name": "decision",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "tokenExpiry",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "timestamp",
+            "type": "string"
+          },
+          {
+            "name": "slot",
+            "type": "u64"
+          }
+        ]
+      }
+    }
+  ],
+  "events": [
+    {
+      "name": "AuditEventEmitted",
+      "fields": [
+        {
+          "name": "eventType",
+          "type": "string",
+          "index": false
+        },
+        {
+          "name": "requestId",
+          "type": "string",
+          "index": false
+        },
+        {
+          "name": "doctorHash",
+          "type": "string",
+          "index": false
+        },
+        {
+          "name": "patientHash",
+          "type": "string",
+          "index": false
+        },
+        {
+          "name": "jurisdiction",
+          "type": "string",
+          "index": false
+        },
+        {
+          "name": "decision",
+          "type": {
+            "option": "string"
+          },
+          "index": false
+        },
+        {
+          "name": "tokenExpiry",
+          "type": {
+            "option": "string"
+          },
+          "index": false
+        },
+        {
+          "name": "timestamp",
+          "type": "string",
+          "index": false
+        },
+        {
+          "name": "slot",
+          "type": "u64",
+          "index": false
+        }
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "DataTooLarge",
+      "msg": "Audit data exceeds maximum allowed size."
+    },
+    {
+      "code": 6001,
+      "name": "PatientHashTooLong",
+      "msg": "Patient hash exceeds maximum allowed size."
+    }
+  ],
+  "metadata": {
+    "address": "3yPCnb5XQAJcvqmVz1xjUrL9iE24oUAX6LkycfWw5NKX"
+  }
+}
