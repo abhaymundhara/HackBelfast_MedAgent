@@ -3,6 +3,9 @@
 export type ParsedIntent =
   | { kind: "slash"; command: string; args: string[] }
   | { kind: "approval"; decision: "approve" | "deny" }
+  | { kind: "appointment_search"; requestedDate: string | null }
+  | { kind: "appointment_slot_selection"; selection: number }
+  | { kind: "appointment_share"; decision: "approve" | "deny" }
   | { kind: "freeform_clinician"; patientHint: string | null; emergencyMode: boolean }
   | { kind: "unknown" };
 
@@ -23,6 +26,18 @@ const EMERGENCY_KEYWORDS = [
 ];
 
 const PATIENT_HINT_RE = /patient:\s*(\S+)/i;
+const DATE_RE = /\b(20\d{2}-\d{2}-\d{2})\b/;
+const APPOINTMENT_KEYWORDS = [
+  "appointment",
+  "book",
+  "doctor",
+  "gp",
+  "knee",
+  "injury",
+  "pain",
+  "belfast",
+  "near me",
+];
 
 function normalizeKeyword(value: string): string {
   return value.trim().toLowerCase();
@@ -65,11 +80,52 @@ export function classifyIntent(text: string, awaiting: string | null): ParsedInt
     return { kind: "unknown" };
   }
 
+  if (awaiting === "appointment_share_yes_no") {
+    const normalized = text.replace(/^[^\w]+/, "").trim().toUpperCase();
+    if (["YES", "Y", "APPROVE", "SHARE"].includes(normalized)) {
+      return { kind: "appointment_share", decision: "approve" };
+    }
+    if (["NO", "N", "DENY", "CANCEL"].includes(normalized)) {
+      return { kind: "appointment_share", decision: "deny" };
+    }
+    return { kind: "unknown" };
+  }
+
+  if (awaiting === "appointment_slot_selection") {
+    const trimmed = text.trim();
+    const dateMatch = DATE_RE.exec(trimmed);
+    if (dateMatch) {
+      return { kind: "appointment_search", requestedDate: dateMatch[1] };
+    }
+    const selection = Number.parseInt(trimmed.replace(/[^0-9]/g, ""), 10);
+    if (Number.isFinite(selection) && selection > 0) {
+      return { kind: "appointment_slot_selection", selection };
+    }
+    return { kind: "unknown" };
+  }
+
+  if (awaiting === "appointment_future_date") {
+    const dateMatch = DATE_RE.exec(text.trim());
+    if (dateMatch) {
+      return { kind: "appointment_search", requestedDate: dateMatch[1] };
+    }
+    return { kind: "unknown" };
+  }
+
   if (text.startsWith("/")) {
     const tokens = text.trim().split(/\s+/);
     const command = tokens[0].slice(1).toLowerCase();
     const args = tokens.slice(1);
     return { kind: "slash", command, args };
+  }
+
+  const dateMatch = DATE_RE.exec(text);
+  const lowerForAppointment = text.toLowerCase();
+  if (APPOINTMENT_KEYWORDS.some((keyword) => lowerForAppointment.includes(keyword))) {
+    return {
+      kind: "appointment_search",
+      requestedDate: dateMatch?.[1] ?? null,
+    };
   }
 
   // Freeform clinician

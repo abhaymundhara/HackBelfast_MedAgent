@@ -5,12 +5,15 @@ import QRCode from "qrcode";
 
 import { validatePatientJwt } from "@/lib/auth/patientAuth";
 import {
+  getAppointment,
   getPatientAccountByPatientId,
   getPatientSummary,
   listAuditEvents,
   listDoctorRegistry,
+  listSharedRecords,
 } from "@/lib/db";
 import { sha256Hash } from "@/lib/crypto";
+import { RevokeShareButton } from "@/components/app/revoke-share-button";
 import { DEMO_CLINICIANS } from "@/lib/ips/seed";
 import { getSolscanTxUrl } from "@/lib/solana/client";
 
@@ -79,6 +82,7 @@ export default async function PatientDashboardPage() {
   if (!account) redirect("/patient/login");
 
   const events = listAuditEvents(session.patientId);
+  const shares = listSharedRecords(session.patientId);
   const summary = getPatientSummary(session.patientId);
   const patientJurisdiction =
     summary?.demographics?.homeJurisdiction ?? "unknown";
@@ -158,6 +162,7 @@ export default async function PatientDashboardPage() {
         </div>
 
         <div className="grid gap-6 lg:grid-cols-[1fr_240px]">
+          <div className="space-y-6">
           <section className="rounded-xl border bg-white shadow-sm">
             <div className="border-b px-4 py-3">
               <h2 className="text-sm font-medium text-slate-900">
@@ -251,6 +256,71 @@ export default async function PatientDashboardPage() {
               </div>
             )}
           </section>
+
+          <section className="rounded-xl border bg-white shadow-sm">
+            <div className="border-b px-4 py-3">
+              <h2 className="text-sm font-medium text-slate-900">
+                Live Record Shares
+              </h2>
+              <p className="mt-1 text-xs text-slate-500">
+                Revocation blocks future live access only. It cannot erase data already viewed or downloaded.
+              </p>
+            </div>
+            {shares.length === 0 ? (
+              <div className="p-6 text-sm text-slate-500">
+                No live shares yet.
+              </div>
+            ) : (
+              <div className="divide-y">
+                {shares.map((share) => {
+                  const appointment = share.appointment_id
+                    ? getAppointment(share.appointment_id)
+                    : null;
+                  const isActive =
+                    share.status === "active" &&
+                    new Date(share.expires_at) > new Date();
+                  const scope =
+                    share.share_scope === "full_record"
+                      ? "Full medical record"
+                      : "Selected fields";
+                  return (
+                    <div
+                      key={share.id}
+                      className="flex flex-wrap items-center justify-between gap-3 px-4 py-3"
+                    >
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-medium text-slate-900">
+                          {scope} shared with {share.doctor_name}
+                        </p>
+                        <p className="text-xs text-slate-500">
+                          {appointment
+                            ? `${appointment.clinic} · ${new Date(appointment.startsAt).toLocaleString()}`
+                            : share.doctor_email}
+                        </p>
+                        <p className="text-xs text-slate-500">
+                          Status: {share.status} · Expires{" "}
+                          {new Date(share.expires_at).toLocaleString()}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span
+                          className={`rounded-full px-2.5 py-1 text-xs ${
+                            isActive
+                              ? "bg-green-50 text-green-700"
+                              : "bg-slate-100 text-slate-500"
+                          }`}
+                        >
+                          {isActive ? "Live" : share.status}
+                        </span>
+                        {isActive ? <RevokeShareButton shareId={share.id} /> : null}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </section>
+          </div>
 
           <aside className="space-y-4">
             <div className="rounded-xl border bg-white p-4 shadow-sm">

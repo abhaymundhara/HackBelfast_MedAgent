@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { parseInbound } from "@/lib/imessage/inbound";
-import { classifyIntent, stripActivationKeyword } from "@/lib/imessage/intents";
+import {
+  classifyIntent,
+  stripActivationKeyword,
+  type ParsedIntent,
+} from "@/lib/imessage/intents";
 import { resolveHandle, listHandleMappings } from "@/lib/imessage/handles";
 import {
   loadConversation,
@@ -15,6 +19,7 @@ import {
   formatAskPatientId,
   formatAskApproval,
   formatAck,
+  formatAppointmentShareCreated,
   formatFollowUpAnswer,
 } from "@/lib/imessage/outbound";
 import { getBridge } from "@/lib/imessage/bridge";
@@ -25,9 +30,17 @@ import {
   answerFollowUpQuestion,
 } from "@/lib/agent/medagent";
 import { getDemoClinician } from "@/lib/ips/seed";
+import { searchAppointmentSlots } from "@/lib/appointments/availability";
+import { bookAppointmentSlot } from "@/lib/appointments/bookAppointment";
+import {
+  formatAppointmentConfirmation,
+  formatAppointmentOptions,
+} from "@/lib/appointments/formatAppointment";
+import { createShareRecord } from "@/lib/sharing/createShare";
 import {
   listPatientsSafe,
   getPatientSummary,
+  getAppointment,
   touchImessageUser,
   updateImessageUser,
   logMessageEvent,
@@ -203,6 +216,19 @@ export async function POST(request: Request) {
       );
     } else if (intent.kind === "approval") {
       await handleApproval(intent.decision, conv, chatGuid, bridge, messageId);
+    } else if (
+      identityKind === "patient" &&
+      (intent.kind === "appointment_search" ||
+        intent.kind === "appointment_slot_selection" ||
+        intent.kind === "appointment_share")
+    ) {
+      await handlePatientAppointmentIntent(
+        text,
+        intent,
+        conv,
+        chatGuid,
+        bridge,
+      );
     } else if (conv.awaiting === "onboarding_name_dob") {
       await handleOnboardingNameDob(text, handle, conv, chatGuid, bridge);
     } else if (conv.awaiting === "onboarding_ready_yes_no") {
@@ -830,17 +856,17 @@ async function handleApproval(
       });
 
       // Notify clinician
-      const clinicianInfo2 = getClinicianHandleForRequest(
+      const deniedClinicianInfo = getClinicianHandleForRequest(
         conv.activeRequestId,
       );
-      if (clinicianInfo2) {
+      if (deniedClinicianInfo) {
         await bridge.sendText({
-          chatGuid: clinicianInfo2.chatGuid,
+          chatGuid: deniedClinicianInfo.chatGuid,
           text: "✗ MedAgent · Patient DENIED your access request.\n\nNo data was released. If this is a life-threatening emergency, reply BREAK GLASS.",
         });
         logMessageEvent({
           messageId,
-          handle: clinicianInfo2.handle,
+          handle: deniedClinicianInfo.handle,
           direction: "outbound",
           linkedRequestId: conv.activeRequestId,
           eventType: "approval_deny_sent_to_clinician",
@@ -857,6 +883,133 @@ async function handleApproval(
 
   conv.activeRequestId = null;
   conv.awaiting = null;
+}
+
+function getStringArrayMetadata(value: unknown): string[] {
+  return Array.isArray(value)
+    ? value.filter((item): item is string => typeof item === "string")
+    : [];
+}
+
+async function handlePatientAppointmentIntent(
+  rawText: string,
+  intent: Extract<
+    ParsedIntent,
+    | { kind: "appointment_search" }
+    | { kind: "appointment_slot_selection" }
+    | { kind: "appointment_share" }
+  >,
+  conv: ConversationState,
+  chatGuid: string,
+  bridge: ReturnType<typeof getBridge>,
+) {
+  const patientId = conv.identityId;
+  if (!patientId || conv.identityKind !== "patient") {
+    await bridge.sendText({
+      chatGuid,
+      text: "Please finish onboarding before booking an appointment.",
+    });
+    return;
+  }
+
+  if (intent.kind === "appointment_search") {
+    const candidates = searchAppointmentSlots({
+      patientId,
+      location: "Belfast",
+      reason: rawText,
+      requestedDate: intent.requestedDate ?? undefined,
+    });
+    conv.awaiting = "appointment_slot_selection";
+    conv.metadata.appointmentCandidates = candidates.map((candidate) => candidate.id);
+    conv.metadata.appointmentReason = rawText;
+    await bridge.sendText({ chatGuid, text: formatAppointmentOptions(candidates) });
+    return;
+  }
+
+  if (intent.kind === "appointment_slot_selection") {
+    const candidateIds = getStringArrayMetadata(conv.metadata.appointmentCandidates);
+    const slotId = candidateIds[intent.selection - 1];
+    if (!slotId) {
+      await bridge.sendText({
+        chatGuid,
+        text: "I couldn't match that slot. Reply with one of the listed numbers, or send a future date in YYYY-MM-DD format.",
+      });
+      return;
+    }
+    try {
+      const appointment = bookAppointmentSlot({
+        patientId,
+        slotId,
+        symptomSummary: String(conv.metadata.appointmentReason ?? rawText),
+      });
+      conv.awaiting = "appointment_share_yes_no";
+      conv.metadata.pendingAppointmentId = appointment.id;
+      conv.metadata.pendingShareDoctor = appointment.doctorName;
+      conv.metadata.pendingShareScope = "full_record";
+      await bridge.sendText({
+        chatGuid,
+        text: formatAppointmentConfirmation(appointment),
+      });
+    } catch (error) {
+      await bridge.sendText({
+        chatGuid,
+        text:
+          error instanceof Error
+            ? error.message
+            : "That appointment slot is no longer available.",
+      });
+    }
+    return;
+  }
+
+  const appointmentId =
+    typeof conv.metadata.pendingAppointmentId === "string"
+      ? conv.metadata.pendingAppointmentId
+      : "";
+  const appointment = appointmentId ? getAppointment(appointmentId) : null;
+  if (!appointment) {
+    conv.awaiting = null;
+    await bridge.sendText({
+      chatGuid,
+      text: "I couldn't find the confirmed appointment to share against. Please ask for appointments again.",
+    });
+    return;
+  }
+
+  if (intent.decision === "deny") {
+    conv.awaiting = null;
+    delete conv.metadata.pendingAppointmentId;
+    delete conv.metadata.pendingShareDoctor;
+    delete conv.metadata.pendingShareScope;
+    await bridge.sendText({
+      chatGuid,
+      text: "Appointment stays confirmed. No medical data was shared.",
+    });
+    return;
+  }
+
+  const result = await createShareRecord({
+    patientId,
+    doctorName: appointment.doctorName,
+    doctorEmail: appointment.doctorEmail,
+    fieldsToShare: [],
+    ttlHours: 24,
+    shareScope: "full_record",
+    appointmentId: appointment.id,
+  });
+  conv.awaiting = null;
+  delete conv.metadata.pendingAppointmentId;
+  delete conv.metadata.pendingShareDoctor;
+  delete conv.metadata.pendingShareScope;
+  const appBaseUrl = process.env.APP_BASE_URL ?? "http://localhost:3000";
+  await bridge.sendText({
+    chatGuid,
+    text: formatAppointmentShareCreated({
+      doctorName: appointment.doctorName,
+      shareUrl: `${appBaseUrl}${result.shareUrl}`,
+      dashboardUrl: `${appBaseUrl}/patient/dashboard`,
+    }),
+  });
 }
 
 const PATIENT_SHORTCODES: Record<string, string> = {

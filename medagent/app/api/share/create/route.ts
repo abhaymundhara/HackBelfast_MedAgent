@@ -18,19 +18,27 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { doctorName, doctorEmail, fieldsToShare, ttlHours } = body;
+    const {
+      doctorName,
+      doctorEmail,
+      fieldsToShare,
+      ttlHours,
+      shareScope,
+      appointmentId,
+    } = body;
 
-    if (!doctorName || !doctorEmail || !fieldsToShare?.length) {
+    if (!doctorName || !doctorEmail) {
       return NextResponse.json(
-        { error: "doctorName, doctorEmail, and fieldsToShare are required" },
+        { error: "doctorName and doctorEmail are required" },
         { status: 400 },
       );
     }
 
-    const validFields = fieldsToShare.filter((f: string) =>
-      ReleasedFieldSchema.safeParse(f).success,
-    );
-    if (validFields.length === 0) {
+    const isFullRecord = shareScope === "full_record";
+    const validFields = Array.isArray(fieldsToShare)
+      ? fieldsToShare.filter((f: string) => ReleasedFieldSchema.safeParse(f).success)
+      : [];
+    if (!isFullRecord && validFields.length === 0) {
       return NextResponse.json(
         { error: "No valid fields selected" },
         { status: 400 },
@@ -43,6 +51,8 @@ export async function POST(request: NextRequest) {
       doctorEmail,
       fieldsToShare: validFields,
       ttlHours: ttlHours ?? 24,
+      shareScope: isFullRecord ? "full_record" : "field_subset",
+      appointmentId: typeof appointmentId === "string" ? appointmentId : null,
     });
 
     return NextResponse.json(result);

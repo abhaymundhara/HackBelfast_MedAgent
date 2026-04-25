@@ -54,6 +54,40 @@ type DoctorRegistryRow = {
   status: string;
 };
 
+type AppointmentSlotRow = {
+  id: string;
+  doctor_reg_number: string;
+  doctor_name: string;
+  doctor_email: string;
+  specialty: string | null;
+  clinic: string;
+  jurisdiction: string;
+  starts_at: string;
+  ends_at: string;
+  status: string;
+  reason_tags_json: string;
+  created_at: string;
+  updated_at: string;
+};
+
+type AppointmentRow = {
+  id: string;
+  patient_id: string;
+  slot_id: string;
+  doctor_reg_number: string;
+  doctor_name: string;
+  doctor_email: string;
+  clinic: string;
+  starts_at: string;
+  ends_at: string;
+  symptom_summary: string;
+  status: string;
+  share_id: string | null;
+  confirmed_at: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
 type PolicyRow = {
   patient_id: string;
   emergency_auto_access: number;
@@ -476,6 +510,45 @@ export function initDb() {
     CREATE INDEX IF NOT EXISTS imessage_users_stage
       ON imessage_users(stage);
 
+    CREATE TABLE IF NOT EXISTS appointment_slots (
+      id TEXT PRIMARY KEY,
+      doctor_reg_number TEXT NOT NULL,
+      doctor_name TEXT NOT NULL,
+      doctor_email TEXT NOT NULL,
+      specialty TEXT,
+      clinic TEXT NOT NULL,
+      jurisdiction TEXT NOT NULL,
+      starts_at TEXT NOT NULL,
+      ends_at TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'available',
+      reason_tags_json TEXT NOT NULL,
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS appointment_slots_lookup
+      ON appointment_slots(status, jurisdiction, starts_at);
+
+    CREATE TABLE IF NOT EXISTS appointments (
+      id TEXT PRIMARY KEY,
+      patient_id TEXT NOT NULL,
+      slot_id TEXT NOT NULL,
+      doctor_reg_number TEXT NOT NULL,
+      doctor_name TEXT NOT NULL,
+      doctor_email TEXT NOT NULL,
+      clinic TEXT NOT NULL,
+      starts_at TEXT NOT NULL,
+      ends_at TEXT NOT NULL,
+      symptom_summary TEXT NOT NULL,
+      status TEXT NOT NULL,
+      share_id TEXT,
+      confirmed_at TEXT,
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL,
+      FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE CASCADE
+    );
+    CREATE INDEX IF NOT EXISTS appointments_patient
+      ON appointments(patient_id, created_at);
+
     CREATE TABLE IF NOT EXISTS message_events (
       id TEXT PRIMARY KEY,
       message_id TEXT NOT NULL,
@@ -503,6 +576,10 @@ export function initDb() {
       fields_shared TEXT NOT NULL,
       access_token_hash TEXT NOT NULL,
       document_hash TEXT NOT NULL,
+      share_scope TEXT NOT NULL DEFAULT 'field_subset',
+      appointment_id TEXT,
+      document_manifest_json TEXT,
+      share_payload_version TEXT NOT NULL DEFAULT '1',
       status TEXT NOT NULL DEFAULT 'active',
       expires_at TEXT NOT NULL,
       max_access_count INTEGER DEFAULT 3,
@@ -536,6 +613,10 @@ export function initDb() {
     "INTEGER",
   );
   ensureColumn(db, "patient_accounts", "solana_log_pda", "TEXT");
+  ensureColumn(db, "shared_records", "share_scope", "TEXT");
+  ensureColumn(db, "shared_records", "appointment_id", "TEXT");
+  ensureColumn(db, "shared_records", "document_manifest_json", "TEXT");
+  ensureColumn(db, "shared_records", "share_payload_version", "TEXT");
   ensureColumn(db, "access_requests", "source_message_id", "TEXT");
   ensureColumn(db, "access_requests", "clinician_handle", "TEXT");
   ensureColumn(db, "access_requests", "clinician_chat_guid", "TEXT");
@@ -852,6 +933,240 @@ export function listPatientDocuments(patientId: string) {
       "SELECT * FROM patient_documents WHERE patient_id = ? ORDER BY title",
     )
     .all(patientId) as DocumentRow[];
+}
+
+export type AppointmentSlot = {
+  id: string;
+  doctorRegNumber: string;
+  doctorName: string;
+  doctorEmail: string;
+  specialty: string | null;
+  clinic: string;
+  jurisdiction: string;
+  startsAt: string;
+  endsAt: string;
+  status: string;
+  reasonTags: string[];
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type Appointment = {
+  id: string;
+  patientId: string;
+  slotId: string;
+  doctorRegNumber: string;
+  doctorName: string;
+  doctorEmail: string;
+  clinic: string;
+  startsAt: string;
+  endsAt: string;
+  symptomSummary: string;
+  status: string;
+  shareId: string | null;
+  confirmedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+function mapAppointmentSlot(row: AppointmentSlotRow): AppointmentSlot {
+  return {
+    id: row.id,
+    doctorRegNumber: row.doctor_reg_number,
+    doctorName: row.doctor_name,
+    doctorEmail: row.doctor_email,
+    specialty: row.specialty,
+    clinic: row.clinic,
+    jurisdiction: row.jurisdiction,
+    startsAt: row.starts_at,
+    endsAt: row.ends_at,
+    status: row.status,
+    reasonTags: parseJson<string[]>(row.reason_tags_json, []),
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
+}
+
+function mapAppointment(row: AppointmentRow): Appointment {
+  return {
+    id: row.id,
+    patientId: row.patient_id,
+    slotId: row.slot_id,
+    doctorRegNumber: row.doctor_reg_number,
+    doctorName: row.doctor_name,
+    doctorEmail: row.doctor_email,
+    clinic: row.clinic,
+    startsAt: row.starts_at,
+    endsAt: row.ends_at,
+    symptomSummary: row.symptom_summary,
+    status: row.status,
+    shareId: row.share_id,
+    confirmedAt: row.confirmed_at,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
+}
+
+export function upsertAppointmentSlot(input: {
+  id: string;
+  doctorRegNumber: string;
+  doctorName: string;
+  doctorEmail: string;
+  specialty?: string | null;
+  clinic: string;
+  jurisdiction: string;
+  startsAt: string;
+  endsAt: string;
+  status?: string;
+  reasonTags: string[];
+}) {
+  const db = getDb();
+  const timestamp = nowIso();
+  db.prepare(
+    `INSERT INTO appointment_slots (
+      id, doctor_reg_number, doctor_name, doctor_email, specialty, clinic,
+      jurisdiction, starts_at, ends_at, status, reason_tags_json, created_at, updated_at
+    ) VALUES (
+      @id, @doctorRegNumber, @doctorName, @doctorEmail, @specialty, @clinic,
+      @jurisdiction, @startsAt, @endsAt, @status, @reasonTagsJson, @createdAt, @updatedAt
+    )
+    ON CONFLICT(id) DO UPDATE SET
+      doctor_reg_number = excluded.doctor_reg_number,
+      doctor_name = excluded.doctor_name,
+      doctor_email = excluded.doctor_email,
+      specialty = excluded.specialty,
+      clinic = excluded.clinic,
+      jurisdiction = excluded.jurisdiction,
+      starts_at = excluded.starts_at,
+      ends_at = excluded.ends_at,
+      status = excluded.status,
+      reason_tags_json = excluded.reason_tags_json,
+      updated_at = excluded.updated_at`,
+  ).run({
+    id: input.id,
+    doctorRegNumber: input.doctorRegNumber,
+    doctorName: input.doctorName,
+    doctorEmail: input.doctorEmail,
+    specialty: input.specialty ?? null,
+    clinic: input.clinic,
+    jurisdiction: input.jurisdiction,
+    startsAt: input.startsAt,
+    endsAt: input.endsAt,
+    status: input.status ?? "available",
+    reasonTagsJson: JSON.stringify(input.reasonTags),
+    createdAt: timestamp,
+    updatedAt: timestamp,
+  });
+}
+
+export function listAppointmentSlots(input: {
+  jurisdiction?: string;
+  from?: string;
+  to?: string;
+  status?: string;
+} = {}) {
+  const clauses: string[] = [];
+  const params: Record<string, unknown> = {};
+  if (input.jurisdiction) {
+    clauses.push("jurisdiction = @jurisdiction");
+    params.jurisdiction = input.jurisdiction;
+  }
+  if (input.from) {
+    clauses.push("starts_at >= @from");
+    params.from = input.from;
+  }
+  if (input.to) {
+    clauses.push("starts_at < @to");
+    params.to = input.to;
+  }
+  if (input.status) {
+    clauses.push("status = @status");
+    params.status = input.status;
+  }
+  const where = clauses.length ? `WHERE ${clauses.join(" AND ")}` : "";
+  const rows = getDb()
+    .prepare(`SELECT * FROM appointment_slots ${where} ORDER BY starts_at ASC`)
+    .all(params) as AppointmentSlotRow[];
+  return rows.map(mapAppointmentSlot);
+}
+
+export function getAppointmentSlot(slotId: string) {
+  const row = getDb()
+    .prepare("SELECT * FROM appointment_slots WHERE id = ?")
+    .get(slotId) as AppointmentSlotRow | undefined;
+  return row ? mapAppointmentSlot(row) : null;
+}
+
+export function createAppointment(input: {
+  id: string;
+  patientId: string;
+  slotId: string;
+  doctorRegNumber: string;
+  doctorName: string;
+  doctorEmail: string;
+  clinic: string;
+  startsAt: string;
+  endsAt: string;
+  symptomSummary: string;
+}) {
+  const db = getDb();
+  const timestamp = nowIso();
+  const tx = db.transaction(() => {
+    const slotUpdate = db
+      .prepare(
+        `UPDATE appointment_slots
+         SET status = 'booked', updated_at = @updatedAt
+         WHERE id = @slotId AND status = 'available'`,
+      )
+      .run({ slotId: input.slotId, updatedAt: timestamp });
+    if (slotUpdate.changes !== 1) {
+      throw new Error("Appointment slot is no longer available");
+    }
+    db.prepare(
+      `INSERT INTO appointments (
+        id, patient_id, slot_id, doctor_reg_number, doctor_name, doctor_email,
+        clinic, starts_at, ends_at, symptom_summary, status, share_id,
+        confirmed_at, created_at, updated_at
+      ) VALUES (
+        @id, @patientId, @slotId, @doctorRegNumber, @doctorName, @doctorEmail,
+        @clinic, @startsAt, @endsAt, @symptomSummary, 'confirmed', NULL,
+        @confirmedAt, @createdAt, @updatedAt
+      )`,
+    ).run({
+      id: input.id,
+      patientId: input.patientId,
+      slotId: input.slotId,
+      doctorRegNumber: input.doctorRegNumber,
+      doctorName: input.doctorName,
+      doctorEmail: input.doctorEmail,
+      clinic: input.clinic,
+      startsAt: input.startsAt,
+      endsAt: input.endsAt,
+      symptomSummary: input.symptomSummary,
+      confirmedAt: timestamp,
+      createdAt: timestamp,
+      updatedAt: timestamp,
+    });
+  });
+  tx();
+  return getAppointment(input.id);
+}
+
+export function getAppointment(appointmentId: string) {
+  const row = getDb()
+    .prepare("SELECT * FROM appointments WHERE id = ?")
+    .get(appointmentId) as AppointmentRow | undefined;
+  return row ? mapAppointment(row) : null;
+}
+
+export function attachShareToAppointment(appointmentId: string, shareId: string) {
+  getDb()
+    .prepare(
+      `UPDATE appointments
+       SET share_id = @shareId, updated_at = @updatedAt
+       WHERE id = @appointmentId`,
+    )
+    .run({ appointmentId, shareId, updatedAt: nowIso() });
 }
 
 export function listPatientsSafe() {
@@ -1767,6 +2082,10 @@ export type SharedRecordRow = {
   fields_shared: string;
   access_token_hash: string;
   document_hash: string;
+  share_scope: string | null;
+  appointment_id: string | null;
+  document_manifest_json: string | null;
+  share_payload_version: string | null;
   status: string;
   expires_at: string;
   max_access_count: number;
@@ -1790,6 +2109,10 @@ export function createSharedRecord(input: {
   fieldsShared: string[];
   accessTokenHash: string;
   documentHash: string;
+  shareScope?: "field_subset" | "full_record";
+  appointmentId?: string | null;
+  documentManifestJson?: string | null;
+  sharePayloadVersion?: string;
   expiresAt: string;
   shareChainRef?: string;
   shareChainSlot?: number;
@@ -1800,11 +2123,13 @@ export function createSharedRecord(input: {
     `INSERT INTO shared_records
      (id, patient_id, doctor_name, doctor_email, doctor_hash,
       encrypted_summary, encrypted_share_key, fields_shared,
-      access_token_hash, document_hash, status, expires_at,
+      access_token_hash, document_hash, share_scope, appointment_id,
+      document_manifest_json, share_payload_version, status, expires_at,
       share_chain_ref, share_chain_slot, created_at, updated_at)
      VALUES (@id, @patientId, @doctorName, @doctorEmail, @doctorHash,
       @encryptedSummary, @encryptedShareKey, @fieldsShared,
-      @accessTokenHash, @documentHash, 'active', @expiresAt,
+      @accessTokenHash, @documentHash, @shareScope, @appointmentId,
+      @documentManifestJson, @sharePayloadVersion, 'active', @expiresAt,
       @shareChainRef, @shareChainSlot, @createdAt, @updatedAt)`,
   ).run({
     id: input.id,
@@ -1817,6 +2142,10 @@ export function createSharedRecord(input: {
     fieldsShared: JSON.stringify(input.fieldsShared),
     accessTokenHash: input.accessTokenHash,
     documentHash: input.documentHash,
+    shareScope: input.shareScope ?? "field_subset",
+    appointmentId: input.appointmentId ?? null,
+    documentManifestJson: input.documentManifestJson ?? null,
+    sharePayloadVersion: input.sharePayloadVersion ?? "1",
     expiresAt: input.expiresAt,
     shareChainRef: input.shareChainRef ?? null,
     shareChainSlot: input.shareChainSlot ?? null,

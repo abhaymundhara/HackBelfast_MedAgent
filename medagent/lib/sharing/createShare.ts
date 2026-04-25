@@ -2,14 +2,27 @@ import crypto from "crypto";
 
 import { decryptJson, encryptString, sha256Hash } from "@/lib/crypto";
 import {
+  attachShareToAppointment,
+  createAccessRequest,
   createSharedRecord,
   getPatientRow,
+  listPatientDocuments,
   listSharedRecords,
+  readEncryptedDocument,
 } from "@/lib/db";
 import { solanaAuditStore } from "@/lib/solana/auditStore";
 import { AuditEventSchema, EmergencySummary, ReleasedField } from "@/lib/types";
 
 const MAX_ACTIVE_SHARES = 10;
+const FULL_RECORD_FIELDS: ReleasedField[] = [
+  "allergies",
+  "medications",
+  "conditions",
+  "alerts",
+  "emergencyContact",
+  "recentDischarge",
+  "documents",
+];
 
 function filterSummaryFields(
   summary: EmergencySummary,
@@ -47,6 +60,8 @@ export async function createShareRecord(input: {
   doctorEmail: string;
   fieldsToShare: ReleasedField[];
   ttlHours: number;
+  shareScope?: "field_subset" | "full_record";
+  appointmentId?: string | null;
 }) {
   const patient = getPatientRow(input.patientId);
   if (!patient) {
@@ -61,7 +76,27 @@ export async function createShareRecord(input: {
   }
 
   const summary = decryptJson<EmergencySummary>(patient.encrypted_summary);
-  const filtered = filterSummaryFields(summary, input.fieldsToShare);
+  const shareScope = input.shareScope ?? "field_subset";
+  const fieldsShared =
+    shareScope === "full_record" ? FULL_RECORD_FIELDS : input.fieldsToShare;
+  const filtered =
+    shareScope === "full_record"
+      ? summary
+      : filterSummaryFields(summary, input.fieldsToShare);
+  const documentDescriptors =
+    shareScope === "full_record"
+      ? listPatientDocuments(input.patientId)
+          .filter((document) => document.patient_approved === 1)
+          .map((document) => {
+            const encryptedBytes = readEncryptedDocument(document.storage_path);
+            return {
+              id: document.id,
+              title: document.title,
+              mimeType: document.mime_type,
+              byteHash: sha256Hash(encryptedBytes),
+            };
+          })
+      : [];
 
   const shareId = crypto.randomUUID();
   const shareKey = crypto.randomBytes(32);
@@ -69,6 +104,10 @@ export async function createShareRecord(input: {
 
   const encryptedPayload = encryptWithShareKey(filtered, shareKey);
   const encryptedShareKey = encryptString(shareKey.toString("hex"));
+  const documentManifestJson =
+    documentDescriptors.length > 0
+      ? encryptString(JSON.stringify(documentDescriptors))
+      : null;
 
   const documentHash = sha256Hash(encryptedPayload);
   const accessTokenHash = sha256Hash(accessToken);
@@ -90,8 +129,22 @@ export async function createShareRecord(input: {
     timestamp: new Date().toISOString(),
     interaction_type: "share",
     summary_hash: summaryHash,
-    fields_accessed: input.fieldsToShare.join(","),
+    fields_accessed:
+      shareScope === "full_record" ? "full_record" : fieldsShared.join(","),
     duration_seconds: input.ttlHours * 3600,
+  });
+
+  createAccessRequest({
+    id: shareId,
+    patientId: input.patientId,
+    requesterId: input.doctorEmail,
+    requesterLabel: input.doctorName,
+    issuerLabel: "MedAgent share",
+    naturalLanguageRequest:
+      shareScope === "full_record"
+        ? "Appointment-backed full medical record share"
+        : "Patient-created field-scoped record share",
+    emergencyMode: false,
   });
 
   const auditResult = await solanaAuditStore.writeAuditEvent({
@@ -108,13 +161,21 @@ export async function createShareRecord(input: {
     doctorHash,
     encryptedSummary: encryptedPayload,
     encryptedShareKey,
-    fieldsShared: input.fieldsToShare,
+    fieldsShared,
     accessTokenHash,
     documentHash,
+    shareScope,
+    appointmentId: input.appointmentId ?? null,
+    documentManifestJson,
+    sharePayloadVersion: "2",
     expiresAt,
     shareChainRef: auditResult.chainRef,
     shareChainSlot: auditResult.chainSequence ?? undefined,
   });
+
+  if (input.appointmentId) {
+    attachShareToAppointment(input.appointmentId, shareId);
+  }
 
   const shareUrl = `/share/${shareId}#token=${accessToken}`;
 
@@ -124,6 +185,6 @@ export async function createShareRecord(input: {
     chainRef: auditResult.chainRef,
     expiresAt,
     patientName: summary.demographics.name,
-    fieldsShared: input.fieldsToShare,
+    fieldsShared,
   };
 }

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import { stripActivationKeyword } from "../intents";
+import { classifyIntent, stripActivationKeyword } from "../intents";
 
 describe("stripActivationKeyword", () => {
   const activation = "hey baymax!";
@@ -34,5 +34,31 @@ describe("stripActivationKeyword", () => {
     const parsed = stripActivationKeyword("access patient SARAHB");
     expect(parsed.activated).toBe(false);
     expect(parsed.cleanedText).toBe("access patient SARAHB");
+  });
+});
+
+describe("classifyIntent appointment flow", () => {
+  it("classifies patient appointment requests", () => {
+    expect(
+      classifyIntent("My knee injury is spiking in Belfast, book a doctor", null),
+    ).toMatchObject({ kind: "appointment_search", requestedDate: null });
+  });
+
+  it("classifies slot selections only while awaiting appointment selection", () => {
+    expect(classifyIntent("2", "appointment_slot_selection")).toEqual({
+      kind: "appointment_slot_selection",
+      selection: 2,
+    });
+  });
+
+  it("keeps appointment share consent separate from clinician approval", () => {
+    expect(classifyIntent("YES", "appointment_share_yes_no")).toEqual({
+      kind: "appointment_share",
+      decision: "approve",
+    });
+    expect(classifyIntent("YES", "approval_yes_no")).toEqual({
+      kind: "approval",
+      decision: "approve",
+    });
   });
 });

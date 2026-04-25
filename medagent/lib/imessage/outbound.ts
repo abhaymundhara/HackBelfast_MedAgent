@@ -199,6 +199,20 @@ export function formatAck(): string {
   return "Thanks — I’ve received your request and I’m working on it now.";
 }
 
+export function formatAppointmentShareCreated(input: {
+  doctorName: string;
+  shareUrl: string;
+  dashboardUrl: string;
+}) {
+  return [
+    `Shared your full uploaded medical record with ${input.doctorName}.`,
+    `Doctor access link: ${input.shareUrl}`,
+    "",
+    "You can revoke future live access from your dashboard.",
+    input.dashboardUrl,
+  ].join("\n");
+}
+
 export function formatFollowUpAnswer(input: {
   sessionId: string;
   answer: string;

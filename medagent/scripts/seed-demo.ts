@@ -7,6 +7,7 @@ import {
   savePatientDocumentMetadata,
   savePatientPolicy,
   setAppConfig,
+  upsertAppointmentSlot,
   upsertIssuerRegistry,
   upsertPatient,
   writeEncryptedDocument,
@@ -23,6 +24,41 @@ const ISSUER_METADATA: Record<string, { jurisdiction: string; requiresCrossSyste
   "dr-okonkwo": { jurisdiction: "NI", requiresCrossSystemApproval: true },
   "unknown-emergency": { jurisdiction: "unknown", requiresCrossSystemApproval: false },
 };
+
+function appointmentDate(dayOffset: number, hour: number, minute = 0) {
+  const date = new Date();
+  date.setDate(date.getDate() + dayOffset);
+  date.setHours(hour, minute, 0, 0);
+  return date;
+}
+
+function seedAppointmentSlot(input: {
+  id: string;
+  doctorRegNumber: string;
+  doctorName: string;
+  doctorEmail: string;
+  specialty: string | null;
+  clinic: string;
+  dayOffset: number;
+  hour: number;
+  minute?: number;
+  reasonTags: string[];
+}) {
+  const startsAt = appointmentDate(input.dayOffset, input.hour, input.minute ?? 0);
+  const endsAt = new Date(startsAt.getTime() + 30 * 60 * 1000);
+  upsertAppointmentSlot({
+    id: input.id,
+    doctorRegNumber: input.doctorRegNumber,
+    doctorName: input.doctorName,
+    doctorEmail: input.doctorEmail,
+    specialty: input.specialty,
+    clinic: input.clinic,
+    jurisdiction: "NI",
+    startsAt: startsAt.toISOString(),
+    endsAt: endsAt.toISOString(),
+    reasonTags: input.reasonTags,
+  });
+}
 
 export async function seedDemo() {
   const db = (await import("@/lib/db")).getDb();
@@ -82,11 +118,46 @@ export async function seedDemo() {
     ).run(doctor);
   }
 
+  seedAppointmentSlot({
+    id: "belfast-msk-today-1",
+    doctorRegNumber: "GMC6021841",
+    doctorName: "Dr. Niamh O'Neill",
+    doctorEmail: "niamh.oneill@belfasttrust.hscni.net",
+    specialty: "MSK / Sports Medicine",
+    clinic: "Belfast Musculoskeletal Clinic",
+    dayOffset: 0,
+    hour: 15,
+    reasonTags: ["knee", "injury", "msk", "pain"],
+  });
+  seedAppointmentSlot({
+    id: "belfast-gp-tomorrow-1",
+    doctorRegNumber: "GMC7112043",
+    doctorName: "Dr. Patrick Hughes",
+    doctorEmail: "patrick.hughes@belfasttrust.hscni.net",
+    specialty: "General Practice",
+    clinic: "Cityside Health Centre, Belfast",
+    dayOffset: 1,
+    hour: 10,
+    reasonTags: ["knee", "injury", "pain", "general"],
+  });
+  seedAppointmentSlot({
+    id: "belfast-msk-future-1",
+    doctorRegNumber: "GMC6021841",
+    doctorName: "Dr. Niamh O'Neill",
+    doctorEmail: "niamh.oneill@belfasttrust.hscni.net",
+    specialty: "MSK / Sports Medicine",
+    clinic: "Belfast Musculoskeletal Clinic",
+    dayOffset: 3,
+    hour: 14,
+    reasonTags: ["knee", "injury", "msk", "pain"],
+  });
+
   setAppConfig("demo.seededAt", new Date().toISOString());
 
   return {
     patients: DEMO_PATIENTS.length,
     clinicians: DEMO_CLINICIANS.length,
+    appointmentSlots: 3,
     audit: "solana",
   };
 }

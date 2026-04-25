@@ -1,10 +1,13 @@
 import crypto from "crypto";
 
-import { decryptString, sha256Hash } from "@/lib/crypto";
+import { decryptBuffer, decryptString, sha256Hash } from "@/lib/crypto";
 import {
+  getAppointment,
+  getDocumentForPatient,
   getPatientRow,
   getSharedRecord,
   incrementSharedRecordAccess,
+  readEncryptedDocument,
 } from "@/lib/db";
 import { solanaAuditStore } from "@/lib/solana/auditStore";
 import { getSolscanTxUrl } from "@/lib/solana/client";
@@ -39,6 +42,20 @@ export type ShareAccessResult = {
   patientName: string;
   fields: Partial<EmergencySummary>;
   fieldsShared: string[];
+  shareScope: string;
+  appointment: {
+    id: string;
+    doctorName: string;
+    clinic: string;
+    startsAt: string;
+  } | null;
+  documents: Array<{
+    id: string;
+    title: string;
+    mimeType: string;
+    byteHash: string;
+    downloadUrl: string;
+  }>;
   sharedAt: string;
   expiresAt: string;
   doctorName: string;
@@ -123,6 +140,18 @@ export async function accessSharedRecord(input: {
       : null;
 
   const fieldsShared: string[] = JSON.parse(share.fields_shared);
+  const shareScope = share.share_scope ?? "field_subset";
+  const manifest = share.document_manifest_json
+    ? (JSON.parse(decryptString(share.document_manifest_json)) as Array<{
+        id: string;
+        title: string;
+        mimeType: string;
+        byteHash: string;
+      }>)
+    : [];
+  const appointment = share.appointment_id
+    ? getAppointment(share.appointment_id)
+    : null;
 
   return {
     ok: true,
@@ -132,11 +161,91 @@ export async function accessSharedRecord(input: {
         "Unknown",
       fields: decryptedFields,
       fieldsShared,
+      shareScope,
+      appointment: appointment
+        ? {
+            id: appointment.id,
+            doctorName: appointment.doctorName,
+            clinic: appointment.clinic,
+            startsAt: appointment.startsAt,
+          }
+        : null,
+      documents: manifest.map((document) => ({
+        ...document,
+        downloadUrl: `/api/share/${share.id}/documents/${document.id}?token=${encodeURIComponent(input.accessToken)}`,
+      })),
       sharedAt: share.created_at,
       expiresAt: share.expires_at,
       doctorName: share.doctor_name,
       solscanUrl,
       shareChainRef: share.share_chain_ref,
+    },
+  };
+}
+
+export async function accessSharedDocument(input: {
+  shareId: string;
+  documentId: string;
+  accessToken: string;
+}): Promise<
+  | {
+      ok: true;
+      data: { bytes: Buffer; mimeType: string; title: string };
+    }
+  | { ok: false; error: ShareAccessError }
+> {
+  const share = getSharedRecord(input.shareId);
+  if (!share) {
+    return { ok: false, error: { code: "not_found", message: "Share not found" } };
+  }
+  if (share.status === "revoked") {
+    return {
+      ok: false,
+      error: {
+        code: "revoked",
+        message: "Access has been revoked by the patient",
+        revokeChainRef: share.revoke_chain_ref,
+      },
+    };
+  }
+  if (new Date(share.expires_at) <= new Date()) {
+    return { ok: false, error: { code: "expired", message: "Share link has expired" } };
+  }
+  if (share.access_count >= share.max_access_count) {
+    return {
+      ok: false,
+      error: { code: "rate_limited", message: "Maximum view count reached" },
+    };
+  }
+  if (sha256Hash(input.accessToken) !== share.access_token_hash) {
+    return {
+      ok: false,
+      error: { code: "invalid_token", message: "Invalid access token" },
+    };
+  }
+  if ((share.share_scope ?? "field_subset") !== "full_record") {
+    return { ok: false, error: { code: "not_found", message: "Document not shared" } };
+  }
+
+  const manifest = share.document_manifest_json
+    ? (JSON.parse(decryptString(share.document_manifest_json)) as Array<{
+        id: string;
+      }>)
+    : [];
+  if (!manifest.some((document) => document.id === input.documentId)) {
+    return { ok: false, error: { code: "not_found", message: "Document not shared" } };
+  }
+  const document = getDocumentForPatient(share.patient_id, input.documentId);
+  if (!document || document.patient_approved !== 1) {
+    return { ok: false, error: { code: "not_found", message: "Document not found" } };
+  }
+  const encryptedBytes = readEncryptedDocument(document.storage_path);
+  return {
+    ok: true,
+    data: {
+      bytes: decryptBuffer(encryptedBytes),
+      mimeType: document.mime_type,
+      title: document.title,
     },
   };
 }
