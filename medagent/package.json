@@ -10,6 +10,7 @@
     "test": "vitest run --coverage",
     "test:agent": "tsx scripts/test-agent.ts",
     "seed:demo": "tsx scripts/seed-demo.ts",
+    "demo:flow": "tsx scripts/demo-flow.ts",
     "demo:reset": "tsx scripts/demo-reset.ts",
     "demo:readiness": "tsx scripts/demo-readiness.ts",
     "imessage:live": "tsx scripts/imessage-live.ts",
