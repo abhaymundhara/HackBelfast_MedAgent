@@ -44,21 +44,31 @@ function tier1Card(ctx: OutboundContext): string {
     "",
   ];
 
-  const demographics = subset.demographics as Record<string, unknown> | undefined;
+  const demographics = subset.demographics as
+    | Record<string, unknown>
+    | undefined;
   if (demographics) {
     lines.push(`DEMOGRAPHICS`);
     if (demographics.name) lines.push(`• Name: ${String(demographics.name)}`);
     if (demographics.dob) lines.push(`• DOB: ${String(demographics.dob)}`);
-    if (demographics.bloodType) lines.push(`• Blood: ${String(demographics.bloodType)}`);
-    if (demographics.languages) lines.push(`• Languages: ${(demographics.languages as string[]).join(", ")}`);
+    if (demographics.bloodType)
+      lines.push(`• Blood: ${String(demographics.bloodType)}`);
+    if (demographics.languages)
+      lines.push(
+        `• Languages: ${(demographics.languages as string[]).join(", ")}`,
+      );
     lines.push("");
   }
 
-  const allergies = subset.allergies as Array<Record<string, unknown>> | undefined;
+  const allergies = subset.allergies as
+    | Array<Record<string, unknown>>
+    | undefined;
   if (allergies?.length) {
     lines.push("ALLERGIES");
     for (const a of allergies) {
-      lines.push(`• ${String(a.substance)} (${String(a.severity)})${a.reaction ? " — " + String(a.reaction) : ""}`);
+      lines.push(
+        `• ${String(a.substance)} (${String(a.severity)})${a.reaction ? " — " + String(a.reaction) : ""}`,
+      );
     }
     lines.push("");
   }
@@ -72,7 +82,10 @@ function tier1Card(ctx: OutboundContext): string {
   const auditLine = solscanLine(outcome.auditLog?.chainRef);
   if (auditLine) lines.push(auditLine);
 
-  return lines.filter((l) => l !== undefined).join("\n").trim();
+  return lines
+    .filter((l) => l !== undefined)
+    .join("\n")
+    .trim();
 }
 
 function tier2Card(ctx: OutboundContext): string {
@@ -86,17 +99,23 @@ function tier2Card(ctx: OutboundContext): string {
     "",
   ];
 
-  const medications = subset.medications as Array<Record<string, unknown>> | undefined;
+  const medications = subset.medications as
+    | Array<Record<string, unknown>>
+    | undefined;
   if (medications?.length) {
     lines.push("MEDICATIONS");
     for (const m of medications) {
       const crit = m.critical ? " ⚠️" : "";
-      lines.push(`• ${String(m.name)} ${String(m.dose)} ${String(m.frequency)}${crit}`);
+      lines.push(
+        `• ${String(m.name)} ${String(m.dose)} ${String(m.frequency)}${crit}`,
+      );
     }
     lines.push("");
   }
 
-  const conditions = subset.conditions as Array<Record<string, unknown>> | undefined;
+  const conditions = subset.conditions as
+    | Array<Record<string, unknown>>
+    | undefined;
   if (conditions?.length) {
     lines.push("CONDITIONS");
     for (const c of conditions) {
@@ -110,7 +129,10 @@ function tier2Card(ctx: OutboundContext): string {
   const auditLine = solscanLine(outcome.auditLog?.chainRef);
   if (auditLine) lines.push(auditLine);
 
-  return lines.filter((l) => l !== undefined).join("\n").trim();
+  return lines
+    .filter((l) => l !== undefined)
+    .join("\n")
+    .trim();
 }
 
 function tier3Card(ctx: OutboundContext): string {
@@ -124,14 +146,19 @@ function tier3Card(ctx: OutboundContext): string {
     "",
   ];
 
-  const demographics = subset.demographics as Record<string, unknown> | undefined;
+  const demographics = subset.demographics as
+    | Record<string, unknown>
+    | undefined;
   if (demographics) {
     if (demographics.name) lines.push(`• Name: ${String(demographics.name)}`);
-    if (demographics.bloodType) lines.push(`• Blood: ${String(demographics.bloodType)}`);
+    if (demographics.bloodType)
+      lines.push(`• Blood: ${String(demographics.bloodType)}`);
     lines.push("");
   }
 
-  const allergies = subset.allergies as Array<Record<string, unknown>> | undefined;
+  const allergies = subset.allergies as
+    | Array<Record<string, unknown>>
+    | undefined;
   if (allergies?.length) {
     lines.push("ALLERGIES");
     for (const a of allergies) {
@@ -140,7 +167,9 @@ function tier3Card(ctx: OutboundContext): string {
     lines.push("");
   }
 
-  const medications = subset.medications as Array<Record<string, unknown>> | undefined;
+  const medications = subset.medications as
+    | Array<Record<string, unknown>>
+    | undefined;
   if (medications?.length) {
     lines.push("MEDICATIONS");
     for (const m of medications) {
@@ -156,9 +185,13 @@ function tier3Card(ctx: OutboundContext): string {
     lines.push("");
   }
 
-  const emergencyContact = subset.emergencyContact as Record<string, unknown> | undefined;
+  const emergencyContact = subset.emergencyContact as
+    | Record<string, unknown>
+    | undefined;
   if (emergencyContact) {
-    lines.push(`🔔 Emergency Contact: ${String(emergencyContact.name)} (${String(emergencyContact.relation)}) ${String(emergencyContact.phone)}`);
+    lines.push(
+      `🔔 Emergency Contact: ${String(emergencyContact.name)} (${String(emergencyContact.relation)}) ${String(emergencyContact.phone)}`,
+    );
     lines.push("");
   }
 
@@ -172,7 +205,10 @@ function tier3Card(ctx: OutboundContext): string {
   const auditLine = solscanLine(outcome.auditLog?.chainRef);
   if (auditLine) lines.push(auditLine);
 
-  return lines.filter((l) => l !== undefined).join("\n").trim();
+  return lines
+    .filter((l) => l !== undefined)
+    .join("\n")
+    .trim();
 }
 
 function denialMessage(ctx: OutboundContext): string {
@@ -247,29 +283,34 @@ export function formatPatientConfirmation(input: {
 }
 
 export function formatHelp(): string {
+  const activationKeyword =
+    process.env.IMESSAGE_ACTIVATION_KEYWORD ?? "hey baymax!";
   return [
-    "MedAgent slash commands:",
-    "• /access — request patient record access",
+    "Hi — I’m MedAgent.",
+    `To wake me up, say: ${activationKeyword}`,
+    "",
+    "You can also use these commands:",
+    "• /access — request access to a patient record",
     "• /approve — approve a pending request",
     "• /deny — deny a pending request",
     "• /persona — view or set your clinician persona",
-    "• /status — check active request status",
-    "• /audit — view recent audit log",
-    "• /help — show this message",
+    "• /status — check your current request",
+    "• /audit — open the recent audit log",
+    "• /help — show this message again",
     "• /end — end the current session",
   ].join("\n");
 }
 
 export function formatAskPatientId(): string {
-  return "Which patient? Reply with a patient ID (e.g. SARAHB).";
+  return "Got it — which patient do you need? Reply with the patient ID (for example: SARAHB).";
 }
 
 export function formatAskApproval(): string {
-  return "Reply YES to approve, NO to deny.";
+  return "Please reply YES to approve, or NO to deny.";
 }
 
 export function formatAck(): string {
-  return "MedAgent received your request, working...";
+  return "Thanks — I’ve received your request and I’m checking this now.";
 }
 
 export function formatFollowUpAnswer(input: {

@@ -1,5 +1,7 @@
 "use strict";
 
+import { execFileSync } from "child_process";
+
 export interface BridgeAdapter {
   sendText(input: {
     chatGuid: string;
@@ -9,109 +11,105 @@ export interface BridgeAdapter {
   isHealthy(): Promise<{ healthy: boolean; detail: string }>;
 }
 
-class MockBridge implements BridgeAdapter {
-  async sendText(input: {
-    chatGuid: string;
-    text: string;
-    tempGuid?: string;
-  }): Promise<{ messageGuid: string; status: "sent" | "queued" | "failed"; error?: string }> {
-    const messageGuid = crypto.randomUUID();
-    console.log("[MockBridge] sendText", { chatGuid: input.chatGuid, text: input.text, messageGuid });
-    return { messageGuid, status: "sent" };
-  }
+const BRIDGE_KIND_MACOS_LOCAL = "macos-local";
 
-  async isHealthy(): Promise<{ healthy: boolean; detail: string }> {
-    return { healthy: true, detail: "mock bridge always healthy" };
-  }
+function parseHandleFromChatGuid(chatGuid: string): string {
+  const raw = chatGuid.trim();
+  if (!raw) return "";
+  const segments = raw.split(";");
+  const candidate = segments[segments.length - 1]?.trim();
+  return candidate || raw;
 }
 
-class BlueBubblesBridge implements BridgeAdapter {
-  private readonly baseUrl: string;
-  private readonly password: string;
-  private readonly defaultMethod: string;
-
-  constructor(baseUrl: string, password: string, defaultMethod: string) {
-    this.baseUrl = baseUrl;
-    this.password = password;
-    this.defaultMethod = defaultMethod;
-  }
-
+class MacOSLocalBridge implements BridgeAdapter {
   async sendText(input: {
     chatGuid: string;
     text: string;
     tempGuid?: string;
   }): Promise<{ messageGuid: string; status: "sent" | "queued" | "failed"; error?: string }> {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 5000);
+    if (process.platform !== "darwin") {
+      return { messageGuid: "", status: "failed", error: "macOS local iMessage bridge requires darwin host" };
+    }
+
+    const handle = parseHandleFromChatGuid(input.chatGuid);
+    if (!handle) {
+      return { messageGuid: "", status: "failed", error: "invalid chatGuid: unable to resolve iMessage handle" };
+    }
+
+    const script = `
+on run argv
+  set targetHandle to item 1 of argv
+  set outgoingMessage to item 2 of argv
+  tell application "Messages"
+    set targetService to 1st service whose service type = iMessage
+    set targetBuddy to buddy targetHandle of targetService
+    send outgoingMessage to targetBuddy
+  end tell
+end run
+`;
+
     try {
-      const response = await fetch(
-        `${this.baseUrl}/api/v1/message/text?password=${this.password}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            chatGuid: input.chatGuid,
-            tempGuid: input.tempGuid ?? crypto.randomUUID(),
-            message: input.text,
-            method: this.defaultMethod,
-          }),
-          signal: controller.signal,
-        },
+      execFileSync(
+        "osascript",
+        ["-e", script, handle, input.text],
+        { stdio: "pipe", timeout: 5000 },
       );
-      const json = (await response.json()) as { guid?: string; status?: number; error?: string };
-      if (!response.ok) {
-        const err = json.error ?? `HTTP ${response.status}`;
-        console.error("[BlueBubblesBridge] sendText error", err);
-        return { messageGuid: "", status: "failed", error: err };
-      }
-      return { messageGuid: json.guid ?? "", status: "sent" };
+      return { messageGuid: input.tempGuid ?? crypto.randomUUID(), status: "sent" };
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
-      console.error("[BlueBubblesBridge] sendText exception", message);
+      console.error("[MacOSLocalBridge] sendText exception", message);
       return { messageGuid: "", status: "failed", error: message };
-    } finally {
-      clearTimeout(timer);
     }
   }
 
   async isHealthy(): Promise<{ healthy: boolean; detail: string }> {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 3000);
+    if (process.platform !== "darwin") {
+      return { healthy: false, detail: "macOS local iMessage bridge requires darwin host" };
+    }
+
+    const script = `
+tell application "Messages"
+  set _svc to 1st service whose service type = iMessage
+  return "ok"
+end tell
+`;
+
     try {
-      const response = await fetch(
-        `${this.baseUrl}/api/v1/server/info?password=${this.password}`,
-        { signal: controller.signal },
+      const output = execFileSync(
+        "osascript",
+        ["-e", script],
+        { encoding: "utf8", stdio: "pipe", timeout: 3000 },
       );
-      if (!response.ok) {
-        return { healthy: false, detail: `HTTP ${response.status}` };
+      if (output.trim().toLowerCase() !== "ok") {
+        return { healthy: false, detail: `unexpected Messages check output: ${output.trim()}` };
       }
-      return { healthy: true, detail: "bluebubbles reachable" };
+      return { healthy: true, detail: "Messages.app iMessage service reachable" };
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
       return { healthy: false, detail: message };
-    } finally {
-      clearTimeout(timer);
     }
   }
 }
 
 let bridgeInstance: BridgeAdapter | null = null;
 
+function buildMacOSLocalBridge(): MacOSLocalBridge {
+  const kind = (process.env.IMESSAGE_BRIDGE_KIND ?? BRIDGE_KIND_MACOS_LOCAL).trim().toLowerCase();
+  if (kind !== BRIDGE_KIND_MACOS_LOCAL) {
+    throw new Error(
+      `[iMessage bridge] Unsupported IMESSAGE_BRIDGE_KIND="${kind}". BlueBubbles and mock bridge are disabled; use "macos-local".`,
+    );
+  }
+
+  return new MacOSLocalBridge();
+}
+
 export function getBridge(): BridgeAdapter {
   if (bridgeInstance) {
     return bridgeInstance;
   }
 
-  const kind = process.env.IMESSAGE_BRIDGE_KIND ?? "mock";
-
-  if (kind === "bluebubbles") {
-    const baseUrl = process.env.IMESSAGE_BRIDGE_URL ?? "";
-    const password = process.env.IMESSAGE_BRIDGE_PASSWORD ?? "";
-    const defaultMethod = process.env.IMESSAGE_BRIDGE_DEFAULT_METHOD ?? "private-api";
-    bridgeInstance = new BlueBubblesBridge(baseUrl, password, defaultMethod);
-  } else {
-    bridgeInstance = new MockBridge();
-  }
+  bridgeInstance = buildMacOSLocalBridge();
 
   return bridgeInstance;
 }

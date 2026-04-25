@@ -1,0 +1,306 @@
+import fs from "fs";
+import os from "os";
+import path from "path";
+
+import Database from "better-sqlite3";
+import { config } from "dotenv";
+import { listHandleMappings } from "@/lib/imessage/handles";
+
+config({ path: ".env.local" });
+config();
+
+type PollerState = {
+  lastRowId: number;
+};
+
+type MessageRow = {
+  rowid: number;
+  message_guid: string;
+  text: string;
+  is_from_me: number;
+  handle: string;
+  service: string;
+  chat_guid: string;
+};
+
+const DEFAULT_STATE_PATH = path.join(
+  process.cwd(),
+  "data",
+  "imessage-poller-state.json",
+);
+const DEFAULT_CHAT_DB_PATH = path.join(
+  os.homedir(),
+  "Library",
+  "Messages",
+  "chat.db",
+);
+const DEFAULT_INTERVAL_MS = 2000;
+const DEFAULT_BATCH_SIZE = 25;
+const DEFAULT_BOOTSTRAP_MODE = "latest";
+const DEFAULT_SKIP_HISTORY_ON_START = true;
+
+function readState(statePath: string): PollerState {
+  try {
+    const raw = fs.readFileSync(statePath, "utf8");
+    const parsed = JSON.parse(raw) as Partial<PollerState>;
+    return { lastRowId: Number(parsed.lastRowId ?? 0) };
+  } catch {
+    return { lastRowId: 0 };
+  }
+}
+
+function writeState(statePath: string, state: PollerState) {
+  fs.mkdirSync(path.dirname(statePath), { recursive: true });
+  fs.writeFileSync(statePath, JSON.stringify(state, null, 2));
+}
+
+function requireEnv(name: string): string {
+  const value = process.env[name]?.trim();
+  if (!value) throw new Error(`Missing required env: ${name}`);
+  return value;
+}
+
+function readBool(name: string, fallback: boolean): boolean {
+  const raw = process.env[name]?.trim().toLowerCase();
+  if (!raw) return fallback;
+  if (["1", "true", "yes", "y", "on"].includes(raw)) return true;
+  if (["0", "false", "no", "n", "off"].includes(raw)) return false;
+  return fallback;
+}
+
+function isDebugEnabled(): boolean {
+  return readBool("IMESSAGE_DEBUG", false);
+}
+
+function debugLog(message: string, data?: unknown) {
+  if (!isDebugEnabled()) return;
+  if (data === undefined) {
+    console.log(`[imessage-poller:debug] ${message}`);
+    return;
+  }
+  console.log(`[imessage-poller:debug] ${message}`, data);
+}
+
+function buildAllowedHandles(): Set<string> {
+  const configured = process.env.IMESSAGE_POLLER_ALLOWED_HANDLES
+    ?.split(",")
+    .map((value) => value.trim())
+    .filter(Boolean);
+
+  if (configured && configured.length > 0) {
+    if (configured.includes("*") || configured.includes("all")) {
+      return new Set();
+    }
+    return new Set(configured);
+  }
+
+  return new Set(listHandleMappings().map((m) => m.handle));
+}
+
+async function forwardMessage(
+  appBaseUrl: string,
+  secret: string | undefined,
+  row: MessageRow,
+) {
+  const webhookUrl = `${appBaseUrl.replace(/\/+$/, "")}/api/imessage/webhook`;
+
+  const payload = {
+    type: "new-message",
+    data: {
+      guid: row.message_guid,
+      text: row.text,
+      handle: { address: row.handle },
+      chats: [{ guid: row.chat_guid }],
+      isFromMe: row.is_from_me === 1,
+      // Keep this fresh so inbound age filter accepts the event.
+      dateCreated: Date.now(),
+    },
+  };
+
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+  };
+  if (secret) headers["x-webhook-secret"] = secret;
+
+  const response = await fetch(webhookUrl, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    const body = await response.text().catch(() => "");
+    throw new Error(`Webhook POST failed (${response.status}): ${body}`);
+  }
+}
+
+async function main() {
+  if (process.platform !== "darwin") {
+    throw new Error("imessage-local-poller requires macOS (darwin).");
+  }
+
+  const appBaseUrl =
+    process.env.APP_BASE_URL?.trim() || "http://localhost:3000";
+  const secret = process.env.IMESSAGE_WEBHOOK_SECRET?.trim();
+  const statePath =
+    process.env.IMESSAGE_POLLER_STATE_PATH?.trim() || DEFAULT_STATE_PATH;
+  const chatDbPath =
+    process.env.IMESSAGE_CHAT_DB_PATH?.trim() || DEFAULT_CHAT_DB_PATH;
+  const intervalMs = Number(
+    process.env.IMESSAGE_POLLER_INTERVAL_MS ?? DEFAULT_INTERVAL_MS,
+  );
+  const batchSize = Number(
+    process.env.IMESSAGE_POLLER_BATCH_SIZE ?? DEFAULT_BATCH_SIZE,
+  );
+  const bootstrapMode = (
+    process.env.IMESSAGE_POLLER_BOOTSTRAP ?? DEFAULT_BOOTSTRAP_MODE
+  )
+    .trim()
+    .toLowerCase();
+  const skipHistoryOnStart = readBool(
+    "IMESSAGE_POLLER_SKIP_HISTORY_ON_START",
+    DEFAULT_SKIP_HISTORY_ON_START,
+  );
+  const onlyIMessageService = readBool(
+    "IMESSAGE_POLLER_ONLY_IMESSAGE_SERVICE",
+    true,
+  );
+  const allowedHandles = buildAllowedHandles();
+  const bridgeKind = (process.env.IMESSAGE_BRIDGE_KIND ?? "")
+    .trim()
+    .toLowerCase();
+
+  if (bridgeKind !== "macos-local") {
+    throw new Error(
+      `IMESSAGE_BRIDGE_KIND must be "macos-local" for local poller (received "${bridgeKind || "(empty)"}").`,
+    );
+  }
+
+  if (!fs.existsSync(chatDbPath)) {
+    throw new Error(`Messages chat DB not found at ${chatDbPath}`);
+  }
+  requireEnv("IMESSAGE_BRIDGE_KIND");
+
+  const db = new Database(chatDbPath, { readonly: true });
+  const maxRowStmt = db.prepare(
+    `SELECT COALESCE(MAX(ROWID), 0) AS maxRowId FROM message`,
+  );
+
+  const query = db.prepare(
+    `
+    SELECT
+      m.ROWID AS rowid,
+      COALESCE(m.guid, 'local-' || m.ROWID) AS message_guid,
+      m.text AS text,
+      m.is_from_me AS is_from_me,
+      COALESCE(h.id, '') AS handle,
+      COALESCE(h.service, '') AS service,
+      COALESCE(MIN(c.guid), 'iMessage;-;' || COALESCE(h.id, '')) AS chat_guid
+    FROM message m
+    LEFT JOIN handle h ON h.ROWID = m.handle_id
+    LEFT JOIN chat_message_join cmj ON cmj.message_id = m.ROWID
+    LEFT JOIN chat c ON c.ROWID = cmj.chat_id
+    WHERE m.ROWID > @afterRowId
+      AND m.text IS NOT NULL
+      AND m.text != ''
+      AND m.is_from_me = 0
+      AND m.cache_has_attachments = 0
+    GROUP BY m.ROWID
+    ORDER BY m.ROWID ASC
+    LIMIT @limit
+    `,
+  );
+
+  const stateFileExists = fs.existsSync(statePath);
+  const state = readState(statePath);
+  const row = maxRowStmt.get() as { maxRowId: number };
+  const currentMaxRowId = Number(row.maxRowId ?? 0);
+
+  // Default behavior is strict live-tail mode: every startup skips history
+  // and starts from the current highest row ID in chat.db.
+  if (skipHistoryOnStart) {
+    state.lastRowId = currentMaxRowId;
+    writeState(statePath, state);
+    console.log(
+      `[imessage-poller] tail-on-start enabled; starting at rowid=${state.lastRowId}`,
+    );
+  } else if (
+    (state.lastRowId <= 0 || !stateFileExists) &&
+    bootstrapMode !== "backfill"
+  ) {
+    state.lastRowId = currentMaxRowId;
+    writeState(statePath, state);
+    console.log(
+      `[imessage-poller] bootstrapped to latest rowid=${state.lastRowId} (mode=${bootstrapMode})`,
+    );
+  }
+
+  console.log(
+    `[imessage-poller] starting | db=${chatDbPath} | state=${statePath} | afterRowId=${state.lastRowId}`,
+  );
+  if (allowedHandles.size > 0) {
+    console.log(
+      `[imessage-poller] handle filter active (${allowedHandles.size} handles)`,
+    );
+  } else {
+    console.log("[imessage-poller] handle filter disabled (all senders allowed)");
+  }
+
+  while (true) {
+    const rows = query.all({
+      afterRowId: state.lastRowId,
+      limit: batchSize,
+    }) as MessageRow[];
+
+    for (const row of rows) {
+      // Messages with no handle/chat are ignored to avoid malformed webhook payloads.
+      if (!row.handle && !row.chat_guid) {
+        debugLog("skip row: missing handle/chat", { rowid: row.rowid });
+        state.lastRowId = row.rowid;
+        writeState(statePath, state);
+        continue;
+      }
+      if (onlyIMessageService && row.service.toLowerCase() !== "imessage") {
+        debugLog("skip row: non-iMessage service", {
+          rowid: row.rowid,
+          service: row.service,
+          handle: row.handle,
+        });
+        state.lastRowId = row.rowid;
+        writeState(statePath, state);
+        continue;
+      }
+      if (allowedHandles.size > 0 && !allowedHandles.has(row.handle)) {
+        debugLog("skip row: handle not allowlisted", {
+          rowid: row.rowid,
+          handle: row.handle,
+        });
+        state.lastRowId = row.rowid;
+        writeState(statePath, state);
+        continue;
+      }
+
+      try {
+        await forwardMessage(appBaseUrl, secret, row);
+        state.lastRowId = row.rowid;
+        writeState(statePath, state);
+        console.log(
+          `[imessage-poller] forwarded row=${row.rowid} fromMe=${row.is_from_me === 1} handle=${row.handle}`,
+        );
+      } catch (err) {
+        const message = err instanceof Error ? err.message : String(err);
+        console.error(
+          `[imessage-poller] forward failed row=${row.rowid}; will retry: ${message}`,
+        );
+        break;
+      }
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, intervalMs));
+  }
+}
+
+main().catch((err) => {
+  console.error("[imessage-poller] fatal:", err);
+  process.exit(1);
+});

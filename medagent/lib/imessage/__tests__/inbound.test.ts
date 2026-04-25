@@ -14,7 +14,7 @@ describe("parseInbound", () => {
     },
   };
 
-  it("parses a valid BlueBubbles new-message payload", () => {
+  it("parses a valid bridge new-message payload", () => {
     const result = parseInbound(validPayload);
     expect(result).not.toBeNull();
     expect(result!.handle).toBe("+447700900111");
