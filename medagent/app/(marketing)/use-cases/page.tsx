@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { CaseTabs } from "@/components/landing/case-tabs";
+import { TextMedAgentButton } from "@/components/landing/text-medagent-button";
 
 export const metadata = {
   title: "Use cases — MedAgent",
@@ -31,9 +32,9 @@ export default function UseCasesPage() {
           <h2 className="display-md">Pick the role that&apos;s yours.</h2>
           <p>The interface adapts. You don&apos;t.</p>
           <div className="actions">
-            <Link className="btn btn-primary btn-lg" href="sms:+447700900099?body=Emergency%20access%20request">
+            <TextMedAgentButton className="btn btn-primary btn-lg">
               Text MedAgent
-            </Link>
+            </TextMedAgentButton>
             <Link className="btn btn-ghost btn-lg" href="/how-it-works">
               How it works
             </Link>
