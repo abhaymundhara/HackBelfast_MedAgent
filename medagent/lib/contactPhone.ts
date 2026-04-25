@@ -1,5 +1,5 @@
 export const DEFAULT_MEDAGENT_PHONE = "+447387381555";
-export const DEFAULT_SMS_BODY = "Hey Baymax!";
+export const DEFAULT_SMS_BODY = "hey baymax!";
 
 export function getMedAgentPhone(): string {
   const fromEnv = process.env.NEXT_PUBLIC_MEDAGENT_PHONE?.trim();
