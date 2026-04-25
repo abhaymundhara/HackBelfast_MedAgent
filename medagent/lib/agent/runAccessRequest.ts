@@ -8,6 +8,9 @@ export async function runAccessRequest(input: {
   naturalLanguageRequest: string;
   emergencyMode: boolean;
   presentedCredential?: string;
+  sourceMessageId?: string;
+  clinicianHandle?: string;
+  clinicianChatGuid?: string;
 }): Promise<MedAgentOutcome> {
   const persona = getDemoClinician(input.requesterId);
   return runMedAgentWorkflow({
@@ -18,6 +21,9 @@ export async function runAccessRequest(input: {
       targetLocale: persona?.locale ?? "en-GB",
       emergencyMode: input.emergencyMode,
       presentedCredential: input.presentedCredential,
+      sourceMessageId: input.sourceMessageId,
     },
+    clinicianHandle: input.clinicianHandle,
+    clinicianChatGuid: input.clinicianChatGuid,
   });
 }

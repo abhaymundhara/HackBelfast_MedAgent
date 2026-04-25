@@ -163,9 +163,13 @@ export const medAgentApp = workflow.compile({ checkpointer });
 export async function runMedAgentWorkflow({
   input,
   resumeRequestId,
+  clinicianHandle,
+  clinicianChatGuid,
 }: {
   input?: AccessWorkflowInput;
   resumeRequestId?: string;
+  clinicianHandle?: string;
+  clinicianChatGuid?: string;
 }): Promise<MedAgentOutcome> {
   let requestId: string;
 
@@ -235,6 +239,9 @@ export async function runMedAgentWorkflow({
     naturalLanguageRequest: input.naturalLanguageRequest,
     presentedCredential: input.presentedCredential,
     emergencyMode: input.emergencyMode,
+    sourceMessageId: input.sourceMessageId,
+    clinicianHandle: clinicianHandle,
+    clinicianChatGuid: clinicianChatGuid,
   });
 
   saveAgentTrace(initialTrace);
@@ -251,6 +258,7 @@ export async function runMedAgentWorkflow({
       patientApprovalPresent: input.patientApprovalPresent ?? false,
       requesterLabel: initialTrace.requesterLabel,
       issuerLabel: initialTrace.issuerLabel,
+      sourceMessageId: input.sourceMessageId,
     },
     trace: initialTrace,
   };
@@ -403,5 +411,6 @@ function buildOutcomeFromState(state: AgentStateType): MedAgentOutcome {
           : "Access denied by deterministic policy engine.",
     trace: state.trace,
     clarificationQuestion: responseContext.clarificationQuestion,
+    sourceMessageId: requestContext.sourceMessageId,
   };
 }
