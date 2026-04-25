@@ -12,14 +12,12 @@ import {
   writeEncryptedDocument,
 } from "@/lib/db";
 import type { InboundAttachment } from "@/lib/imessage/inbound";
-import {
-  EMERGENCY_ALERTS,
-  EmergencySummary,
-  PatientPolicy,
-} from "@/lib/types";
+import { EMERGENCY_ALERTS, EmergencySummary, PatientPolicy } from "@/lib/types";
 
 const execFileAsync = promisify(execFile);
 const OCR_MIN_TEXT_LENGTH = 40;
+const SECTION_BOUNDARY_PATTERN =
+  "allergies?|known allergies?|adverse reactions?|current medications?|medications?|medicines|active conditions?|major conditions?|conditions?|diagnoses|problems|emergency contact|next of kin|blood type|recent discharge|emergency alerts?|alerts?";
 
 type PdfTextExtractor = (filePath: string) => Promise<string>;
 
@@ -121,29 +119,44 @@ export function buildEmergencySummaryFromReport(input: {
     throw new Error("The PDF did not contain enough readable medical text.");
   }
 
-  const allergies = extractList(normalizedText, [
-    "allergies",
-    "allergy",
-    "adverse reactions",
-  ]).map((substance) => ({
-    substance,
-    severity: inferAllergySeverity(substance, normalizedText),
-    reaction: extractReactionFor(substance, normalizedText),
-  }));
-  const medications = extractList(normalizedText, [
-    "current medications",
-    "medications",
-    "medicines",
-  ]).map((entry) => parseMedication(entry));
+  const allergies = collapseContinuationEntries(
+    extractList(normalizedText, [
+      "allergies",
+      "known allergies",
+      "allergy",
+      "adverse reactions",
+    ]),
+  )
+    .map((substance) => sanitizeAllergySubstance(substance))
+    .filter((substance) => substance.length > 0)
+    .map((substance) => ({
+      substance,
+      severity: inferAllergySeverity(substance, normalizedText),
+      reaction: extractReactionFor(substance, normalizedText),
+    }))
+    .filter((entry) => !isNarrativeAllergyEntry(entry.substance));
+
+  const medications = collapseContinuationEntries(
+    extractList(normalizedText, [
+      "current medications",
+      "medications",
+      "medicines",
+    ]),
+  )
+    .map((entry) => parseMedication(entry))
+    .filter((medication) => isLikelyMedication(medication));
+
   const conditions = extractList(normalizedText, [
+    "active conditions",
     "major conditions",
     "conditions",
     "diagnoses",
     "problems",
-  ]).map((label) => ({
-    label,
-    major: /major|chronic|epilepsy|diabetes|heart|stroke|cancer/i.test(label),
-  }));
+  ])
+    .map((label) => parseCondition(label))
+    .filter((value): value is { label: string; major: boolean } =>
+      Boolean(value),
+    );
   const emergencyContact = parseEmergencyContact(normalizedText);
   const bloodType = matchFirst(
     normalizedText,
@@ -167,10 +180,9 @@ export function buildEmergencySummaryFromReport(input: {
     conditions,
     alerts: inferAlerts(normalizedText, medications, conditions),
     emergencyContact,
-    recentDischarge: matchFirst(
-      normalizedText,
-      /\brecent\s+discharge[:\s]+([^\n]+)/i,
-    ) ?? undefined,
+    recentDischarge:
+      matchFirst(normalizedText, /\brecent\s+discharge[:\s]+([^\n]+)/i) ??
+      undefined,
     documents: [
       {
         id: `${input.patientId}-medical-report-pdf`,
@@ -256,30 +268,75 @@ async function extractTextWithVision(filePath: string) {
 }
 
 function normalizeText(value: string) {
-  return value.replace(/\r/g, "\n").replace(/[ \t]+/g, " ").trim();
+  return value
+    .replace(/\r/g, "\n")
+    .replace(/(\w)-\n(\w)/g, "$1$2")
+    .replace(/([a-z])\n([a-z])/g, "$1$2")
+    .replace(/[ \t]+/g, " ")
+    .trim();
 }
 
 function extractList(text: string, labels: string[]) {
   for (const label of labels) {
     const escaped = label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const match = new RegExp(
-      `(?:^|\\n)\\s*${escaped}\\s*:?\\s*([\\s\\S]*?)(?=\\n\\s*(?:allergies?|adverse reactions?|current medications?|medications?|medicines|major conditions?|conditions?|diagnoses|problems|emergency contact|next of kin|blood type|recent discharge)\\s*:?|$)`,
+      `(?:^|\\n)\\s*${escaped}\\s*:?\\s*([\\s\\S]*?)(?=\\n\\s*(?:${SECTION_BOUNDARY_PATTERN})\\s*:?|$)`,
       "i",
     ).exec(text);
     if (!match?.[1]) continue;
 
     const values = match[1]
       .split(/\n|;|,/)
-      .map((value) => value.replace(/^[\s*-]+/, "").trim())
+      .map((value) =>
+        value
+          .replace(/^[\s*•\-–—]+/, "")
+          .replace(/^\d+[.)]\s*/, "")
+          .trim(),
+      )
       .filter((value) => value && !/^none( known)?$/i.test(value))
+      .filter(
+        (value) =>
+          !new RegExp(`^&?\\s*(?:${SECTION_BOUNDARY_PATTERN})$`, "i").test(
+            value,
+          ),
+      )
       .slice(0, 10);
     if (values.length > 0) return values;
   }
   return [];
 }
 
+function collapseContinuationEntries(values: string[]) {
+  const collapsed: string[] = [];
+  for (const value of values) {
+    if (!value) continue;
+    const cleaned = value.trim();
+    if (!cleaned) continue;
+
+    if (collapsed.length > 0 && isContinuationFragment(cleaned)) {
+      collapsed[collapsed.length - 1] =
+        `${collapsed[collapsed.length - 1]} ${cleaned}`
+          .replace(/\s+/g, " ")
+          .trim();
+      continue;
+    }
+
+    collapsed.push(cleaned);
+  }
+
+  return collapsed;
+}
+
+function isContinuationFragment(value: string) {
+  return /^(critical\b|history\b|documented\b|patient\b|all\b|beta-|review\b|reliever\b|gastric\b|for\b|on\b)/i.test(
+    value,
+  );
+}
+
 function parseMedication(entry: string) {
-  const doseMatch = entry.match(/\b(\d+(?:\.\d+)?\s*(?:mg|mcg|g|ml|units?))\b/i);
+  const doseMatch = entry.match(
+    /\b(\d+(?:\.\d+)?\s*(?:mg|mcg|g|ml|units?))\b/i,
+  );
   const frequencyMatch = entry.match(
     /\b(once daily|twice daily|daily|nightly|weekly|bd|od|prn|as needed)\b/i,
   );
@@ -300,15 +357,102 @@ function parseMedication(entry: string) {
   };
 }
 
+function isLikelyMedication(medication: {
+  name: string;
+  dose: string;
+  frequency: string;
+  critical: boolean;
+}) {
+  if (medication.dose || medication.frequency || medication.critical) {
+    return true;
+  }
+
+  const name = medication.name.trim();
+  if (!name) return false;
+
+  const knownMedicationTerms =
+    /\b(tablet|capsule|inhaler|insulin|metformin|warfarin|apixaban|rivaroxaban|aspirin|epipen|paracetamol|acetaminophen|ibuprofen|amoxicillin|atorvastatin|simvastatin|omeprazole|lansoprazole|prednisolone|salbutamol|levothyroxine|lisinopril|losartan|amlodipine|metoprolol|bisoprolol)\b/i;
+  if (knownMedicationTerms.test(name)) return true;
+
+  const lowerName = name.toLowerCase();
+  if (/(olol|pril|sartan|azole|cillin|statin|mab)\b/.test(lowerName)) {
+    return true;
+  }
+
+  // Accept plain single-token names that look drug-like.
+  // - Initial capital (e.g. "Metformin")
+  // - Longer lowercase generic-style token
+  if (/^[A-Z][A-Za-z0-9-]{2,}$/.test(name)) return true;
+  if (/^[a-z][a-z0-9-]{5,}$/.test(name)) return true;
+
+  // Accept long alphanumeric medication tokens (brand/coded names).
+  if (/\b[A-Za-z]+\d+[A-Za-z0-9-]{2,}\b/.test(name)) return true;
+
+  return false;
+}
+
+function parseCondition(label: string) {
+  const cleaned = label
+    .replace(/^\d+[.)]\s*/, "")
+    .replace(/\((major|minor)\)/gi, "")
+    .replace(/\s*-\s*.*$/, "")
+    .trim();
+  const normalized = cleaned || label;
+  if (/^(on|with|without|and|for)\b/i.test(normalized)) {
+    return null;
+  }
+  if (/^(well|controlled|stable|minor|major)$/i.test(normalized)) {
+    return null;
+  }
+  if (
+    /\b(alert|warning|risk|do not|confirm inr|reversal agent)\b/i.test(
+      normalized,
+    )
+  ) {
+    return null;
+  }
+  return {
+    label: normalized,
+    major:
+      /major|chronic|epilepsy|diabetes|heart|stroke|cancer|atrial fibrillation/i.test(
+        label,
+      ),
+  };
+}
+
+function isNarrativeAllergyEntry(value: string) {
+  return /^(history\b|documented\b|patient\b|all\b|beta-|review\b)/i.test(
+    value,
+  );
+}
+
+function sanitizeAllergySubstance(value: string) {
+  return value
+    .replace(/^&\s*/, "")
+    .replace(/^(known\s+)?adverse reactions?$/i, "")
+    .replace(/\b(history|documented)\b[\s\S]*$/i, "")
+    .replace(/\s+/g, " ")
+    .replace(/[-:,;]+$/g, "")
+    .trim();
+}
+
 function parseEmergencyContact(text: string) {
   const raw =
     matchFirst(text, /\bemergency contact[:\s]+([^\n]+)/i) ??
     matchFirst(text, /\bnext of kin[:\s]+([^\n]+)/i) ??
     "";
   const phone = raw.match(/(?:\+?\d[\d\s().-]{6,}\d)/)?.[0]?.trim() ?? "";
-  const withoutPhone = raw.replace(phone, "").replace(/[(),-]+$/g, "").trim();
-  const relation = matchFirst(withoutPhone, /\(([^)]+)\)/) ?? "Emergency contact";
-  const name = withoutPhone.replace(/\([^)]+\)/g, "").trim() || "Emergency contact";
+  const withoutPhone = raw
+    .replace(phone, "")
+    .replace(/[(),-]+$/g, "")
+    .trim();
+  const relation =
+    matchFirst(withoutPhone, /\(([^)]+)\)/) ?? "Emergency contact";
+  const name =
+    withoutPhone
+      .replace(/\([^)]+\)/g, "")
+      .replace(/[\s-]+$/g, "")
+      .trim() || "Emergency contact";
 
   return { name, relation, phone };
 }
@@ -320,17 +464,17 @@ function inferAllergySeverity(
   const nearby =
     new RegExp(`${escapeRegex(substance)}[^\\n]{0,120}`, "i").exec(text)?.[0] ??
     substance;
-  if (/anaphylaxis|life[-\s]?threatening/i.test(nearby)) return "life-threatening";
+  if (/anaphylaxis|life[-\s]?threatening/i.test(nearby))
+    return "life-threatening";
   if (/severe/i.test(nearby)) return "severe";
   if (/mild/i.test(nearby)) return "mild";
   return "moderate";
 }
 
 function extractReactionFor(substance: string, text: string) {
-  const nearby = new RegExp(
-    `${escapeRegex(substance)}[^\\n]{0,120}`,
-    "i",
-  ).exec(text)?.[0];
+  const nearby = new RegExp(`${escapeRegex(substance)}[^\\n]{0,120}`, "i").exec(
+    text,
+  )?.[0];
   return matchFirst(nearby ?? "", /\breaction[:\s]+([^;,\n]+)/i) ?? undefined;
 }
 
@@ -428,6 +572,8 @@ for index in 0..<pageCount {
 print(allText.joined(separator: "\\n\\n"))
 `;
 
-export function __setPdfTextExtractorForTests(extractor: PdfTextExtractor | null) {
+export function __setPdfTextExtractorForTests(
+  extractor: PdfTextExtractor | null,
+) {
   pdfTextExtractor = extractor ?? extractTextWithNativeMacTools;
 }
