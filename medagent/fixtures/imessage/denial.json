@@ -1,0 +1,11 @@
+{
+  "type": "new-message",
+  "data": {
+    "guid": "iMessage;-;+447700900201",
+    "text": "Access patient OMARH",
+    "handle": { "address": "+447700900201" },
+    "chats": [{ "guid": "iMessage;-;+447700900201" }],
+    "isFromMe": false,
+    "dateCreated": 1745539200000
+  }
+}

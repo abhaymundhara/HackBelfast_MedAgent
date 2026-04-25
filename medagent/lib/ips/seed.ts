@@ -8,24 +8,24 @@ import {
 
 export const DEMO_CLINICIANS: ClinicianPersona[] = [
   ClinicianPersonaSchema.parse({
-    id: "dr-garcia",
+    id: "dr-murphy",
     requesterId:
       "did:solana:testnet:7YwL6mUFr9s6qQ2VwT4Qf3V3wq2f9m9p2B7qQn1vR8kH",
-    requesterLabel: "Dr. Garcia",
+    requesterLabel: "Dr. Aoife Murphy",
     issuerId: "did:solana:testnet:9mDqM2kX4LJ9Gf1V7rQxS3yQ5bF2pN8tH6uP4kR1xCwZ",
-    issuerLabel: "Hospital Clinic Barcelona",
-    locale: "es-ES",
+    issuerLabel: "HSE Ireland (St. James's Hospital, Dublin)",
+    locale: "en-IE",
     stronglyVerified: true,
   }),
   ClinicianPersonaSchema.parse({
-    id: "dr-patel",
+    id: "dr-okonkwo",
     requesterId:
       "did:solana:testnet:6qWmZ8pR3HkN5fT2xV7cD1jL9sB4uY3nQ8rP2mK6tFvA",
-    requesterLabel: "Dr. Patel",
+    requesterLabel: "Dr. Chidi Okonkwo",
     issuerId: "did:solana:testnet:C3vK8pN2mQ7tR5xL1fH9wD4sY6uB2jP8qM5nT1rV4kZx",
-    issuerLabel: "Generic City Clinic",
+    issuerLabel: "NHS Northern Ireland (Royal Victoria Hospital, Belfast)",
     locale: "en-GB",
-    stronglyVerified: false,
+    stronglyVerified: true,
   }),
   ClinicianPersonaSchema.parse({
     id: "unknown-emergency",
@@ -34,7 +34,7 @@ export const DEMO_CLINICIANS: ClinicianPersona[] = [
     requesterLabel: "Emergency Doctor / Unknown Clinician",
     issuerId: "did:solana:testnet:B7kP2mQ5tR8xL1fH4wD9sY6uN3jV2qM5nT4rC7vK1zXp",
     issuerLabel: "Unverified Emergency Department",
-    locale: "es-ES",
+    locale: "en-GB",
     stronglyVerified: false,
   }),
 ];
@@ -49,9 +49,10 @@ export const DEMO_PATIENTS: PatientSeed[] = [
         name: "Sarah Bennett",
         dob: "1991-08-14",
         sex: "female",
-        bloodType: "A+",
+        bloodType: "O-",
         languages: ["English"],
         homeCountry: "United Kingdom",
+        homeJurisdiction: "NI",
         email: "sarah.bennett@example.com",
       },
       allergies: [
@@ -65,7 +66,7 @@ export const DEMO_PATIENTS: PatientSeed[] = [
         {
           name: "Warfarin",
           dose: "5 mg",
-          frequency: "Once nightly",
+          frequency: "Once daily",
           critical: true,
         },
         {
@@ -81,16 +82,16 @@ export const DEMO_PATIENTS: PatientSeed[] = [
       ],
       alerts: ["anticoagulants"],
       emergencyContact: {
-        name: "Tom Bennett",
+        name: "J. Bennett",
         relation: "Brother",
         phone: "+44 7700 900 111",
       },
       recentDischarge:
-        "Discharged from St Thomas' Hospital three weeks ago after atrial fibrillation observation. INR stable at discharge. Recheck advised within 7 days.",
+        "Belfast City Hospital — A&E discharge 2025-11-14, post-syncope investigation, cleared for discharge. Started warfarin 5mg OD for newly diagnosed AF.",
       documents: [
         {
-          id: "sarah-travel-summary",
-          title: "Travel GP Summary",
+          id: "sarah-gp-summary",
+          title: "GP Emergency Summary",
           patientApprovedForTier1Or2: true,
         },
         {
@@ -104,15 +105,15 @@ export const DEMO_PATIENTS: PatientSeed[] = [
       emergencyAutoAccess: true,
       allowPatientApprovalRequests: true,
       breakGlassAllowed: true,
-      shareableDocumentIds: ["sarah-travel-summary", "sarah-insurance-note"],
+      shareableDocumentIds: ["sarah-gp-summary", "sarah-insurance-note"],
     }),
     docs: [
       {
-        id: "sarah-travel-summary",
-        title: "Travel GP Summary",
+        id: "sarah-gp-summary",
+        title: "GP Emergency Summary",
         mimeType: "text/plain",
         content:
-          "Sarah Bennett has a severe penicillin allergy, takes warfarin nightly, and should avoid IM injections when INR status is unknown.",
+          "Sarah Bennett has a severe penicillin allergy, takes warfarin daily, and should avoid IM injections when INR status is unknown.",
         patientApprovedForTier1Or2: true,
       },
       {
@@ -120,7 +121,7 @@ export const DEMO_PATIENTS: PatientSeed[] = [
         title: "Insurance Emergency Letter",
         mimeType: "text/plain",
         content:
-          "Emergency treatment abroad is authorized. Contact insurer within 24 hours after stabilisation if admission occurs.",
+          "Emergency treatment is authorized. Contact insurer within 24 hours after stabilisation if admission occurs.",
         patientApprovedForTier1Or2: true,
       },
     ],
@@ -136,8 +137,9 @@ export const DEMO_PATIENTS: PatientSeed[] = [
         sex: "male",
         bloodType: "O+",
         languages: ["Arabic", "English"],
-        homeCountry: "Jordan",
-        email: "omar.haddad@example.com",
+        homeCountry: "United Kingdom",
+        homeJurisdiction: "NI",
+        email: "omar.haddad@qub.ac.uk",
       },
       allergies: [
         {
@@ -159,7 +161,7 @@ export const DEMO_PATIENTS: PatientSeed[] = [
       emergencyContact: {
         name: "Leila Haddad",
         relation: "Spouse",
-        phone: "+962 79 555 1200",
+        phone: "+44 7700 900 222",
       },
       documents: [],
     }),
@@ -181,8 +183,9 @@ export const DEMO_PATIENTS: PatientSeed[] = [
         dob: "1978-11-23",
         sex: "female",
         bloodType: "B-",
-        languages: ["Spanish", "Catalan", "English"],
-        homeCountry: "Spain",
+        languages: ["English", "Irish"],
+        homeCountry: "Ireland",
+        homeJurisdiction: "ROI",
         email: "lucia.martin@example.com",
       },
       allergies: [
@@ -208,10 +211,10 @@ export const DEMO_PATIENTS: PatientSeed[] = [
       emergencyContact: {
         name: "Jaime Martin",
         relation: "Partner",
-        phone: "+34 600 111 222",
+        phone: "+353 86 111 2222",
       },
       recentDischarge:
-        "Observed overnight after breakthrough seizure six months ago. Medication adherence restored. No further episodes reported.",
+        "Observed overnight at Daisy Hill Hospital, Newry after breakthrough seizure six months ago. Medication adherence restored. No further episodes reported.",
       documents: [
         {
           id: "lucia-neuro-letter",

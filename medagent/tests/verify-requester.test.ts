@@ -21,20 +21,20 @@ describe("requester verification", () => {
     expect(result.registryAnchored).toBe(true);
   });
 
-  it("marks a known but untrusted clinic as insufficient for Tier 1", async () => {
+  it("marks a trusted cross-jurisdiction clinician as verified", async () => {
     const result = await verifyRequester({
       requesterId: DEMO_CLINICIANS[1].requesterId,
     });
 
-    expect(result.verified).toBe(false);
-    expect(result.trustLevel).toBe("known_untrusted_issuer");
+    expect(result.verified).toBe(true);
+    expect(result.trustLevel).toBe("trusted_requester");
   });
 
   it("recognizes a credential that points to a trusted issuer without upgrading the requester", async () => {
     const result = await verifyRequester({
       requesterId: "did:solana:3yPCnb5XQAJcvqmVz1xjUrL9iE24oUAX6LkycfWw5NKX",
       presentedCredential:
-        "Issuer: Hospital Clinic Barcelona; badge-owner: temporary-locum",
+        "Issuer: HSE Ireland (St. James's Hospital, Dublin); badge-owner: temporary-locum",
     });
 
     expect(result.verified).toBe(false);

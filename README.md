@@ -1,8 +1,6 @@
 # MedAgent
 
-MedAgent is a deterministic emergency medical access demo built for live walkthroughs and hackathon judging. It gives clinicians a narrow, time-limited view of a traveler's emergency summary while recording non-PHI audit metadata through the `medagent_audit` Anchor program.
-
-The system is intentionally scoped around emergency access rather than full EHR interoperability. Its core question is simple: what is the minimum safe medical context a clinician should see right now, under what policy, and with what audit trail?
+MedAgent is a deterministic emergency medical access system for cross-border healthcare on the island of Ireland. Designed for HackBelfast 2026's *Belfast 2036* problem statement, it gives clinicians on either side of the NI/ROI border narrow, time-limited access to a traveler's emergency summary, with non-PHI audit trails on Solana. The clinician and patient interface is iMessage, powered by a BlueBubbles bridge.
 
 ## Product Model
 
@@ -176,6 +174,10 @@ SOLANA_RPC_URL=https://api.devnet.solana.com
 SOLANA_WALLET=/absolute/path/to/solana/id.json
 JWT_SECRET=...
 ENCRYPTION_PEPPER=...
+BLUEBUBBLES_URL=http://localhost:1234
+BLUEBUBBLES_PASSWORD=...
+IMESSAGE_WEBHOOK_SECRET=...
+APP_BASE_URL=http://localhost:3000
 ```
 
 Notes:
@@ -187,7 +189,6 @@ Notes:
   Set it to an absolute path before running Anchor commands:
   - macOS/Linux: `export SOLANA_WALLET=\"$HOME/.config/solana/id.json\"`
   - Windows PowerShell: `$env:SOLANA_WALLET=\"$env:USERPROFILE\\.config\\solana\\id.json\"`
-- Patient QR payloads currently emit both new (`auditRef`, `chainIdentity`) and legacy (`topicId`, `hederaIdentity`) keys for backward compatibility during migration.
 
 ### Anchor Program
 
@@ -230,7 +231,7 @@ Recommended demo path:
 
 1. Run `npm run demo:readiness`
 2. Open `/clinician`
-3. Trigger Tier 1 with `Dr. Garcia`
+3. Trigger Tier 1 with `Dr. Aoife Murphy`
 4. Trigger Tier 2 with `Dr. Patel` and approve from `/patient/dashboard`
 5. Trigger Tier 3 with the unknown emergency clinician
 6. Open `/audit/sarah-bennett`

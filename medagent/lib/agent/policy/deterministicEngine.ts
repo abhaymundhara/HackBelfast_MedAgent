@@ -66,6 +66,12 @@ export async function runDeterministicPolicyEngine(
     !verified && patientPolicy.allowPatientApprovalRequests;
   const canBreakGlass = emergencyMode && patientPolicy.breakGlassAllowed;
 
+  // 2b) Cross-system check: if the issuer is flagged as requiring patient approval
+  // for cross-system access (e.g. NHS NI accessing records across health systems),
+  // downgrade to Tier 2 unless emergency break-glass is active.
+  const requiresCrossSystemApproval = Boolean(registryEntry?.requires_cross_system_approval);
+  const isCrossJurisdiction = requiresCrossSystemApproval;
+
   // 3) Safety-first routing order (auditable):
   //    A. Trusted + auto-access -> Tier 1
   //    B. Patient-approved untrusted request -> Tier 2
@@ -78,8 +84,23 @@ export async function runDeterministicPolicyEngine(
   let justification = "Access denied.";
 
   // A) Highest-confidence path: verified requester + patient policy auto-access.
-  // Emergency mode does not reduce privileges on this path.
-  if (canAutoAccess) {
+  // Cross-jurisdiction requests from verified issuers downgrade to Tier 2 unless emergencyMode.
+  if (canAutoAccess && isCrossJurisdiction && !emergencyMode) {
+    // A-cross) Verified but cross-jurisdiction: requires patient approval.
+    if (patientApprovalPresent) {
+      decision = "granted";
+      tier = 2;
+      fieldsAllowed = TIER_2_FIELDS;
+      justification =
+        "Verified clinician from trusted cross-jurisdiction issuer. Patient approval received for Tier 2 release.";
+    } else {
+      decision = "awaiting_human";
+      tier = 2;
+      fieldsAllowed = TIER_2_FIELDS;
+      justification =
+        "Verified clinician from trusted registry, but cross-jurisdiction access requires patient consent.";
+    }
+  } else if (canAutoAccess) {
     decision = "granted";
     tier = 1;
     fieldsAllowed = TIER_1_FIELDS;

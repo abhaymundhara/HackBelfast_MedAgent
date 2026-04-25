@@ -40,7 +40,7 @@ const defaultState: FormState = {
   dob: "1993-01-15",
   sex: "female",
   bloodType: "A+",
-  languages: "English,Spanish",
+  languages: "English",
   homeCountry: "United Kingdom",
   allergies: [{ substance: "Penicillin", severity: "severe", reaction: "Rash" }],
   medications: [{ name: "Warfarin", dose: "5 mg", frequency: "Once nightly", critical: true }],

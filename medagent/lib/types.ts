@@ -19,6 +19,7 @@ export const EmergencySummary = z.object({
     bloodType: z.string().optional(),
     languages: z.array(z.string()),
     homeCountry: z.string(),
+    homeJurisdiction: z.string().optional(),
     email: z.string().email(),
   }),
   allergies: z.array(

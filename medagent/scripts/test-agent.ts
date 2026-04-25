@@ -36,7 +36,7 @@ async function main() {
   const tier1 = await runScenario({
     patientId: "sarah-bennett",
     requesterId: DEMO_CLINICIANS[0].requesterId,
-    naturalLanguageRequest: "Verified Barcelona doctor needs immediate emergency summary.",
+    naturalLanguageRequest: "Verified clinician needs immediate emergency summary for cross-border patient.",
     emergencyMode: false,
   });
 

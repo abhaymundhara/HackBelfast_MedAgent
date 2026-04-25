@@ -14,7 +14,9 @@
     "demo:readiness": "tsx scripts/demo-readiness.ts",
     "eval:retrieval": "tsx scripts/run-retrieval-eval.ts",
     "eval:embedding-bakeoff": "tsx scripts/run-embedding-bakeoff.ts",
-    "eval:cost-dashboard": "tsx scripts/run-retrieval-cost-dashboard.ts"
+    "eval:cost-dashboard": "tsx scripts/run-retrieval-cost-dashboard.ts",
+    "imessage:smoke": "tsx scripts/imessage-smoke.ts",
+    "imessage:replay": "tsx scripts/imessage-replay.ts"
   },
   "dependencies": {
     "@coral-xyz/anchor": "^0.31.1",

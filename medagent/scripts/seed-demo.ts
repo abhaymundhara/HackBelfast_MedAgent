@@ -17,9 +17,24 @@ import { DEMO_CLINICIANS, DEMO_PATIENTS } from "@/lib/ips/seed";
 config({ path: ".env.local" });
 config();
 
+// Cross-jurisdiction metadata per issuer for the Belfast 2036 demo.
+const ISSUER_METADATA: Record<string, { jurisdiction: string; requiresCrossSystemApproval: boolean }> = {
+  "dr-murphy": { jurisdiction: "ROI", requiresCrossSystemApproval: false },
+  "dr-okonkwo": { jurisdiction: "NI", requiresCrossSystemApproval: true },
+  "unknown-emergency": { jurisdiction: "unknown", requiresCrossSystemApproval: false },
+};
+
 export async function seedDemo() {
+  const db = (await import("@/lib/db")).getDb();
+
   for (const clinician of DEMO_CLINICIANS) {
     upsertIssuerRegistry(clinician, null);
+    const meta = ISSUER_METADATA[clinician.id];
+    if (meta) {
+      db.prepare(
+        "UPDATE issuer_registry SET jurisdiction = ?, requires_cross_system_approval = ? WHERE id = ?"
+      ).run(meta.jurisdiction, meta.requiresCrossSystemApproval ? 1 : 0, clinician.id);
+    }
   }
 
   for (const patient of DEMO_PATIENTS) {

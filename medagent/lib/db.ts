@@ -374,6 +374,18 @@ export function initDb() {
       value TEXT NOT NULL,
       updated_at TEXT NOT NULL
     );
+
+    CREATE TABLE IF NOT EXISTS imessage_conversations (
+      handle TEXT PRIMARY KEY,
+      identity_id TEXT NOT NULL,
+      identity_kind TEXT NOT NULL,
+      active_request_id TEXT,
+      awaiting TEXT,
+      last_message_at TEXT NOT NULL,
+      metadata_json TEXT
+    );
+    CREATE INDEX IF NOT EXISTS imessage_conversations_request
+      ON imessage_conversations(active_request_id);
   `);
 
   // Lightweight forward-compatible migration for branches that already have old schemas.
@@ -387,6 +399,8 @@ export function initDb() {
   ensureColumn(db, "patients", "chain_identity", "TEXT");
   ensureColumn(db, "patients", "audit_ref", "TEXT");
   ensureColumn(db, "issuer_registry", "registry_account_id", "TEXT");
+  ensureColumn(db, "issuer_registry", "jurisdiction", "TEXT");
+  ensureColumn(db, "issuer_registry", "requires_cross_system_approval", "INTEGER");
 
   if (!database) {
     db.close();
@@ -486,6 +500,8 @@ export function listIssuerRegistry() {
     trusted: number;
     verification_mode: string;
     registry_account_id: string | null;
+    jurisdiction: string | null;
+    requires_cross_system_approval: number | null;
   }[];
 }
 
@@ -504,6 +520,8 @@ export function getIssuerByRequesterId(requesterId: string) {
         trusted: number;
         verification_mode: string;
         registry_account_id: string | null;
+        jurisdiction: string | null;
+        requires_cross_system_approval: number | null;
       }
     | undefined;
 }

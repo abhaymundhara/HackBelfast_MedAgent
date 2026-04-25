@@ -49,7 +49,7 @@ export async function verifyRequester(input: {
   if (verified) {
     trustLevel = "trusted_requester";
     verificationReason =
-      "Requester matches a trusted registry entry anchored to the Barcelona demo issuer set.";
+      "Requester matches a trusted registry entry in the cross-border issuer registry.";
   } else if (credentialIssuerHint) {
     trustLevel = "trusted_issuer_unrecognized_requester";
     verificationReason =

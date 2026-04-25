@@ -1,67 +1,36 @@
-# 90-Second Demo Script
+# MedAgent Demo Script (iMessage — Belfast 2036)
 
-## Preflight
+## Setup (~5 min)
+1. BlueBubbles running on demo Mac, webhook → laptop running `npm run dev`
+2. `npm run imessage:smoke -- --chat 'iMessage;-;+447700900401' --text 'MedAgent online'`
+3. `npm run demo:reset`
+4. Open `http://localhost:3000/audit/sarah-bennett` on second screen
 
-Before the judged demo, run:
+## Flow 1 — Tier 1 (HSE clinician, verified, same jurisdiction)
+- iMessage from +353871000001 (Dr. Aoife Murphy, HSE)
+- Send: "Need emergency access to patient SARAHB. RTA on the M1 outside Newry, GCS 13."
+- Expect: Tier 1 grant with full critical info card
+- Audit page: new row — Granted · Tier 1 · dr-murphy · HSE Ireland
 
-```bash
-npm run demo:readiness
-```
+## Flow 2 — Tier 2 (NHS NI clinician, cross-jurisdiction)
+- iMessage from +447700900201 (Dr. Chidi Okonkwo, NHS NI)
+- Send: "Patient SARAHB just walked into RVH A&E, suspected stroke, need full record."
+- Expect: clinician gets "pending patient approval"
+- Patient (+447700900401) receives approval prompt
+- Patient replies YES
+- Clinician receives Tier 2 grant
+- Audit page: two rows (request opened, granted)
 
-Expected result:
+## Flow 3 — Tier 3 (break-glass, unverified)
+- iMessage from unmapped handle
+- Send: "BREAK GLASS — patient SARAHB unconscious, road traffic accident"
+- Expect: Tier 3 break-glass grant, critical-only fields
+- Audit page: Tier 3 · break-glass · unverified
 
-- credentials check passes
-- RPC check passes
-- Solana Anchor audit write is submitted
+## Flow 4 — Denial
+- dr-okonkwo requests omar-haddad
+- Expect: denial text with reason
+- Audit page: Denied · reason logged
 
-## 0:00 to 0:10
-
-Open the landing page.
-
-- “MedAgent is emergency medical access for travelers.”
-- “This is not full-record sharing. It is tiered, time-boxed, auditable release of the minimum safe emergency subset.”
-- If live Solana is configured, point to the status banner and mention the readiness check.
-
-## 0:10 to 0:30
-
-Open `/clinician`.
-
-- Select `Dr. Garcia`.
-- Choose `sarah-bennett`.
-- Submit a request that mentions medication and allergy context.
-- Explain that MedAgent verifies the requester, applies deterministic tier policy, and only then interprets the request focus.
-
-## 0:30 to 0:48
-
-Show the Tier 1 session.
-
-- Point to the Tier 1 badge and countdown.
-- Point to `Clinical intent` to show that the natural-language request affected emphasis.
-- Point to `Verification basis` to show why Tier 1 was allowed.
-- Point to `Released` versus `Withheld`.
-- Point to `Workflow steps`.
-
-## 0:48 to 1:05
-
-Open `/patient/dashboard?patientId=sarah-bennett`.
-
-- Explain that `Dr. Patel` is known but not trusted for Tier 1.
-- Trigger the Tier 2 flow if needed.
-- Show the pending approval and click `Approve`.
-- Explain that the original request pauses and resumes on the same `requestId`.
-
-## 1:05 to 1:20
-
-Open the Tier 2 clinician session.
-
-- Contrast it with Tier 1.
-- Point out `Requested but withheld` if discharge or documents were requested.
-- Highlight that the clinician request changed the focus panel and starter questions, but not the policy boundary.
-
-## 1:20 to 1:30
-
-Open `/audit/sarah-bennett`.
-
-- Show timestamp, event type, slot, transaction signature, and the Solscan link.
-- Example verifier URL: `https://solscan.io/tx/<signature>?cluster=devnet`
-- Close with: “Solana is not decorative here. The audit view is backed by our Anchor audit program, and we verified live submission before the demo.”
+## Pitch Beat
+"Every one of these accesses was logged on Solana. Any patient can verify exactly who opened their record, when, and under what authority. PHI never went on-chain — only hashes, decisions, and timestamps."

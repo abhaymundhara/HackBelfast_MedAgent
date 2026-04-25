@@ -252,6 +252,9 @@ function buildEvalState(input: {
       lexicalLatencyMs: 0,
       rerankLatencyMs: 0,
       latencyClassification: "healthy",
+      estimatedRequestCostUsd: 0,
+      costBudgetUsd: 0.01,
+      costBudgetStatus: "healthy" as const,
     },
     evidenceContext: {
       authorizedChunks: [],

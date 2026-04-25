@@ -44,7 +44,7 @@ export async function decideTier(input: {
       ttlSeconds: 30 * 60,
       fieldsAllowed: TIER_1_FIELDS,
       justification:
-        "Verified clinician from trusted Barcelona clinic. Patient enabled emergency auto-access. Tier 1 granted.",
+        "Verified clinician from trusted registry. Patient enabled emergency auto-access. Tier 1 granted.",
     };
   }
 

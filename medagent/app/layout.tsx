@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { JetBrains_Mono, Manrope } from "next/font/google";
 
-import { Navbar } from "@/components/app/navbar";
 import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
 
@@ -19,7 +18,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "MedAgent",
   description:
-    "AI-powered emergency medical record access with tiered consent and tamper-proof audit.",
+    "Cross-border emergency medical access with tiered consent and on-chain audit trails on Solana.",
 };
 
 export default function RootLayout({
@@ -36,8 +35,6 @@ export default function RootLayout({
               MedAgent
             </Link>
             <div className="flex items-center gap-6 text-sm text-muted-foreground">
-              <Link href="/clinician" className="transition hover:text-foreground">Clinician</Link>
-              <Link href="/patient" className="transition hover:text-foreground">Patient</Link>
               <Link href="/audit/sarah-bennett" className="transition hover:text-foreground">Audit</Link>
             </div>
           </div>

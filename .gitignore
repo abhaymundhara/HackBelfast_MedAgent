@@ -1,4 +1,6 @@
 .DS_Store
+.omc/
+.omg/
 .omx/
 **/node_modules/
 **/coverage/
@@ -16,6 +18,7 @@ pnpm-debug.log*
 .env
 .env.*
 !.env.example
+!.env.local.example
 
 # Next.js / frontend build artifacts
 **/out/
@@ -37,3 +40,6 @@ temp/
 
 # MedAgent local runtime data
 medagent/data/
+
+# OMC / plugin state (per-directory)
+**/.omc/

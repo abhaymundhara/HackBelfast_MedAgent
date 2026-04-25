@@ -11,21 +11,17 @@ export default function HomePage() {
       <div className="mx-auto max-w-2xl text-center space-y-8">
         <SolanaStatusAlert />
         <h1 className="text-5xl font-semibold tracking-tight text-slate-950 md:text-6xl">
-          Emergency records,<br />right access, right time.
+          Cross-border emergency access,<br />auditable on Solana.
         </h1>
         <p className="text-lg text-slate-600 max-w-lg mx-auto">
-          MedAgent gives clinicians a time-limited emergency summary — verified, consented, and fully auditable.
+          MedAgent gives clinicians on either side of the NI/ROI border a narrow,
+          time-limited emergency summary — verified, consented, and fully auditable
+          via iMessage.
         </p>
 
         <div className="flex flex-wrap justify-center gap-3">
           <Button asChild size="lg" className="rounded-full px-8">
-            <Link href="/clinician">Clinician</Link>
-          </Button>
-          <Button asChild variant="outline" size="lg" className="rounded-full px-8">
-            <Link href="/patient/dashboard?patientId=sarah-bennett">Patient</Link>
-          </Button>
-          <Button asChild variant="secondary" size="lg" className="rounded-full px-8">
-            <Link href="/audit/sarah-bennett">Audit log</Link>
+            <Link href="/audit/sarah-bennett">View audit log</Link>
           </Button>
         </div>
 

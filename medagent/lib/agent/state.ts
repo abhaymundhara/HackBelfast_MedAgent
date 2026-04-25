@@ -334,6 +334,9 @@ export const AgentState = Annotation.Root({
       cacheLookupLatencyMs: 0,
       cacheWriteLatencyMs: 0,
       retryCount: 0,
+      estimatedRequestCostUsd: 0,
+      costBudgetUsd: 0.01,
+      costBudgetStatus: "healthy" as const,
     }),
   }),
 
