@@ -3,13 +3,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { TextMedAgentButton } from "@/components/landing/text-medagent-button";
+
 const links = [
   { href: "/how-it-works", label: "How it works" },
   { href: "/features", label: "Features" },
   { href: "/use-cases", label: "Use cases" },
 ];
-
-const SMS_HREF = "sms:+447700900099?body=Emergency%20access%20request";
 
 const ArrowRight = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
@@ -39,10 +39,10 @@ export function SiteNav() {
               </Link>
             );
           })}
-          <Link className="btn btn-primary" href={SMS_HREF}>
+          <TextMedAgentButton className="btn btn-primary">
             Text MedAgent
             <ArrowRight />
-          </Link>
+          </TextMedAgentButton>
         </nav>
       </div>
     </header>

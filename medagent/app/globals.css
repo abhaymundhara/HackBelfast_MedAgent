@@ -2037,3 +2037,85 @@ html {
     transform: rotate(0deg) !important;
   }
 }
+
+/* iMessage redirect modal */
+.imsg-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  animation: imsg-fade-in 0.18s ease-out;
+}
+.imsg-modal {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 28px 26px 22px;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.28);
+  animation: imsg-pop-in 0.22s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+.imsg-modal h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 10px;
+  color: #0a0a0a;
+}
+.imsg-modal p {
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: rgba(15, 23, 42, 0.72);
+  margin: 0 0 22px;
+}
+.imsg-modal p strong {
+  color: #0a0a0a;
+  font-weight: 600;
+}
+.imsg-modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+.imsg-modal-actions .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: background 0.15s, border-color 0.15s;
+}
+.imsg-modal-actions .btn-ghost {
+  background: transparent;
+  color: rgba(15, 23, 42, 0.72);
+  border-color: rgba(15, 23, 42, 0.16);
+}
+.imsg-modal-actions .btn-ghost:hover {
+  background: rgba(15, 23, 42, 0.06);
+}
+.imsg-modal-actions .btn-imsg {
+  background: #007aff;
+  color: #ffffff;
+}
+.imsg-modal-actions .btn-imsg:hover {
+  background: #006fe6;
+}
+@keyframes imsg-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes imsg-pop-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}

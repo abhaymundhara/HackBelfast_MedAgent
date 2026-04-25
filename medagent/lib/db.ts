@@ -529,7 +529,12 @@ export function initDb() {
   ensureColumn(db, "patients", "audit_ref", "TEXT");
   ensureColumn(db, "issuer_registry", "registry_account_id", "TEXT");
   ensureColumn(db, "issuer_registry", "jurisdiction", "TEXT");
-  ensureColumn(db, "issuer_registry", "requires_cross_system_approval", "INTEGER");
+  ensureColumn(
+    db,
+    "issuer_registry",
+    "requires_cross_system_approval",
+    "INTEGER",
+  );
   ensureColumn(db, "patient_accounts", "solana_log_pda", "TEXT");
   ensureColumn(db, "access_requests", "source_message_id", "TEXT");
   ensureColumn(db, "access_requests", "clinician_handle", "TEXT");
@@ -854,18 +859,37 @@ export function listPatientsSafe() {
   const rows = db
     .prepare("SELECT * FROM patients ORDER BY id")
     .all() as PatientRow[];
-  return rows.map((row) => {
-    const summary = decryptJson<EmergencySummary>(row.encrypted_summary);
-    return {
-      patientId: row.id,
-      name: summary.demographics.name,
-      email: summary.demographics.email,
-      homeCountry: summary.demographics.homeCountry,
-      localIdentity: row.local_identity,
-      chainIdentity: row.chain_identity,
-      auditRef: row.audit_ref,
-    };
-  });
+  const safeProfiles: Array<{
+    patientId: string;
+    name: string;
+    email: string;
+    homeCountry: string;
+    localIdentity: string;
+    chainIdentity: string | null;
+    auditRef: string | null;
+  }> = [];
+
+  for (const row of rows) {
+    try {
+      const summary = decryptJson<EmergencySummary>(row.encrypted_summary);
+      safeProfiles.push({
+        patientId: row.id,
+        name: summary.demographics.name,
+        email: summary.demographics.email,
+        homeCountry: summary.demographics.homeCountry,
+        localIdentity: row.local_identity,
+        chainIdentity: row.chain_identity,
+        auditRef: row.audit_ref,
+      });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.warn(
+        `[db] skipping patient ${row.id} in listPatientsSafe: failed to decrypt summary (${message}). Check ENCRYPTION_PEPPER consistency or reseed demo data.`,
+      );
+    }
+  }
+
+  return safeProfiles;
 }
 
 export function getPatientSafeProfile(patientId: string) {

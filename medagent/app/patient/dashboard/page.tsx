@@ -6,14 +6,13 @@ import QRCode from "qrcode";
 import { validatePatientJwt } from "@/lib/auth/patientAuth";
 import {
   getPatientAccountByPatientId,
+  getPatientSummary,
   listAuditEvents,
   listDoctorRegistry,
-  listSharedRecords,
 } from "@/lib/db";
 import { sha256Hash } from "@/lib/crypto";
 import { DEMO_CLINICIANS } from "@/lib/ips/seed";
 import { getSolscanTxUrl } from "@/lib/solana/client";
-import { ShareForm } from "@/components/app/share-form";
 
 function getInteractionType(payload: unknown, fallback: string) {
   if (payload && typeof payload === "object" && "interaction_type" in payload) {
@@ -31,54 +30,43 @@ function getFieldsAccessed(payload: unknown) {
   return "Not recorded";
 }
 
-function buildDoctorLabelByHash() {
-  const labels = new Map<string, string>();
+type DoctorInfo = { name: string; jurisdiction: string | null };
+
+function buildDoctorInfoByHash() {
+  const info = new Map<string, DoctorInfo>();
   const doctors = listDoctorRegistry();
 
   for (const doctor of doctors) {
-    labels.set(sha256Hash(doctor.reg_number), doctor.name);
+    info.set(sha256Hash(doctor.reg_number), {
+      name: doctor.name,
+      jurisdiction: doctor.jurisdiction,
+    });
   }
 
   for (const persona of DEMO_CLINICIANS) {
     const doctor =
-      doctors.find((candidate) => candidate.reg_number === persona.requesterId) ??
-      null;
+      doctors.find((c) => c.reg_number === persona.requesterId) ?? null;
     const label = doctor?.name ?? persona.requesterLabel;
-    labels.set(sha256Hash(persona.id), label);
-    labels.set(sha256Hash(persona.requesterId), label);
+    const jurisdiction = doctor?.jurisdiction ?? null;
+    info.set(sha256Hash(persona.id), { name: label, jurisdiction });
+    info.set(sha256Hash(persona.requesterId), { name: label, jurisdiction });
   }
 
-  return labels;
+  return info;
 }
 
-function eventBadge(eventType: string, decision: string | null) {
-  if (eventType === "record_shared") {
-    return { color: "bg-purple-100 text-purple-700", label: "Shared" };
-  }
-  if (eventType === "record_accessed") {
-    return { color: "bg-blue-100 text-blue-700", label: "Viewed" };
-  }
-  if (eventType === "share_revoked") {
-    return { color: "bg-red-100 text-red-700", label: "Revoked" };
-  }
-  if (decision === "allow") {
-    return { color: "bg-green-100 text-green-700", label: "allow" };
-  }
-  if (decision === "deny") {
-    return { color: "bg-red-100 text-red-700", label: "deny" };
-  }
-  return null;
+function isEmergencyAccess(doctorHash: string) {
+  const emergencyPersona = DEMO_CLINICIANS.find(
+    (c) => c.id === "unknown-emergency",
+  );
+  if (!emergencyPersona) return false;
+  return (
+    doctorHash === sha256Hash(emergencyPersona.id) ||
+    doctorHash === sha256Hash(emergencyPersona.requesterId)
+  );
 }
 
-function shareStatusBadge(status: string, expiresAt: string) {
-  if (status === "revoked") {
-    return { color: "bg-red-100 text-red-700 border-red-200", label: "Revoked" };
-  }
-  if (new Date(expiresAt) <= new Date()) {
-    return { color: "bg-slate-100 text-slate-500 border-slate-200", label: "Expired" };
-  }
-  return { color: "bg-green-100 text-green-700 border-green-200", label: "Active" };
-}
+const ESTIMATED_COST_PER_EVENT_USD = 0.001;
 
 export default async function PatientDashboardPage() {
   const token = cookies().get("patient_token")?.value;
@@ -91,26 +79,37 @@ export default async function PatientDashboardPage() {
   if (!account) redirect("/patient/login");
 
   const events = listAuditEvents(session.patientId);
-  const shares = listSharedRecords(session.patientId);
-  const doctorLabelByHash = buildDoctorLabelByHash();
-  const uniqueDoctors = new Set(events.map((event) => event.doctorHash)).size;
+  const summary = getPatientSummary(session.patientId);
+  const patientJurisdiction =
+    summary?.demographics?.homeJurisdiction ?? "unknown";
+  const doctorInfoByHash = buildDoctorInfoByHash();
+  const uniqueDoctors = new Set(events.map((e) => e.doctorHash)).size;
   const lastAccess = events.length > 0 ? events[0]?.createdAt : null;
+  const onChainCount = events.filter(
+    (e) => !e.chainRef.startsWith("local-solana:"),
+  ).length;
+  const totalCostUsd = events.length * ESTIMATED_COST_PER_EVENT_USD;
+
   const qrPayload = JSON.stringify({
     patientId: session.patientId,
     solanaLogPda: account.solana_log_pda,
   });
-  const qrDataUrl = await QRCode.toDataURL(qrPayload, { margin: 1, width: 192 });
+  const qrDataUrl = await QRCode.toDataURL(qrPayload, {
+    margin: 1,
+    width: 192,
+  });
 
   return (
-    <main className="min-h-[calc(100vh-3.5rem)] px-6 py-8">
+    <main className="min-h-[calc(100vh-3.5rem)] px-4 py-6 sm:px-6 sm:py-8">
       <div className="mx-auto max-w-5xl space-y-6">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight">
+            <h1 className="text-xl font-semibold tracking-tight sm:text-2xl">
               Patient Dashboard
             </h1>
             <p className="text-sm text-muted-foreground">
-              Patient ID: {session.patientId}
+              Patient ID: {session.patientId} &middot; Jurisdiction:{" "}
+              {patientJurisdiction}
             </p>
           </div>
           <form action="/patient/login">
@@ -120,154 +119,117 @@ export default async function PatientDashboardPage() {
           </form>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-4">
-          <div className="rounded-xl border bg-white p-4 shadow-sm">
-            <p className="text-sm text-slate-500">Total Interactions</p>
-            <p className="text-3xl font-semibold">{events.length}</p>
-          </div>
-          <div className="rounded-xl border bg-white p-4 shadow-sm">
-            <p className="text-sm text-slate-500">Unique Doctors</p>
-            <p className="text-3xl font-semibold">{uniqueDoctors}</p>
-          </div>
-          <div className="rounded-xl border bg-white p-4 shadow-sm">
-            <p className="text-sm text-slate-500">Last Access</p>
-            <p className="mt-1 text-sm font-medium">
-              {lastAccess ? new Date(lastAccess).toLocaleString() : "No accesses yet"}
+        {/* Stats cards — 2 cols mobile, 4 cols desktop */}
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
+          <div className="rounded-xl border bg-white p-3 shadow-sm sm:p-4">
+            <p className="text-xs text-slate-500 sm:text-sm">
+              Total Interactions
+            </p>
+            <p className="text-2xl font-semibold sm:text-3xl">
+              {events.length}
             </p>
           </div>
-          <div className="rounded-xl border bg-white p-4 shadow-sm">
-            <p className="text-sm text-slate-500">Active Shares</p>
-            <p className="text-3xl font-semibold">
-              {shares.filter(
-                (s) => s.status === "active" && new Date(s.expires_at) > new Date(),
-              ).length}
+          <div className="rounded-xl border bg-white p-3 shadow-sm sm:p-4">
+            <p className="text-xs text-slate-500 sm:text-sm">Unique Doctors</p>
+            <p className="text-2xl font-semibold sm:text-3xl">
+              {uniqueDoctors}
+            </p>
+          </div>
+          <div className="rounded-xl border bg-white p-3 shadow-sm sm:p-4">
+            <p className="text-xs text-slate-500 sm:text-sm">Last Access</p>
+            <p className="mt-1 text-xs font-medium sm:text-sm">
+              {lastAccess
+                ? new Date(lastAccess).toLocaleString()
+                : "No accesses yet"}
+            </p>
+          </div>
+          <div className="rounded-xl border bg-white p-3 shadow-sm sm:p-4">
+            <p className="text-xs text-slate-500 sm:text-sm">
+              Solana Audit Cost
+            </p>
+            <p className="text-2xl font-semibold sm:text-3xl">
+              ${totalCostUsd.toFixed(4)}
+            </p>
+            <p className="text-[10px] text-slate-400">
+              {onChainCount}/{events.length} on-chain &middot; ~$
+              {ESTIMATED_COST_PER_EVENT_USD}/event
             </p>
           </div>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-[1fr_300px]">
-          <div className="space-y-6">
-            {/* Share Form */}
-            <section className="rounded-xl border bg-white shadow-sm">
-              <div className="border-b px-4 py-3">
-                <h2 className="text-sm font-medium text-slate-900">
-                  Share Your Records
-                </h2>
-                <p className="text-xs text-slate-500">
-                  Create a secure link for a doctor to view selected medical fields
-                </p>
+        <div className="grid gap-6 lg:grid-cols-[1fr_240px]">
+          <section className="rounded-xl border bg-white shadow-sm">
+            <div className="border-b px-4 py-3">
+              <h2 className="text-sm font-medium text-slate-900">
+                Interaction Timeline
+              </h2>
+            </div>
+            {events.length === 0 ? (
+              <div className="p-8 text-center text-sm text-slate-500">
+                No interactions recorded yet.
               </div>
-              <div className="p-4">
-                <ShareForm />
-              </div>
-            </section>
+            ) : (
+              <div className="divide-y">
+                {events.map((event) => {
+                  const isLocal = event.chainRef.startsWith("local-solana:");
+                  const solscanUrl = !isLocal
+                    ? getSolscanTxUrl(event.chainRef)
+                    : null;
+                  const isEmergency = isEmergencyAccess(event.doctorHash);
+                  const doctorInfo = doctorInfoByHash.get(event.doctorHash);
+                  const doctorJurisdiction = doctorInfo?.jurisdiction;
+                  const isCrossBorder =
+                    doctorJurisdiction &&
+                    patientJurisdiction !== "unknown" &&
+                    doctorJurisdiction !== "unknown" &&
+                    doctorJurisdiction !== patientJurisdiction;
 
-            {/* Shared Records */}
-            {shares.length > 0 && (
-              <section className="rounded-xl border bg-white shadow-sm">
-                <div className="border-b px-4 py-3">
-                  <h2 className="text-sm font-medium text-slate-900">
-                    Shared Records
-                  </h2>
-                </div>
-                <div className="divide-y">
-                  {shares.map((share) => {
-                    const badge = shareStatusBadge(share.status, share.expires_at);
-                    const fields: string[] = JSON.parse(share.fields_shared);
-                    const isLocal =
-                      share.share_chain_ref?.startsWith("local-solana:") ?? true;
-                    const solscanUrl =
-                      share.share_chain_ref && !isLocal
-                        ? getSolscanTxUrl(share.share_chain_ref)
-                        : null;
+                  return (
+                    <div
+                      key={event.id}
+                      className={`flex flex-wrap items-center justify-between gap-3 px-4 py-3 ${
+                        isEmergency ? "bg-red-50/50" : ""
+                      }`}
+                    >
+                      <div className="min-w-0 flex-1 space-y-1">
+                        <p className="text-sm font-medium capitalize text-slate-900">
+                          {getInteractionType(event.payload, event.eventType)}
 
-                    return (
-                      <div
-                        key={share.id}
-                        className="flex flex-wrap items-center justify-between gap-3 px-4 py-3"
-                      >
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-2">
-                            <p className="text-sm font-medium text-slate-900">
-                              {share.doctor_name}
-                            </p>
-                            <span
-                              className={`inline-block rounded-full border px-2 py-0.5 text-xs font-medium ${badge.color}`}
-                            >
-                              {badge.label}
+                          {/* Decision badge */}
+                          {isEmergency ? (
+                            <span className="ml-2 inline-block rounded-full bg-red-600 px-2 py-0.5 text-xs font-medium text-white">
+                              Emergency Access
                             </span>
-                          </div>
-                          <p className="text-xs text-slate-500">
-                            {fields.join(", ")} &middot;{" "}
-                            {new Date(share.created_at).toLocaleDateString()} &middot;{" "}
-                            {share.access_count}/{share.max_access_count} views
-                          </p>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          {solscanUrl && (
-                            <a
-                              href={solscanUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-xs text-blue-600 hover:text-blue-700"
+                          ) : event.decision ? (
+                            <span
+                              className={`ml-2 inline-block rounded-full px-2 py-0.5 text-xs font-medium ${
+                                event.decision === "allow"
+                                  ? "bg-green-100 text-green-700"
+                                  : "bg-red-100 text-red-700"
+                              }`}
                             >
-                              Solscan
-                            </a>
-                          )}
-                          {share.status === "active" &&
-                            new Date(share.expires_at) > new Date() && (
-                              <RevokeButton shareId={share.id} />
-                            )}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </section>
-            )}
+                              {event.decision}
+                            </span>
+                          ) : null}
 
-            {/* Interaction Timeline */}
-            <section className="rounded-xl border bg-white shadow-sm">
-              <div className="border-b px-4 py-3">
-                <h2 className="text-sm font-medium text-slate-900">
-                  Interaction Timeline
-                </h2>
-              </div>
-              {events.length === 0 ? (
-                <div className="p-8 text-center text-sm text-slate-500">
-                  No interactions recorded yet.
-                </div>
-              ) : (
-                <div className="divide-y">
-                  {events.map((event) => {
-                    const isLocal = event.chainRef.startsWith("local-solana:");
-                    const solscanUrl = !isLocal ? getSolscanTxUrl(event.chainRef) : null;
-                    const badge = eventBadge(event.eventType, event.decision);
-                    return (
-                      <div
-                        key={event.id}
-                        className="flex flex-wrap items-center justify-between gap-3 px-4 py-3"
-                      >
-                        <div className="space-y-1">
-                          <p className="text-sm font-medium capitalize text-slate-900">
-                            {getInteractionType(event.payload, event.eventType)}
-                            {badge && (
-                              <span
-                                className={`ml-2 inline-block rounded-full px-2 py-0.5 text-xs font-medium ${badge.color}`}
-                              >
-                                {badge.label}
-                              </span>
-                            )}
-                          </p>
-                          <p className="text-xs text-slate-500">
-                            {doctorLabelByHash.get(event.doctorHash) ??
-                              `Doctor hash ${event.doctorHash.slice(0, 18)}…`}{" "}
-                            &middot; {event.jurisdiction} &middot; {new Date(event.createdAt).toLocaleString()}
-                          </p>
-                          <p className="text-xs text-slate-500">
-                            Fields accessed: {getFieldsAccessed(event.payload)}
-                          </p>
-                        </div>
+                          {/* Cross-border badge */}
+                          {isCrossBorder && (
+                            <span className="ml-2 inline-block rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800">
+                              Cross-border
+                            </span>
+                          )}
+                        </p>
+                        <p className="text-xs text-slate-500">
+                          {doctorInfo?.name ??
+                            `Doctor ${event.doctorHash.slice(0, 12)}...`}{" "}
+                          &middot; {event.jurisdiction} &middot;{" "}
+                          {new Date(event.createdAt).toLocaleString()}
+                        </p>
+                        <p className="text-xs text-slate-500">
+                          Fields: {getFieldsAccessed(event.payload)}
+                        </p>
+                      </div>
+                      <div className="flex shrink-0 flex-col items-end gap-1">
                         {solscanUrl ? (
                           <a
                             href={solscanUrl}
@@ -278,69 +240,47 @@ export default async function PatientDashboardPage() {
                             Verified on Solana
                           </a>
                         ) : (
-                          <span className="inline-flex items-center rounded-full bg-amber-50 border border-amber-200 px-2.5 py-1 text-xs text-amber-600">
-                            Pending confirmation
+                          <span className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 text-xs text-slate-500">
+                            Local fallback
                           </span>
                         )}
                       </div>
-                    );
-                  })}
-                </div>
-              )}
-            </section>
-          </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </section>
 
-          <div className="space-y-4">
+          <aside className="space-y-4">
             <div className="rounded-xl border bg-white p-4 shadow-sm">
-              <p className="text-sm text-slate-500">Solana Log PDA</p>
-              <p className="mt-1 break-all font-mono text-xs">
-                {account.solana_log_pda ?? "Awaiting first audit event"}
+              <h2 className="text-sm font-medium text-slate-900">
+                Solana Log PDA
+              </h2>
+              <p className="mt-1 break-all font-mono text-xs text-slate-600">
+                {account.solana_log_pda ??
+                  "Pending first configured on-chain write"}
               </p>
             </div>
-
-            <aside className="rounded-xl border bg-white p-4 shadow-sm">
-              <h2 className="text-sm font-medium text-slate-900">Clinician QR</h2>
+            <div className="rounded-xl border bg-white p-4 shadow-sm">
+              <h2 className="text-sm font-medium text-slate-900">
+                Clinician QR
+              </h2>
               <p className="mt-1 text-xs text-slate-500">
-                Encodes patient ID and the current Solana audit-log PDA for demo scanning.
+                Patient ID + Solana PDA for demo scanning.
               </p>
               <Image
                 src={qrDataUrl}
                 alt="Patient QR code"
                 width={192}
                 height={192}
-                className="mt-4 rounded-lg border"
+                className="mt-3 rounded-lg border"
                 unoptimized
               />
-            </aside>
-          </div>
+            </div>
+          </aside>
         </div>
       </div>
     </main>
-  );
-}
-
-function RevokeButton({ shareId }: { shareId: string }) {
-  return (
-    <form
-      action={async () => {
-        "use server";
-        const { cookies } = await import("next/headers");
-        const token = cookies().get("patient_token")?.value;
-        if (!token) return;
-        await fetch(`${process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000"}/api/share/${shareId}/revoke`, {
-          method: "POST",
-          headers: { Cookie: `patient_token=${token}` },
-        });
-        const { revalidatePath } = await import("next/cache");
-        revalidatePath("/patient/dashboard");
-      }}
-    >
-      <button
-        type="submit"
-        className="rounded-md border border-red-200 px-2.5 py-1 text-xs font-medium text-red-600 hover:bg-red-50"
-      >
-        Revoke
-      </button>
-    </form>
   );
 }

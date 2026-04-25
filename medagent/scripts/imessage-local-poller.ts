@@ -16,11 +16,20 @@ type PollerState = {
 type MessageRow = {
   rowid: number;
   message_guid: string;
-  text: string;
+  text: string | null;
   is_from_me: number;
   handle: string;
   service: string;
   chat_guid: string;
+};
+
+type AttachmentRow = {
+  guid: string;
+  filename: string;
+  transfer_name: string;
+  mime_type: string;
+  uti: string;
+  total_bytes: number | null;
 };
 
 const DEFAULT_STATE_PATH = path.join(
@@ -98,6 +107,34 @@ function buildAllowedHandles(): Set<string> {
   return new Set(listHandleMappings().map((m) => m.handle));
 }
 
+let attachmentQuery: Database.Statement | null = null;
+
+function normalizeAttachmentPath(filename: string) {
+  if (!filename) return "";
+  if (filename.startsWith("~/")) {
+    return path.join(os.homedir(), filename.slice(2));
+  }
+  return filename;
+}
+
+function readMessageAttachments(messageRowId: number) {
+  if (!attachmentQuery) return [];
+
+  const rows = attachmentQuery.all(messageRowId) as AttachmentRow[];
+  return rows.map((attachment) => ({
+    guid: attachment.guid || undefined,
+    filename: attachment.filename || attachment.transfer_name || undefined,
+    path: normalizeAttachmentPath(attachment.filename),
+    mimeType: attachment.mime_type || undefined,
+    uti: attachment.uti || undefined,
+    transferName: attachment.transfer_name || undefined,
+    totalBytes:
+      typeof attachment.total_bytes === "number"
+        ? attachment.total_bytes
+        : undefined,
+  }));
+}
+
 async function forwardMessage(
   appBaseUrl: string,
   secret: string | undefined,
@@ -109,12 +146,13 @@ async function forwardMessage(
     type: "new-message",
     data: {
       guid: row.message_guid,
-      text: row.text,
+      text: row.text ?? "",
       handle: { address: row.handle },
       chats: [{ guid: row.chat_guid }],
       isFromMe: row.is_from_me === 1,
       // Keep this fresh so inbound age filter accepts the event.
       dateCreated: Date.now(),
+      attachments: readMessageAttachments(row.rowid),
     },
   };
 
@@ -218,13 +256,30 @@ async function main() {
     LEFT JOIN chat_message_join cmj ON cmj.message_id = m.ROWID
     LEFT JOIN chat c ON c.ROWID = cmj.chat_id
     WHERE m.ROWID > @afterRowId
-      AND m.text IS NOT NULL
-      AND m.text != ''
       AND m.is_from_me = 0
-      AND m.cache_has_attachments = 0
+      AND (
+        (m.text IS NOT NULL AND m.text != '')
+        OR m.cache_has_attachments = 1
+      )
     GROUP BY m.ROWID
     ORDER BY m.ROWID ASC
     LIMIT @limit
+    `,
+  );
+
+  attachmentQuery = db.prepare(
+    `
+    SELECT
+      COALESCE(a.guid, '') AS guid,
+      COALESCE(a.filename, '') AS filename,
+      COALESCE(a.transfer_name, '') AS transfer_name,
+      COALESCE(a.mime_type, '') AS mime_type,
+      COALESCE(a.uti, '') AS uti,
+      a.total_bytes AS total_bytes
+    FROM message_attachment_join maj
+    JOIN attachment a ON a.ROWID = maj.attachment_id
+    WHERE maj.message_id = ?
+    ORDER BY a.ROWID ASC
     `,
   );
 
