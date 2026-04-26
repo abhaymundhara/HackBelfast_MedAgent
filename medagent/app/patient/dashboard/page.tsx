@@ -71,8 +71,6 @@ function isEmergencyAccess(doctorHash: string) {
   );
 }
 
-const ESTIMATED_COST_PER_EVENT_USD = 0.001;
-
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
@@ -81,11 +79,11 @@ const DEMO_PATIENT_ID = "sarah-bennett";
 export default async function PatientDashboardPage() {
   const token = cookies().get("patient_token")?.value;
   const validated = token ? validatePatientJwt(token) : null;
-  const patientId =
-    validated?.valid && validated.patientId ? validated.patientId : DEMO_PATIENT_ID;
+  const visiblePatientId =
+    validated?.valid && validated.patientId ? validated.patientId : null;
+  const patientId = visiblePatientId ?? DEMO_PATIENT_ID;
 
   const session = { patientId } as { patientId: string };
-
 
   const events = listAuditEvents(session.patientId);
   const shares = listSharedRecords(session.patientId);
@@ -95,10 +93,6 @@ export default async function PatientDashboardPage() {
   const doctorInfoByHash = buildDoctorInfoByHash();
   const uniqueDoctors = new Set(events.map((e) => e.doctorHash)).size;
   const lastAccess = events.length > 0 ? events[0]?.createdAt : null;
-  const onChainCount = events.filter(
-    (e) => !e.chainRef.startsWith("local-solana:"),
-  ).length;
-  const totalCostUsd = events.length * ESTIMATED_COST_PER_EVENT_USD;
 
   const medagentPhone = getMedAgentPhone();
   const qrTarget = `sms:${medagentPhone}?body=${encodeURIComponent(
@@ -119,10 +113,12 @@ export default async function PatientDashboardPage() {
             <div>
               <span className="eyebrow">Patient portal</span>
               <h1>Patient dashboard</h1>
-              <div className="sub">
-                Patient ID: {session.patientId} · Jurisdiction:{" "}
-                {patientJurisdiction}
-              </div>
+              {visiblePatientId ? (
+                <div className="sub">
+                  Patient ID: {visiblePatientId} · Jurisdiction:{" "}
+                  {patientJurisdiction}
+                </div>
+              ) : null}
             </div>
             <form action="/patient/login">
               <button type="submit" className="dashb-logout">
@@ -149,16 +145,6 @@ export default async function PatientDashboardPage() {
                 {lastAccess
                   ? new Date(lastAccess).toLocaleString()
                   : "No accesses yet"}
-              </div>
-            </div>
-            <div className="dashb-stat">
-              <div className="dashb-stat-label">Solana audit cost</div>
-              <div className="dashb-stat-value">
-                ${totalCostUsd.toFixed(4)}
-              </div>
-              <div className="dashb-stat-meta">
-                {onChainCount}/{events.length} on-chain · ~$
-                {ESTIMATED_COST_PER_EVENT_USD}/event
               </div>
             </div>
           </div>
@@ -335,6 +321,7 @@ export default async function PatientDashboardPage() {
                 <Image
                   src={qrDataUrl}
                   alt={`Open iMessage to MedAgent ${medagentPhone}`}
+                  className="dashb-qr-image"
                   width={192}
                   height={192}
                   unoptimized
