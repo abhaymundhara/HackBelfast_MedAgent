@@ -40,6 +40,7 @@ import {
   formatAppointmentOptions,
 } from "@/lib/appointments/formatAppointment";
 import { createShareRecord } from "@/lib/sharing/createShare";
+import { sendAppointmentShareLinkEmail } from "@/lib/sharing/shareEmail";
 import {
   listPatientsSafe,
   getPatientSummary,
@@ -1038,6 +1039,19 @@ async function handlePatientAppointmentIntent(
     shareScope: "full_record",
     appointmentId: appointment.id,
   });
+  const shareUrl = `${appBaseUrl}${result.shareUrl}`;
+  const emailResult = await sendAppointmentShareLinkEmail({
+    doctorName: appointment.doctorName,
+    shareUrl,
+    patientId,
+  });
+  if (!emailResult.sent) {
+    debugLog("appointment share email not sent", {
+      patientId,
+      to: emailResult.to,
+      error: emailResult.error,
+    });
+  }
   conv.awaiting = null;
   delete conv.metadata.pendingAppointmentId;
   delete conv.metadata.pendingShareDoctor;
@@ -1046,7 +1060,7 @@ async function handlePatientAppointmentIntent(
     chatGuid,
     text: formatAppointmentShareCreated({
       doctorName: appointment.doctorName,
-      shareUrl: `${appBaseUrl}${result.shareUrl}`,
+      shareUrl,
       dashboardUrl: `${appBaseUrl}/patient/dashboard`,
       chainRef: result.chainRef,
       shareId: result.shareId,
