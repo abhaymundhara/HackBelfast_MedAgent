@@ -2216,6 +2216,26 @@ export function updateSharedRecordShortToken(shareId: string, shortToken: string
   db.prepare("UPDATE shared_records SET short_token = ? WHERE id = ?").run(shortToken, shareId);
 }
 
+export function updateSharedRecordShareAudit(
+  shareId: string,
+  chainRef: string | null,
+  chainSlot?: number | null,
+) {
+  const db = getDb();
+  db.prepare(
+    `UPDATE shared_records
+     SET share_chain_ref = COALESCE(@chainRef, share_chain_ref),
+         share_chain_slot = COALESCE(@chainSlot, share_chain_slot),
+         updated_at = @updatedAt
+     WHERE id = @id`,
+  ).run({
+    id: shareId,
+    chainRef,
+    chainSlot: chainSlot ?? null,
+    updatedAt: nowIso(),
+  });
+}
+
 export function getSharedRecord(shareId: string) {
   const db = getDb();
   return db

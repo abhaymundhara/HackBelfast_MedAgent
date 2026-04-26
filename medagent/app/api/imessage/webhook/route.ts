@@ -1025,7 +1025,9 @@ async function handlePatientAppointmentIntent(
     return;
   }
 
-  const appBaseUrl = getPublicAppBaseUrl();
+  const appBaseUrl =
+    process.env.APP_BASE_URL?.trim().replace(/\/+$/, "") ||
+    "http://localhost:3000";
   const result = await createShareRecord({
     patientId,
     doctorName: appointment.doctorName,
