@@ -52,8 +52,8 @@ export function isPdfAttachment(attachment: InboundAttachment) {
 
 export async function processMedicalReportPdfOnboarding(input: {
   attachment: InboundAttachment;
-  fullName: string;
-  dob: string;
+  fullName?: string;
+  dob?: string;
   handle: string;
 }): Promise<MedicalReportProfile> {
   if (!isPdfAttachment(input.attachment)) {
@@ -69,10 +69,24 @@ export async function processMedicalReportPdfOnboarding(input: {
   const rawText = extraction.text;
   const extractionMethod = extraction.method;
   const pdfMeta = await extractPdfMetadata(pdfPath);
+
+  // Extract name/DOB from PDF text if not provided
+  let fullName = input.fullName || "";
+  let dob = input.dob || "";
+  if (!fullName || !dob) {
+    const extracted = extractNameDobFromReport(rawText);
+    if (extracted.name && !fullName) fullName = extracted.name;
+    if (extracted.dob && !dob) dob = extracted.dob;
+  }
+
+  if (!fullName || !dob) {
+    throw new Error("Could not extract name and date of birth from the PDF. Please ensure the report contains a patient name and DOB.");
+  }
+
   const summary = buildEmergencySummaryFromReport({
-    patientId: buildPatientId(input.fullName, input.dob, input.handle),
-    fullName: input.fullName,
-    dob: input.dob,
+    patientId: buildPatientId(fullName, dob, input.handle),
+    fullName,
+    dob,
     reportText: rawText,
   });
   const patientHash = sha256Hash(

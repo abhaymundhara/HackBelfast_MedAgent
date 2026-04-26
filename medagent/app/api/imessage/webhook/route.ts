@@ -611,62 +611,17 @@ async function handleOnboardingMedicalReportUpload(
     return;
   }
 
-  // Try to get name/DOB from conversation metadata first, then extract from PDF
-  let name =
-    typeof conv.metadata.onboardingName === "string"
-      ? conv.metadata.onboardingName
-      : "";
-  let dob =
-    typeof conv.metadata.onboardingDob === "string"
-      ? conv.metadata.onboardingDob
-      : "";
-
   await pulseTypingIndicator(bridge, chatGuid);
 
-  // If name/DOB not known yet, pre-read the PDF to extract them
-  if (!name || !dob) {
-    try {
-      const pdfPath = pdfAttachment.path ?? pdfAttachment.filename ?? "";
-      const resolvedPath = pdfPath.startsWith("~/")
-        ? require("path").join(require("os").homedir(), pdfPath.slice(2))
-        : pdfPath;
-      if (resolvedPath && require("fs").existsSync(resolvedPath)) {
-        const { execFile } = require("child_process");
-        const { promisify } = require("util");
-        const execFileAsync = promisify(execFile);
-        // Quick text extraction for name/DOB only
-        let previewText = "";
-        try {
-          const { stdout } = await execFileAsync(
-            "/usr/bin/mdls",
-            ["-raw", "-name", "kMDItemTextContent", resolvedPath],
-            { encoding: "utf8", timeout: 10_000, maxBuffer: 1024 * 1024 },
-          );
-          previewText = stdout.trim() === "(null)" ? "" : stdout;
-        } catch {
-          // Non-macOS or extraction failed — will fall back below
-        }
-        if (previewText) {
-          const extracted = extractNameDobFromReport(previewText);
-          if (extracted.name && !name) name = extracted.name;
-          if (extracted.dob && !dob) dob = extracted.dob;
-        }
-      }
-    } catch {
-      debugLog("pre-extract name/dob failed, continuing", { handle });
-    }
-  }
-
-  // If still no name/DOB, ask the user — but only as a fallback
-  if (!name || !dob) {
-    conv.awaiting = "onboarding_name_dob";
-    updateImessageUser(handle, { stage: "awaiting_name_dob" });
-    await bridge.sendText({
-      chatGuid,
-      text: "i couldn't find your name and date of birth in the PDF. could you send them to me? just type something like: Ciara Byrne 1994-02-17",
-    });
-    return;
-  }
+  // Name/DOB from conversation metadata if available, otherwise extracted from PDF automatically
+  const name =
+    typeof conv.metadata.onboardingName === "string"
+      ? conv.metadata.onboardingName
+      : undefined;
+  const dob =
+    typeof conv.metadata.onboardingDob === "string"
+      ? conv.metadata.onboardingDob
+      : undefined;
 
   try {
     const profile = await processMedicalReportPdfOnboarding({
@@ -703,14 +658,26 @@ async function handleOnboardingMedicalReportUpload(
       ].join("\n"),
     });
   } catch (error) {
+    const isNameDobError = error instanceof Error && error.message.includes("name and date of birth");
     debugLog("pdf onboarding failed", {
       handle,
       reason: error instanceof Error ? error.message : "unknown",
+      isNameDobError,
     });
-    await bridge.sendText({
-      chatGuid,
-      text: "hmm, i couldn't pull enough medical info from that PDF. could you try sending one that has your allergies, medications, conditions, and emergency contact? a GP summary works great.",
-    });
+    if (isNameDobError) {
+      // Fall back to asking for name/DOB, then they can re-send the PDF
+      conv.awaiting = "onboarding_name_dob";
+      updateImessageUser(handle, { stage: "awaiting_name_dob" });
+      await bridge.sendText({
+        chatGuid,
+        text: "hmm, i couldn't find your name or date of birth in that PDF. could you send me your name and DOB? just type something like: Ciara Byrne 1994-02-17",
+      });
+    } else {
+      await bridge.sendText({
+        chatGuid,
+        text: "hmm, i couldn't pull enough medical info from that PDF. could you try sending one that has your allergies, medications, conditions, and emergency contact? a GP summary works great.",
+      });
+    }
   }
 }
 
@@ -722,21 +689,21 @@ async function promptOnboardingStage(
   if (stage === "awaiting_name_dob") {
     await bridge.sendText({
       chatGuid,
-      text: "Let's continue setup. Reply with your full name and DOB in YYYY-MM-DD format.",
+      text: "i just need your name and date of birth to continue — type something like: Ciara Byrne 1994-02-17",
     });
     return;
   }
   if (stage === "awaiting_ready_yes_no") {
     await bridge.sendText({
       chatGuid,
-      text: "Ready to continue setup? Reply YES or NO.",
+      text: "ready to keep going? just say yes or no.",
     });
     return;
   }
   if (stage === "awaiting_new_user_record") {
     await bridge.sendText({
       chatGuid,
-      text: "Let's continue setup. Please upload your medical report PDF here in iMessage.",
+      text: "just send me your medical report PDF and i'll get you set up!",
     });
     return;
   }
