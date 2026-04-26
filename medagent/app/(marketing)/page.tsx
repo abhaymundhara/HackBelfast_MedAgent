@@ -3,6 +3,7 @@ import Link from "next/link";
 import { CopyNumberButton } from "@/components/landing/copy-number";
 import { IntegrationsStrip } from "@/components/landing/integrations-strip";
 import { QrCard } from "@/components/landing/qr-card";
+import { Reveal } from "@/components/landing/reveal";
 import { ShowcaseOverlap } from "@/components/landing/showcase-overlap";
 import { StickyNotes } from "@/components/landing/sticky-notes";
 import { TextMedAgentButton } from "@/components/landing/text-medagent-button";
@@ -36,18 +37,16 @@ export default function HomePage() {
         <div className="container">
           <Link href="/how-it-works" className="pill-link">
             <span className="tag">NEW</span>
-            <span>Book, consent, and revoke in the HackBelfast demo →</span>
+            <span>NHS ↔ HSE — closing three gaps in one thread →</span>
           </Link>
 
-          <h1 className="display">
-            Belfast doctor bookings,
-            <br />
-            by text message.
+          <h1 className="display" style={{ fontSize: "clamp(28px, 4.4vw, 52px)", maxWidth: 720 }}>
+            where the NHS meets the HSE
           </h1>
           <p className="lead">
-            MedAgent helps Irish travelers in Belfast find verified appointment slots, confirm a
-            doctor, and share their full uploaded medical record only after explicit consent —
-            revocable from the dashboard and audited on Solana without PHI on-chain.
+            Three gaps, one text message. Speed inside the NHS, data and login security across
+            providers, and a bridge between the UK and Europe so a patient&apos;s medical record can
+            cross the border as fast as the patient does.
           </p>
           <div className="hero-ctas">
             <TextMedAgentButton className="btn btn-primary btn-lg">
@@ -65,11 +64,11 @@ export default function HomePage() {
             </span>
             <span>
               <span className="dot dot-blue" />
-              NHS booking adapter
+              No app · No login
             </span>
             <span>
               <span className="dot dot-grey" />
-              No app · No login
+              Solana-audited
             </span>
           </div>
         </div>
@@ -77,16 +76,18 @@ export default function HomePage() {
 
       <section className="showcase">
         <div className="container">
-          <ShowcaseOverlap />
+          <Reveal>
+            <ShowcaseOverlap />
+          </Reveal>
         </div>
       </section>
 
       <div className="container">
         <div className="trust">
+          <span className="item">NHS speed gap</span>
+          <span className="item">Data &amp; login security</span>
+          <span className="item">UK ↔ Europe record transfer</span>
           <span className="item">Built for HackBelfast 2026</span>
-          <span className="item">Belfast 2036 problem statement</span>
-          <span className="item">Solana devnet</span>
-          <span className="item">No PHI on chain</span>
         </div>
       </div>
 
@@ -98,8 +99,8 @@ export default function HomePage() {
         <div className="container">
           <div className="sec-head">
             <span className="eyebrow">How the agent thinks</span>
-            <h2 className="display-md">A three-stage agent for cross-border appointments.</h2>
-            <p>From patient text to appointment confirmation to named-doctor record sharing.</p>
+            <h2 className="display-md">Three gaps. One thread. Three stages.</h2>
+            <p>Speed inside the NHS, data and login security, a bridge between the UK and Europe — closed by a deterministic agent that hashes every decision on-chain.</p>
           </div>
           <WorkflowDiagram />
         </div>
@@ -107,7 +108,7 @@ export default function HomePage() {
 
       <section className="bigstats" id="audit">
         <div className="container">
-          <h2>Built for cross-border care when symptoms flare away from home.</h2>
+          <h2>Built for the scale of cross-border care.</h2>
           <div className="row">
             <div className="bigstat">
               <div className="n">30k+</div>
@@ -130,15 +131,15 @@ export default function HomePage() {
           <div className="start">
             <div>
               <span className="eyebrow">Start a conversation</span>
-              <h3>Text MedAgent. Confirm a slot before sharing records.</h3>
+              <h3>Text MedAgent. Get a record back in seconds.</h3>
               <p>
-                Save the number, send a message, choose a Belfast appointment, then approve the
-                full-record share for the named doctor.
+                Save the number, send a message, watch the agent verify, route, and respond — with the
+                audit row hitting Solana before you blink.
               </p>
 
               <div className="num-display">
                 <div>
-                  <div className="label">MedAgent · iMessage / SMS</div>
+                  <div className="label">MedAgent · iMessage</div>
                   <div className="number">{MEDAGENT_PHONE_DISPLAY}</div>
                 </div>
               </div>
@@ -164,7 +165,7 @@ export default function HomePage() {
 
       <section className="cta-final">
         <div className="container">
-          <h2 className="display">Send a text. Book the slot. Share only when ready.</h2>
+          <h2 className="display">Send a text. See what happens.</h2>
           <p>
             The whole demo runs over your phone&apos;s existing messaging app. No installs, no signup, no
             learning curve.
@@ -179,7 +180,7 @@ export default function HomePage() {
             </Link>
           </div>
           <div className="foot">
-            <span>iMessage · WhatsApp · SMS</span>
+            <span>iMessage only</span>
             <span>Solana devnet</span>
             <span>Open source</span>
           </div>

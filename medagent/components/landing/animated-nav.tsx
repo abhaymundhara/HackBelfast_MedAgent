@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 
 const links = [
   { href: "/how-it-works", label: "How it works" },
@@ -26,23 +26,14 @@ const ArrowRight = () => (
 
 export function AnimatedNav() {
   const pathname = usePathname();
-  const { scrollY } = useScroll();
-
-  const bgOpacity = useTransform(scrollY, [0, 100], [0, 0.85]);
-  const backdropBlur = useTransform(scrollY, [0, 100], [0, 16]);
-  const borderOpacity = useTransform(scrollY, [0, 100], [0, 0.1]);
-
-  const bg = useTransform(bgOpacity, (v) => `rgba(10, 10, 10, ${v})`);
-  const blur = useTransform(backdropBlur, (v) => `blur(${v}px)`);
-  const border = useTransform(borderOpacity, (v) => `1px solid rgba(255,255,255,${v})`);
 
   return (
     <motion.header
       className="nav"
       style={{
-        backgroundColor: bg,
-        backdropFilter: blur,
-        borderBottom: border,
+        backgroundColor: "transparent",
+        backdropFilter: "none",
+        borderBottom: "1px solid transparent",
       }}
     >
       <div className="container nav-inner">
