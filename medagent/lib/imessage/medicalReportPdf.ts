@@ -12,6 +12,7 @@ import {
   writeEncryptedDocument,
 } from "@/lib/db";
 import type { InboundAttachment } from "@/lib/imessage/inbound";
+import { indexPatientDocument } from "@/lib/rag/ragClient";
 import { EMERGENCY_ALERTS, EmergencySummary, PatientPolicy } from "@/lib/types";
 
 const execFileAsync = promisify(execFile);
@@ -19,9 +20,10 @@ const OCR_MIN_TEXT_LENGTH = 40;
 const SECTION_BOUNDARY_PATTERN =
   "allergies?|known allergies?|adverse reactions?|current medications?|medications?|medicines|active conditions?|major conditions?|conditions?|diagnoses|problems|emergency contact|next of kin|blood type|recent discharge|emergency alerts?|alerts?";
 
-type PdfTextExtractor = (filePath: string) => Promise<string>;
+type ExtractionResult = { text: string; method: string };
+type PdfTextExtractor = (filePath: string) => Promise<ExtractionResult>;
 
-let pdfTextExtractor: PdfTextExtractor = extractTextWithNativeMacTools;
+let pdfTextExtractor: PdfTextExtractor = extractTextWithNativeMacToolsTracked;
 
 export type MedicalReportProfile = {
   patientId: string;
@@ -50,8 +52,8 @@ export function isPdfAttachment(attachment: InboundAttachment) {
 
 export async function processMedicalReportPdfOnboarding(input: {
   attachment: InboundAttachment;
-  fullName: string;
-  dob: string;
+  fullName?: string;
+  dob?: string;
   handle: string;
 }): Promise<MedicalReportProfile> {
   if (!isPdfAttachment(input.attachment)) {
@@ -63,11 +65,28 @@ export async function processMedicalReportPdfOnboarding(input: {
     throw new Error("The uploaded PDF is not available on this Mac yet.");
   }
 
-  const rawText = await pdfTextExtractor(pdfPath);
+  const extraction = await pdfTextExtractor(pdfPath);
+  const rawText = extraction.text;
+  const extractionMethod = extraction.method;
+  const pdfMeta = await extractPdfMetadata(pdfPath);
+
+  // Extract name/DOB from PDF text if not provided
+  let fullName = input.fullName || "";
+  let dob = input.dob || "";
+  if (!fullName || !dob) {
+    const extracted = extractNameDobFromReport(rawText);
+    if (extracted.name && !fullName) fullName = extracted.name;
+    if (extracted.dob && !dob) dob = extracted.dob;
+  }
+
+  if (!fullName || !dob) {
+    throw new Error("Could not extract name and date of birth from the PDF. Please ensure the report contains a patient name and DOB.");
+  }
+
   const summary = buildEmergencySummaryFromReport({
-    patientId: buildPatientId(input.fullName, input.dob, input.handle),
-    fullName: input.fullName,
-    dob: input.dob,
+    patientId: buildPatientId(fullName, dob, input.handle),
+    fullName,
+    dob,
     reportText: rawText,
   });
   const patientHash = sha256Hash(
@@ -103,6 +122,22 @@ export async function processMedicalReportPdfOnboarding(input: {
     mimeType: "application/pdf",
     storagePath,
     patientApproved: true,
+    fileSizeBytes: pdfMeta.fileSizeBytes,
+    pageCount: pdfMeta.pageCount,
+    pdfAuthor: pdfMeta.pdfAuthor,
+    pdfCreationDate: pdfMeta.pdfCreationDate,
+    pdfProducer: pdfMeta.pdfProducer,
+    pdfKeywords: pdfMeta.pdfKeywords,
+    extractionMethod,
+    extractedTextLength: rawText.length,
+  });
+
+  // Index extracted text into the RAG system so the patient can query their record
+  indexPatientDocument({
+    patientHash,
+    rawText,
+    patientId: summary.patientId,
+    documentId,
   });
 
   return { patientId: summary.patientId, summary, documentId };
@@ -207,6 +242,56 @@ export function buildPatientId(fullName: string, dob: string, handle: string) {
   return `imessage-${sha256Hash(handle).slice(0, 12)}`;
 }
 
+/**
+ * Extract patient name and DOB directly from the PDF report text.
+ * Looks for patterns like "Name: Ciara Byrne" and "Date of Birth: 1994-02-17".
+ */
+export function extractNameDobFromReport(reportText: string): {
+  name: string | null;
+  dob: string | null;
+} {
+  // Name extraction — line-based to avoid greedy multi-line grabs
+  const namePatterns = [
+    /(?:^|\n)\s*[Nn]ame\s*:\s*(.+)/,
+    /(?:^|\n)\s*[Pp]atient\s*(?:[Nn]ame)?\s*:\s*(.+)/,
+  ];
+
+  let name: string | null = null;
+  for (const pattern of namePatterns) {
+    const match = pattern.exec(reportText);
+    if (match?.[1]) {
+      // Clean up: take only capitalized name words, stop at non-name content
+      const raw = match[1].trim();
+      const nameOnly = raw.match(/^([A-Z][a-zA-Z'-]+(?:\s+[A-Z][a-zA-Z'-]+){0,4})/);
+      name = nameOnly?.[1]?.trim() ?? raw.split("\n")[0].trim();
+      if (name) break;
+    }
+  }
+
+  // DOB extraction
+  const dobPatterns = [
+    /(?:date of birth|dob|d\.o\.b\.?)\s*:\s*(\d{4}-\d{2}-\d{2})/i,
+    /(?:date of birth|dob|d\.o\.b\.?)\s*:\s*(\d{2}[\/.-]\d{2}[\/.-]\d{4})/i,
+  ];
+
+  let dob: string | null = null;
+  for (const pattern of dobPatterns) {
+    const match = pattern.exec(reportText);
+    if (match?.[1]) {
+      let raw = match[1].trim();
+      // Normalize DD/MM/YYYY or DD-MM-YYYY to YYYY-MM-DD
+      const dmyMatch = raw.match(/^(\d{2})[\/.-](\d{2})[\/.-](\d{4})$/);
+      if (dmyMatch) {
+        raw = `${dmyMatch[3]}-${dmyMatch[2]}-${dmyMatch[1]}`;
+      }
+      dob = raw;
+      break;
+    }
+  }
+
+  return { name, dob };
+}
+
 function resolveAttachmentPath(attachment: InboundAttachment) {
   const rawPath = attachment.path ?? attachment.filename ?? "";
   if (!rawPath) return "";
@@ -223,12 +308,95 @@ function buildDocumentTitle(attachment: InboundAttachment) {
   return title || "Medical report PDF";
 }
 
-async function extractTextWithNativeMacTools(filePath: string) {
+async function extractTextWithNativeMacToolsTracked(
+  filePath: string,
+): Promise<ExtractionResult> {
   const spotlightText = await extractTextWithSpotlight(filePath);
   if (spotlightText.trim().length >= OCR_MIN_TEXT_LENGTH) {
-    return spotlightText;
+    return { text: spotlightText, method: "spotlight" };
   }
-  return extractTextWithVision(filePath);
+  const visionText = await extractTextWithVision(filePath);
+  return { text: visionText, method: "vision-ocr" };
+}
+
+export type PdfMetadata = {
+  fileSizeBytes: number;
+  pageCount: number | null;
+  pdfAuthor: string | null;
+  pdfCreationDate: string | null;
+  pdfProducer: string | null;
+  pdfKeywords: string | null;
+};
+
+export async function extractPdfMetadata(
+  filePath: string,
+): Promise<PdfMetadata> {
+  const fileSizeBytes = fs.statSync(filePath).size;
+
+  if (process.platform !== "darwin") {
+    return {
+      fileSizeBytes,
+      pageCount: null,
+      pdfAuthor: null,
+      pdfCreationDate: null,
+      pdfProducer: null,
+      pdfKeywords: null,
+    };
+  }
+
+  try {
+    const { stdout } = await execFileAsync(
+      "/usr/bin/mdls",
+      [
+        "-name", "kMDItemNumberOfPages",
+        "-name", "kMDItemAuthors",
+        "-name", "kMDItemCreator",
+        "-name", "kMDItemKeywords",
+        "-name", "kMDItemContentCreationDate",
+        filePath,
+      ],
+      { encoding: "utf8", timeout: 10_000, maxBuffer: 1024 * 1024 },
+    );
+
+    const get = (key: string): string | null => {
+      const match = stdout.match(new RegExp(`${key}\\s*=\\s*(.+)`));
+      if (!match) return null;
+      const val = match[1].trim();
+      if (val === "(null)" || val === "") return null;
+      return val.replace(/^"(.*)"$/, "$1");
+    };
+
+    const getArray = (key: string): string | null => {
+      const match = stdout.match(
+        new RegExp(`${key}\\s*=\\s*\\(([^)]*?)\\)`, "s"),
+      );
+      if (!match) return null;
+      const items = match[1]
+        .split(",")
+        .map((s) => s.trim().replace(/^"(.*)"$/, "$1"))
+        .filter(Boolean);
+      return items.length > 0 ? items.join(", ") : null;
+    };
+
+    const pageCountRaw = get("kMDItemNumberOfPages");
+    return {
+      fileSizeBytes,
+      pageCount: pageCountRaw ? parseInt(pageCountRaw, 10) || null : null,
+      pdfAuthor: getArray("kMDItemAuthors"),
+      pdfCreationDate: get("kMDItemContentCreationDate"),
+      pdfProducer: get("kMDItemCreator"),
+      pdfKeywords: getArray("kMDItemKeywords"),
+    };
+  } catch {
+    return {
+      fileSizeBytes,
+      pageCount: null,
+      pdfAuthor: null,
+      pdfCreationDate: null,
+      pdfProducer: null,
+      pdfKeywords: null,
+    };
+  }
 }
 
 async function extractTextWithSpotlight(filePath: string) {
@@ -573,7 +741,18 @@ print(allText.joined(separator: "\\n\\n"))
 `;
 
 export function __setPdfTextExtractorForTests(
-  extractor: PdfTextExtractor | null,
+  extractor: PdfTextExtractor | ((filePath: string) => Promise<string>) | null,
 ) {
-  pdfTextExtractor = extractor ?? extractTextWithNativeMacTools;
+  if (!extractor) {
+    pdfTextExtractor = extractTextWithNativeMacToolsTracked;
+    return;
+  }
+  // Wrap legacy string-returning extractors for backward compatibility
+  pdfTextExtractor = async (filePath: string) => {
+    const result = await extractor(filePath);
+    if (typeof result === "string") {
+      return { text: result, method: "test" };
+    }
+    return result;
+  };
 }

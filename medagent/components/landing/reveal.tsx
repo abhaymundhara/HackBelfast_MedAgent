@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { createElement, type ElementType, useEffect, useRef, useState } from "react";
 
 type Props = {
   children: React.ReactNode;
   delay?: number;
   className?: string;
-  as?: keyof JSX.IntrinsicElements;
+  as?: ElementType;
 };
 
 export function Reveal({ children, delay = 0, className = "", as: Tag = "div" }: Props) {
@@ -31,13 +31,13 @@ export function Reveal({ children, delay = 0, className = "", as: Tag = "div" }:
     return () => obs.disconnect();
   }, []);
 
-  return (
-    <Tag
-      ref={ref as never}
-      className={`reveal${visible ? " in" : ""} ${className}`.trim()}
-      style={delay ? { transitionDelay: `${delay}ms` } : undefined}
-    >
-      {children}
-    </Tag>
+  return createElement(
+    Tag,
+    {
+      ref,
+      className: `reveal${visible ? " in" : ""} ${className}`.trim(),
+      style: delay ? { transitionDelay: `${delay}ms` } : undefined,
+    },
+    children,
   );
 }

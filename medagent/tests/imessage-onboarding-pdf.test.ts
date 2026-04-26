@@ -79,14 +79,12 @@ describe("iMessage PDF onboarding", () => {
     fs.rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("asks a new patient to upload a PDF after confirming setup", async () => {
+  it("asks a new patient to upload a PDF immediately after activation", async () => {
     await postWebhook(inboundPayload({ text: "hey baymax!" }));
-    await postWebhook(inboundPayload({ text: "Niamh Kelly 1992-03-04" }));
-    await postWebhook(inboundPayload({ text: "YES" }));
 
     const sentTexts = bridgeSpies.sendText.mock.calls.map((call) => call[0].text);
     expect(sentTexts).toContain(
-      "Great. Please upload your medical report PDF here in iMessage. I'll read it on this Mac, extract your emergency details, and store them in your MedAgent profile.",
+      "hey! i'm baymax — your secure medical assistant for cross-border care on the island of ireland. everything's private and auditable on solana. why don't you send me your medical history report as a PDF and i'll get you onboarded!",
     );
     expect(getImessageUser("+15550001111")?.stage).toBe(
       "awaiting_new_user_record",
@@ -98,6 +96,8 @@ describe("iMessage PDF onboarding", () => {
     fs.writeFileSync(pdfPath, "%PDF-1.4 fake test fixture");
     __setPdfTextExtractorForTests(async () =>
       [
+        "Patient Name: Niamh Kelly",
+        "DOB: 1992-03-04",
         "Allergies: Penicillin - severe reaction",
         "Current medications: Warfarin 5mg daily, Salbutamol inhaler PRN",
         "Major conditions: Atrial fibrillation, Asthma",
@@ -107,8 +107,6 @@ describe("iMessage PDF onboarding", () => {
     );
 
     await postWebhook(inboundPayload({ text: "hey baymax!" }));
-    await postWebhook(inboundPayload({ text: "Niamh Kelly 1992-03-04" }));
-    await postWebhook(inboundPayload({ text: "YES" }));
     await postWebhook(
       inboundPayload({
         attachments: [

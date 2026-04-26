@@ -50,8 +50,9 @@ beforeEach(() => {
 });
 
 describe("bookAppointmentSlot", () => {
-  it("confirms appointment and marks slot booked", () => {
-    const appointment = bookAppointmentSlot({
+  it("confirms appointment and marks slot booked", async () => {
+    process.env.MEDAGENT_FORCE_LOCAL_AUDIT = "1";
+    const appointment = await bookAppointmentSlot({
       patientId: "patient-1",
       slotId: "slot-1",
       symptomSummary: "knee pain",
@@ -60,5 +61,6 @@ describe("bookAppointmentSlot", () => {
     expect(appointment.patientId).toBe("patient-1");
     expect(appointment.status).toBe("confirmed");
     expect(getAppointmentSlot("slot-1")?.status).toBe("booked");
+    delete process.env.MEDAGENT_FORCE_LOCAL_AUDIT;
   });
 });

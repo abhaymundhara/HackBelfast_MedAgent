@@ -28,14 +28,27 @@ export function formatAppointmentOptions(slots: Array<AppointmentSlot | Appointm
   ].join("\n");
 }
 
-export function formatAppointmentConfirmation(appointment: Appointment) {
-  return [
-    "Appointment confirmed.",
-    `Doctor: ${appointment.doctorName}`,
-    `When: ${formatDateTime(appointment.startsAt)}`,
-    `Where: ${appointment.clinic}`,
+export function formatAppointmentConfirmation(appointment: Appointment & { chainRef?: string | null }) {
+  const lines = [
+    "you're booked in!",
+    `doctor: ${appointment.doctorName}`,
+    `when: ${formatDateTime(appointment.startsAt)}`,
+    `where: ${appointment.clinic}`,
+  ];
+  if (appointment.chainRef) {
+    if (appointment.chainRef.startsWith("local-solana:")) {
+      lines.push("", "your appointment is safely stored and protected.");
+    } else {
+      lines.push(
+        "",
+        "your appointment is safely stored and permanently protected — here's your receipt:",
+        `https://solscan.io/tx/${appointment.chainRef}?cluster=devnet`,
+      );
+    }
+  }
+  lines.push(
     "",
-    "Booking does not share your medical data.",
-    `Do you want to share your full uploaded medical record with ${appointment.doctorName} for this appointment? Reply YES or NO.`,
-  ].join("\n");
+    `your medical data hasn't been shared yet. would you like to share your record with ${appointment.doctorName} for this appointment? reply YES or NO.`,
+  );
+  return lines.join("\n");
 }

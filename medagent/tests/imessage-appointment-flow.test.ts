@@ -17,6 +17,18 @@ vi.mock("@/lib/imessage/bridge", () => ({
   }),
 }));
 
+vi.mock("@/lib/solana/auditStore", () => ({
+  solanaAuditStore: {
+    writeAuditEvent: vi.fn().mockResolvedValue({
+      chainRef: "local-solana:audit-failed",
+      chainSequence: null,
+      chainTimestamp: new Date().toISOString(),
+      status: "failed",
+      error: "Anchor audit write failed: Type not found: params",
+    }),
+  },
+}));
+
 import { POST } from "@/app/api/imessage/webhook/route";
 import {
   resetDatabase,
@@ -60,7 +72,7 @@ async function postWebhook(text: string) {
 
 function setupOnboardedPatient() {
   resetDatabase();
-  process.env.MEDAGENT_FORCE_LOCAL_AUDIT = "1";
+  delete process.env.MEDAGENT_FORCE_LOCAL_AUDIT;
   const summary = EmergencySummary.parse({
     patientId,
     demographics: {
@@ -134,11 +146,10 @@ describe("iMessage appointment flow", () => {
 
     const texts = bridgeSpies.sendText.mock.calls.map((call) => call[0].text).join("\n\n");
     expect(texts).toContain("I found these Belfast appointment slots");
-    expect(texts).toContain("Appointment confirmed.");
-    expect(texts).toContain("Booking does not share your medical data.");
-    expect(texts).toContain("Shared your full uploaded medical record");
+    expect(texts).toContain("you're booked in!");
+    expect(texts).toContain("your medical data hasn't been shared yet");
+    expect(texts).toContain("done! i've shared your medical record");
     expect(texts).toContain("/share/");
     expect(texts).toContain("#token=");
   });
 });
-

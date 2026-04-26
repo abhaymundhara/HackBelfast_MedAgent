@@ -9,6 +9,8 @@ import {
   listPatientDocuments,
   listSharedRecords,
   readEncryptedDocument,
+  updateSharedRecordShortToken,
+  updateSharedRecordShareAudit,
 } from "@/lib/db";
 import { solanaAuditStore } from "@/lib/solana/auditStore";
 import { AuditEventSchema, EmergencySummary, ReleasedField } from "@/lib/types";
@@ -147,11 +149,7 @@ export async function createShareRecord(input: {
     emergencyMode: false,
   });
 
-  const auditResult = await solanaAuditStore.writeAuditEvent({
-    requestId: shareId,
-    patientId: input.patientId,
-    event,
-  });
+  const shortCode = crypto.randomBytes(4).toString("base64url");
 
   createSharedRecord({
     id: shareId,
@@ -169,20 +167,52 @@ export async function createShareRecord(input: {
     documentManifestJson,
     sharePayloadVersion: "2",
     expiresAt,
-    shareChainRef: auditResult.chainRef,
-    shareChainSlot: auditResult.chainSequence ?? undefined,
+    shortCode,
   });
+
+  updateSharedRecordShortToken(shareId, accessToken);
 
   if (input.appointmentId) {
     attachShareToAppointment(input.appointmentId, shareId);
   }
 
+  let chainRef: string | null = null;
+  try {
+    const auditResult = await solanaAuditStore.writeAuditEvent({
+      requestId: shareId,
+      patientId: input.patientId,
+      event,
+    });
+    chainRef = auditResult.chainRef;
+    updateSharedRecordShareAudit(
+      shareId,
+      auditResult.chainRef,
+      auditResult.chainSequence,
+    );
+    if (auditResult.status !== "submitted") {
+      console.warn("Share audit did not submit to Solana", {
+        shareId,
+        patientId: input.patientId,
+        status: auditResult.status,
+        error: auditResult.error,
+      });
+    }
+  } catch (error) {
+    console.warn("Share created before audit write completed", {
+      shareId,
+      patientId: input.patientId,
+      error: error instanceof Error ? error.message : String(error),
+    });
+  }
+
   const shareUrl = `/share/${shareId}#token=${accessToken}`;
+  const shortUrl = `/s/${shortCode}`;
 
   return {
     shareId,
     shareUrl,
-    chainRef: auditResult.chainRef,
+    shortUrl,
+    chainRef,
     expiresAt,
     patientName: summary.demographics.name,
     fieldsShared,

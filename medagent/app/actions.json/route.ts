@@ -18,6 +18,10 @@ export async function GET() {
           pathPattern: "/share/*",
           apiPath: "/api/actions/share/*",
         },
+        {
+          pathPattern: "/audit/*",
+          apiPath: "/api/actions/audit/*",
+        },
       ],
     },
     { headers: { "Content-Type": "application/json", ...CORS_HEADERS } },

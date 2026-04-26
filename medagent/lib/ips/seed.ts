@@ -18,10 +18,10 @@ export const DEMO_CLINICIANS: ClinicianPersona[] = [
   }),
   ClinicianPersonaSchema.parse({
     id: "dr-okonkwo",
-    requesterId: "GMC7953798",
+    requesterId: "GMC4921847",
     requesterLabel: "Dr. Chidi Okonkwo",
     issuerId: "did:solana:testnet:C3vK8pN2mQ7tR5xL1fH9wD4sY6uB2jP8qM5nT1rV4kZx",
-    issuerLabel: "NHS Northern Ireland (Royal Victoria Hospital, Belfast)",
+    issuerLabel: "Belfast Trust (Royal Victoria Hospital, 274 Grosvenor Road, Belfast)",
     locale: "en-GB",
     stronglyVerified: true,
   }),
@@ -240,6 +240,7 @@ export const DEMO_PATIENTS: PatientSeed[] = [
 ];
 
 export const DEMO_DOCTORS = [
+  // ROI clinicians
   {
     regNumber: "MC12345",
     regBody: "IMC" as const,
@@ -250,33 +251,6 @@ export const DEMO_DOCTORS = [
     jurisdiction: "ROI",
   },
   {
-    regNumber: "GMC7953798",
-    regBody: "GMC" as const,
-    name: "Dr. Chidi Okonkwo",
-    email: "chidi.okonkwo@belfasttrust.hscni.net",
-    specialty: "A&E",
-    hospital: "Royal Victoria Hospital, Belfast",
-    jurisdiction: "NI",
-  },
-  {
-    regNumber: "GMC6021841",
-    regBody: "GMC" as const,
-    name: "Dr. Niamh O'Neill",
-    email: "niamh.oneill@belfasttrust.hscni.net",
-    specialty: "MSK / Sports Medicine",
-    hospital: "Belfast Musculoskeletal Clinic",
-    jurisdiction: "NI",
-  },
-  {
-    regNumber: "GMC7112043",
-    regBody: "GMC" as const,
-    name: "Dr. Patrick Hughes",
-    email: "patrick.hughes@belfasttrust.hscni.net",
-    specialty: "General Practice",
-    hospital: "Cityside Health Centre, Belfast",
-    jurisdiction: "NI",
-  },
-  {
     regNumber: "MC99999",
     regBody: "IMC" as const,
     name: "Dr. Siobhan Kelly",
@@ -284,6 +258,56 @@ export const DEMO_DOCTORS = [
     specialty: "General Practice",
     hospital: "Dundalk Health Centre",
     jurisdiction: "ROI",
+  },
+  // NI — Royal Victoria Hospital (274 Grosvenor Road, Belfast BT12 6BA)
+  {
+    regNumber: "GMC4921847",
+    regBody: "GMC" as const,
+    name: "Dr. Chidi Okonkwo",
+    email: "chidi.okonkwo@belfasttrust.hscni.net",
+    specialty: "Emergency Medicine / A&E",
+    hospital: "Royal Victoria Hospital, 274 Grosvenor Road, Belfast BT12 6BA",
+    jurisdiction: "NI",
+  },
+  // NI — Musgrave Park Hospital (20 Stockmans Lane, Belfast BT9 7JB) — Regional Orthopaedic Centre
+  {
+    regNumber: "GMC5318264",
+    regBody: "GMC" as const,
+    name: "Mr. Conor Wilson",
+    email: "conor.wilson@belfasttrust.hscni.net",
+    specialty: "Orthopaedics / MSK",
+    hospital: "Musgrave Park Hospital, 20 Stockmans Lane, Belfast BT9 7JB",
+    jurisdiction: "NI",
+  },
+  // NI — Mater Infirmorum Hospital (45-51 Crumlin Road, Belfast BT14 6AB)
+  {
+    regNumber: "GMC6187432",
+    regBody: "GMC" as const,
+    name: "Dr. Roisin McAlister",
+    email: "roisin.mcalister@belfasttrust.hscni.net",
+    specialty: "General Medicine / Respiratory",
+    hospital: "Mater Infirmorum Hospital, 45-51 Crumlin Road, Belfast BT14 6AB",
+    jurisdiction: "NI",
+  },
+  // NI — Ormeau Health Centre (120 Ormeau Road, Belfast BT7 2EB) — GP Practice
+  {
+    regNumber: "GMC4756091",
+    regBody: "GMC" as const,
+    name: "Dr. Aisling Donaghy",
+    email: "aisling.donaghy@ormeauhc.hscni.net",
+    specialty: "General Practice",
+    hospital: "Ormeau Health Centre, 120 Ormeau Road, Belfast BT7 2EB",
+    jurisdiction: "NI",
+  },
+  // NI — Belfast City Hospital (51 Lisburn Road, Belfast BT9 7AB)
+  {
+    regNumber: "GMC5842617",
+    regBody: "GMC" as const,
+    name: "Dr. Sean Maguire",
+    email: "sean.maguire@belfasttrust.hscni.net",
+    specialty: "Cardiology",
+    hospital: "Belfast City Hospital, 51 Lisburn Road, Belfast BT9 7AB",
+    jurisdiction: "NI",
   },
 ];
 

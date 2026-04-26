@@ -1,6 +1,7 @@
 "use strict";
 
 import type { MedAgentOutcome } from "@/lib/types";
+import { getPublicAppBaseUrl } from "@/lib/appUrl";
 import { getActivationKeyword } from "./intents";
 
 export interface OutboundContext {
@@ -173,26 +174,32 @@ export function formatPatientConfirmation(input: {
 export function formatHelp(): string {
   const activationKeyword = getActivationKeyword();
   return [
-    "MedAgent commands:",
+    `Hey! Here's what I can help you with.`,
+    "",
     `Wake word: ${activationKeyword}`,
     "",
-    "• /access <patient> — request record access",
-    "• /approve — approve a pending request",
-    "• /deny — deny a pending request",
-    "• /status — check active request",
-    "• /audit <patient> — view audit log",
-    "• /persona <id> — set clinician persona",
-    "• /end — end session",
-    "• /help — show this message",
+    "Just talk to me naturally — or use these shortcuts:",
+    "",
+    `• Say "${activationKeyword}" + what you need — e.g. "${activationKeyword} access patient SARAHB"`,
+    "• Ask about appointments — \"I need a GP in Belfast for my knee\"",
+    "• Ask about your record — \"what are my allergies?\"",
+    "",
+    "Quick commands:",
+    "• /access <patient> — look up a patient's record",
+    "• /help — show this menu",
+    "• /approve or /deny — respond to a pending request",
+    "• /status — check what's active",
+    "• /audit <patient> — see the audit trail",
+    "• /end — close your session",
   ].join("\n");
 }
 
 export function formatAskPatientId(): string {
-  return "Got it — which patient do you need? Reply with the patient ID (for example: SARAHB).";
+  return "Sure thing — which patient do you need to look up? Just send me their ID (like SARAHB) or their name.";
 }
 
 export function formatAskApproval(): string {
-  return "Please reply YES to approve, or NO to deny.";
+  return "Just need a quick yes or no from you on this one — should I approve or deny the request?";
 }
 
 export function formatAck(): string {
@@ -203,14 +210,47 @@ export function formatAppointmentShareCreated(input: {
   doctorName: string;
   shareUrl: string;
   dashboardUrl: string;
+  chainRef?: string | null;
+  shareId?: string;
 }) {
-  return [
-    `Shared your full uploaded medical record with ${input.doctorName}.`,
-    `Doctor access link: ${input.shareUrl}`,
+  const lines = [
+    `done! i've shared your medical record with ${input.doctorName}.`,
     "",
-    "You can revoke future live access from your dashboard.",
+    `doctor's link: ${input.shareUrl}`,
+  ];
+  const proof = formatSolanaProof({ action: "record share", chainRef: input.chainRef ?? null });
+  if (proof) {
+    lines.push("", proof);
+  }
+  if (input.shareId) {
+    lines.push("", `blink: ${generateBlinkUrl(`/api/actions/share/${input.shareId}`)}`);
+  }
+  lines.push(
+    "",
+    `you can revoke access anytime from your dashboard:`,
     input.dashboardUrl,
+  );
+  return lines.join("\n");
+}
+
+export function formatSolanaProof(input: {
+  action: string;
+  chainRef: string | null;
+}): string {
+  if (!input.chainRef) return "";
+  if (input.chainRef.startsWith("local-solana:")) {
+    return "Solana audit is in local-only demo mode; no on-chain receipt was created.";
+  }
+  return [
+    `your ${input.action} is safely stored and permanently protected — here's your receipt:`,
+    `https://solscan.io/tx/${input.chainRef}?cluster=devnet`,
   ].join("\n");
+}
+
+export function generateBlinkUrl(actionPath: string): string {
+  const appBaseUrl = getPublicAppBaseUrl();
+  const actionUrl = `solana-action:${appBaseUrl}${actionPath}`;
+  return `https://dial.to/?action=${encodeURIComponent(actionUrl)}&cluster=devnet`;
 }
 
 export function formatFollowUpAnswer(input: {

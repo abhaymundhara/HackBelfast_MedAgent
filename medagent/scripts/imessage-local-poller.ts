@@ -4,6 +4,7 @@ import path from "path";
 
 import Database from "better-sqlite3";
 import { config } from "dotenv";
+import { getAppBaseUrl } from "@/lib/appUrl";
 import { listHandleMappings } from "@/lib/imessage/handles";
 
 config({ path: ".env.local" });
@@ -194,8 +195,7 @@ async function main() {
     throw new Error("imessage-local-poller requires macOS (darwin).");
   }
 
-  const appBaseUrl =
-    process.env.APP_BASE_URL?.trim() || "http://localhost:3000";
+  const appBaseUrl = getAppBaseUrl();
   const secret = process.env.IMESSAGE_WEBHOOK_SECRET?.trim();
   const statePath =
     process.env.IMESSAGE_POLLER_STATE_PATH?.trim() || DEFAULT_STATE_PATH;
