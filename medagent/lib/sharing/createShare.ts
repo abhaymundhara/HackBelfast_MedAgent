@@ -103,6 +103,7 @@ export async function createShareRecord(input: {
   const shareId = crypto.randomUUID();
   const shareKey = crypto.randomBytes(32);
   const accessToken = crypto.randomBytes(32).toString("hex");
+  const revokeToken = crypto.randomBytes(32).toString("hex");
 
   const encryptedPayload = encryptWithShareKey(filtered, shareKey);
   const encryptedShareKey = encryptString(shareKey.toString("hex"));
@@ -113,6 +114,7 @@ export async function createShareRecord(input: {
 
   const documentHash = sha256Hash(encryptedPayload);
   const accessTokenHash = sha256Hash(accessToken);
+  const revokeTokenHash = sha256Hash(revokeToken);
   const summaryHash = sha256Hash(accessToken + documentHash);
   const doctorHash = sha256Hash(input.doctorEmail);
 
@@ -168,6 +170,7 @@ export async function createShareRecord(input: {
     sharePayloadVersion: "2",
     expiresAt,
     shortCode,
+    revokeTokenHash,
   });
 
   updateSharedRecordShortToken(shareId, accessToken);
@@ -216,5 +219,6 @@ export async function createShareRecord(input: {
     expiresAt,
     patientName: summary.demographics.name,
     fieldsShared,
+    revokeToken,
   };
 }

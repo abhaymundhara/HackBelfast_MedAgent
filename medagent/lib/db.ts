@@ -635,6 +635,7 @@ export function initDb() {
     ["patient_documents", "pdf_keywords", "TEXT"],
     ["patient_documents", "extraction_method", "TEXT"],
     ["patient_documents", "extracted_text_length", "INTEGER"],
+    ["shared_records", "revoke_token_hash", "TEXT"],
   ];
   for (const [table, col, type] of migrations) {
     ensureColumn(db, table, col, type);
@@ -2116,6 +2117,7 @@ export function createSharedRecord(input: {
   shareChainRef?: string;
   shareChainSlot?: number;
   shortCode?: string;
+  revokeTokenHash?: string;
 }) {
   const db = getDb();
   const now = nowIso();
@@ -2125,12 +2127,14 @@ export function createSharedRecord(input: {
       encrypted_summary, encrypted_share_key, fields_shared,
       access_token_hash, document_hash, share_scope, appointment_id,
       document_manifest_json, share_payload_version, status, expires_at,
-      share_chain_ref, share_chain_slot, short_code, created_at, updated_at)
+      share_chain_ref, share_chain_slot, short_code, revoke_token_hash,
+      created_at, updated_at)
      VALUES (@id, @patientId, @doctorName, @doctorEmail, @doctorHash,
       @encryptedSummary, @encryptedShareKey, @fieldsShared,
       @accessTokenHash, @documentHash, @shareScope, @appointmentId,
       @documentManifestJson, @sharePayloadVersion, 'active', @expiresAt,
-      @shareChainRef, @shareChainSlot, @shortCode, @createdAt, @updatedAt)`,
+      @shareChainRef, @shareChainSlot, @shortCode, @revokeTokenHash,
+      @createdAt, @updatedAt)`,
   ).run({
     id: input.id,
     patientId: input.patientId,
@@ -2150,6 +2154,7 @@ export function createSharedRecord(input: {
     shareChainRef: input.shareChainRef ?? null,
     shareChainSlot: input.shareChainSlot ?? null,
     shortCode: input.shortCode ?? null,
+    revokeTokenHash: input.revokeTokenHash ?? null,
     createdAt: now,
     updatedAt: now,
   });

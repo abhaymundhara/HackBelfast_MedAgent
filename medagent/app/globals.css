@@ -3223,3 +3223,28 @@ html {
   border-color: var(--ink);
   color: var(--ink);
 }
+
+/* Revoke button */
+.landing-root .revoke-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  background: var(--red);
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.landing-root .revoke-btn:hover:not(:disabled) {
+  background: #991b1b;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px -6px rgba(185, 28, 28, 0.4);
+}
+.landing-root .revoke-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
