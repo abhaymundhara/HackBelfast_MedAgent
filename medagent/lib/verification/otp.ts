@@ -1,7 +1,7 @@
 import crypto from "crypto";
-import sgMail from "@sendgrid/mail";
 
 import { getDb } from "@/lib/db";
+import { getMailTransport, getFromAddress } from "@/lib/email/transport";
 
 export function generateOtp(): string {
   const num = crypto.randomInt(0, 1_000_000);
@@ -13,19 +13,17 @@ export async function sendOtp(
   otp: string,
   doctorName: string,
 ): Promise<{ sent: boolean; error?: string; devOtp?: string }> {
-  const apiKey = process.env.SENDGRID_API_KEY;
-  const fromEmail = process.env.SENDGRID_FROM_EMAIL ?? "noreply@medagent.dev";
+  const transporter = getMailTransport();
 
-  if (!apiKey) {
-    console.warn("SENDGRID_API_KEY not configured — OTP not sent via email");
+  if (!transporter) {
+    console.warn("GMAIL_APP_PASSWORD not configured — OTP not sent via email");
     console.log(`[DEV] OTP for ${doctorName} (${email}): ${otp}`);
     return { sent: true, devOtp: otp };
   }
 
   try {
-    sgMail.setApiKey(apiKey);
-    await sgMail.send({
-      from: fromEmail,
+    await transporter.sendMail({
+      from: getFromAddress(),
       to: email,
       subject: "MedAgent — Your verification code",
       html: `
@@ -44,7 +42,7 @@ export async function sendOtp(
     return { sent: true };
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
-    console.error("Failed to send OTP via SendGrid:", message);
+    console.error("Failed to send OTP via Gmail SMTP:", message);
     return { sent: false, error: message };
   }
 }

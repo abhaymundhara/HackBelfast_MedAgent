@@ -1,4 +1,4 @@
-import sgMail from "@sendgrid/mail";
+import { getMailTransport, getFromAddress } from "@/lib/email/transport";
 
 const DEFAULT_APPOINTMENT_SHARE_EMAIL = "gulsameer1000@gmail.com";
 
@@ -21,22 +21,20 @@ export async function sendAppointmentShareLinkEmail(input: {
   patientId: string;
 }): Promise<AppointmentShareEmailResult> {
   const to = getAppointmentShareEmailRecipient();
-  const apiKey = process.env.SENDGRID_API_KEY;
-  const fromEmail = process.env.SENDGRID_FROM_EMAIL ?? "noreply@medagent.dev";
+  const transporter = getMailTransport();
 
-  if (!apiKey) {
-    console.warn("SENDGRID_API_KEY not configured; appointment share email not sent", {
+  if (!transporter) {
+    console.warn("GMAIL_APP_PASSWORD not configured; appointment share email not sent", {
       to,
       patientId: input.patientId,
     });
     console.log(`[DEV] Appointment share link for ${input.doctorName}: ${input.shareUrl}`);
-    return { sent: false, to, error: "SENDGRID_API_KEY not configured" };
+    return { sent: false, to, error: "GMAIL_APP_PASSWORD not configured" };
   }
 
   try {
-    sgMail.setApiKey(apiKey);
-    await sgMail.send({
-      from: fromEmail,
+    await transporter.sendMail({
+      from: getFromAddress(),
       to,
       subject: `MedAgent record link for ${input.doctorName}`,
       html: `
