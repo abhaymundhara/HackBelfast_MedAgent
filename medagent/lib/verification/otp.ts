@@ -1,4 +1,5 @@
 import crypto from "crypto";
+import sgMail from "@sendgrid/mail";
 
 import { getDb } from "@/lib/db";
 
@@ -12,19 +13,18 @@ export async function sendOtp(
   otp: string,
   doctorName: string,
 ): Promise<{ sent: boolean; error?: string; devOtp?: string }> {
-  const apiKey = process.env.RESEND_API_KEY;
-  const fromEmail = process.env.RESEND_FROM_EMAIL ?? "noreply@medagent.dev";
+  const apiKey = process.env.SENDGRID_API_KEY;
+  const fromEmail = process.env.SENDGRID_FROM_EMAIL ?? "noreply@medagent.dev";
 
   if (!apiKey) {
-    console.warn("RESEND_API_KEY not configured — OTP not sent via email");
+    console.warn("SENDGRID_API_KEY not configured — OTP not sent via email");
     console.log(`[DEV] OTP for ${doctorName} (${email}): ${otp}`);
     return { sent: true, devOtp: otp };
   }
 
   try {
-    const { Resend } = await import("resend");
-    const resend = new Resend(apiKey);
-    await resend.emails.send({
+    sgMail.setApiKey(apiKey);
+    await sgMail.send({
       from: fromEmail,
       to: email,
       subject: "MedAgent — Your verification code",
@@ -44,7 +44,7 @@ export async function sendOtp(
     return { sent: true };
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
-    console.error("Failed to send OTP via Resend:", message);
+    console.error("Failed to send OTP via SendGrid:", message);
     return { sent: false, error: message };
   }
 }

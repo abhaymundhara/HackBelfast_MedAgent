@@ -38,6 +38,7 @@
     "@radix-ui/react-switch": "^1.2.6",
     "@radix-ui/react-tabs": "^1.1.13",
     "@radix-ui/react-toast": "^1.2.15",
+    "@sendgrid/mail": "^8.1.6",
     "@solana/web3.js": "^1.98.4",
     "@types/bcryptjs": "^2.4.6",
     "bcryptjs": "^3.0.3",
@@ -57,7 +58,6 @@
     "qrcode": "^1.5.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "resend": "^6.12.2",
     "tailwind-merge": "^3.5.0",
     "zod": "^4.3.6"
   },

@@ -1,3 +1,5 @@
+import sgMail from "@sendgrid/mail";
+
 const DEFAULT_APPOINTMENT_SHARE_EMAIL = "gulsameer1000@gmail.com";
 
 export type AppointmentShareEmailResult = {
@@ -19,22 +21,21 @@ export async function sendAppointmentShareLinkEmail(input: {
   patientId: string;
 }): Promise<AppointmentShareEmailResult> {
   const to = getAppointmentShareEmailRecipient();
-  const apiKey = process.env.RESEND_API_KEY;
-  const fromEmail = process.env.RESEND_FROM_EMAIL ?? "noreply@medagent.dev";
+  const apiKey = process.env.SENDGRID_API_KEY;
+  const fromEmail = process.env.SENDGRID_FROM_EMAIL ?? "noreply@medagent.dev";
 
   if (!apiKey) {
-    console.warn("RESEND_API_KEY not configured; appointment share email not sent", {
+    console.warn("SENDGRID_API_KEY not configured; appointment share email not sent", {
       to,
       patientId: input.patientId,
     });
     console.log(`[DEV] Appointment share link for ${input.doctorName}: ${input.shareUrl}`);
-    return { sent: false, to, error: "RESEND_API_KEY not configured" };
+    return { sent: false, to, error: "SENDGRID_API_KEY not configured" };
   }
 
   try {
-    const { Resend } = await import("resend");
-    const resend = new Resend(apiKey);
-    const response = await resend.emails.send({
+    sgMail.setApiKey(apiKey);
+    await sgMail.send({
       from: fromEmail,
       to,
       subject: `MedAgent record link for ${input.doctorName}`,
@@ -48,13 +49,6 @@ export async function sendAppointmentShareLinkEmail(input: {
         </div>
       `,
     });
-    if (response.error) {
-      const message =
-        response.error.message ??
-        `Resend rejected the email with status ${response.error.statusCode ?? "unknown"}`;
-      console.error("Failed to send appointment share email:", message);
-      return { sent: false, to, error: message };
-    }
     return { sent: true, to };
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
