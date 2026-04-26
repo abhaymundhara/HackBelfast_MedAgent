@@ -5,7 +5,6 @@ import QRCode from "qrcode";
 import { validatePatientJwt } from "@/lib/auth/patientAuth";
 import {
   getAppointment,
-  getPatientAccountByPatientId,
   getPatientSummary,
   listAuditEvents,
   listDoctorRegistry,
@@ -82,9 +81,6 @@ export default async function PatientDashboardPage() {
 
   const session = { patientId } as { patientId: string };
 
-  const account = getPatientAccountByPatientId(patientId) ?? {
-    solana_log_pda: null,
-  };
 
   const events = listAuditEvents(session.patientId);
   const shares = listSharedRecords(session.patientId);
@@ -101,7 +97,6 @@ export default async function PatientDashboardPage() {
 
   const qrPayload = JSON.stringify({
     patientId: session.patientId,
-    solanaLogPda: account.solana_log_pda,
   });
   const qrDataUrl = await QRCode.toDataURL(qrPayload, {
     margin: 1,
@@ -325,15 +320,8 @@ export default async function PatientDashboardPage() {
 
             <aside className="dashb-aside">
               <div className="dashb-card">
-                <h2>Solana log PDA</h2>
-                <p className="mono">
-                  {account.solana_log_pda ??
-                    "Pending first configured on-chain write"}
-                </p>
-              </div>
-              <div className="dashb-card">
                 <h2>Clinician QR</h2>
-                <p>Patient ID + Solana PDA for demo scanning.</p>
+                <p>Patient ID for demo scanning.</p>
                 <Image
                   src={qrDataUrl}
                   alt="Patient QR code"
