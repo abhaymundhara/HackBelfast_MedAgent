@@ -1042,7 +1042,7 @@ async function handlePatientAppointmentIntent(
     chatGuid,
     text: formatAppointmentShareCreated({
       doctorName: appointment.doctorName,
-      shareUrl: `${appBaseUrl}${result.shortUrl}`,
+      shareUrl: `${appBaseUrl}${result.shareUrl}`,
       dashboardUrl: `${appBaseUrl}/patient/dashboard`,
       chainRef: result.chainRef,
       shareId: result.shareId,
