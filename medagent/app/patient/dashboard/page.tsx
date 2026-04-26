@@ -12,8 +12,10 @@ import {
 } from "@/lib/db";
 import { sha256Hash } from "@/lib/crypto";
 import { RevokeShareButton } from "@/components/app/revoke-share-button";
+import { DashboardRefresher } from "@/components/landing/dashboard-refresher";
 import { SiteFooter } from "@/components/landing/site-footer";
 import { SiteNav } from "@/components/landing/site-nav";
+import { getMedAgentPhone } from "@/lib/contactPhone";
 import { DEMO_CLINICIANS } from "@/lib/ips/seed";
 import { getSolscanTxUrl } from "@/lib/solana/client";
 
@@ -71,6 +73,9 @@ function isEmergencyAccess(doctorHash: string) {
 
 const ESTIMATED_COST_PER_EVENT_USD = 0.001;
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 const DEMO_PATIENT_ID = "sarah-bennett";
 
 export default async function PatientDashboardPage() {
@@ -95,16 +100,18 @@ export default async function PatientDashboardPage() {
   ).length;
   const totalCostUsd = events.length * ESTIMATED_COST_PER_EVENT_USD;
 
-  const qrPayload = JSON.stringify({
-    patientId: session.patientId,
-  });
-  const qrDataUrl = await QRCode.toDataURL(qrPayload, {
+  const medagentPhone = getMedAgentPhone();
+  const qrTarget = `sms:${medagentPhone}?body=${encodeURIComponent(
+    `Patient ${session.patientId} — emergency access request`,
+  )}`;
+  const qrDataUrl = await QRCode.toDataURL(qrTarget, {
     margin: 1,
     width: 192,
   });
 
   return (
     <div className="landing-root">
+      <DashboardRefresher />
       <SiteNav />
       <main className="dashb-page">
         <div className="dashb-shell">
@@ -321,10 +328,13 @@ export default async function PatientDashboardPage() {
             <aside className="dashb-aside">
               <div className="dashb-card">
                 <h2>Clinician QR</h2>
-                <p>Patient ID for demo scanning.</p>
+                <p>
+                  Scan to text MedAgent ({medagentPhone}) about this patient on
+                  iMessage.
+                </p>
                 <Image
                   src={qrDataUrl}
-                  alt="Patient QR code"
+                  alt={`Open iMessage to MedAgent ${medagentPhone}`}
                   width={192}
                   height={192}
                   unoptimized

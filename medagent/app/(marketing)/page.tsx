@@ -40,7 +40,7 @@ export default function HomePage() {
             <span>NHS ↔ HSE — closing three gaps in one thread →</span>
           </Link>
 
-          <h1 className="display" style={{ fontSize: "clamp(28px, 4.4vw, 52px)", maxWidth: 720 }}>
+          <h1 className="display" style={{ fontSize: "clamp(24px, 3.4vw, 40px)", maxWidth: 640 }}>
             where the NHS meets the HSE
           </h1>
           <p className="lead">
