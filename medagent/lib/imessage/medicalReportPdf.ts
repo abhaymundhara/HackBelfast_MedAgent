@@ -4,6 +4,8 @@ import os from "os";
 import path from "path";
 import { promisify } from "util";
 
+import { PDFParse } from "pdf-parse";
+
 import { encryptBuffer, encryptJson, sha256Hash } from "@/lib/crypto";
 import {
   savePatientDocumentMetadata,
@@ -308,15 +310,34 @@ function buildDocumentTitle(attachment: InboundAttachment) {
   return title || "Medical report PDF";
 }
 
+async function extractTextWithPdfParse(
+  filePath: string,
+): Promise<ExtractionResult> {
+  const dataBuffer = fs.readFileSync(filePath);
+  const parser = new PDFParse({ data: new Uint8Array(dataBuffer) });
+  const result = await parser.getText();
+  await parser.destroy();
+  return { text: result.text, method: "pdf-parse" };
+}
+
 async function extractTextWithNativeMacToolsTracked(
   filePath: string,
 ): Promise<ExtractionResult> {
-  const spotlightText = await extractTextWithSpotlight(filePath);
-  if (spotlightText.trim().length >= OCR_MIN_TEXT_LENGTH) {
-    return { text: spotlightText, method: "spotlight" };
+  if (process.platform === "darwin") {
+    const spotlightText = await extractTextWithSpotlight(filePath);
+    if (spotlightText.trim().length >= OCR_MIN_TEXT_LENGTH) {
+      return { text: spotlightText, method: "spotlight" };
+    }
+    try {
+      const visionResult = await extractTextWithVision(filePath);
+      if (visionResult.trim().length >= OCR_MIN_TEXT_LENGTH) {
+        return { text: visionResult, method: "vision-ocr" };
+      }
+    } catch {
+      // Fall through to pdf-parse
+    }
   }
-  const visionText = await extractTextWithVision(filePath);
-  return { text: visionText, method: "vision-ocr" };
+  return extractTextWithPdfParse(filePath);
 }
 
 export type PdfMetadata = {
