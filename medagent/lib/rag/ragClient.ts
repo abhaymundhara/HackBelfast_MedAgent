@@ -85,12 +85,12 @@ function buildDemoChunks(): CanonicalEvidenceItem[] {
     (patient) => patient.patientId === "omar-haddad",
   );
   const lucia = DEMO_PATIENTS.find(
-    (patient) => patient.patientId === "lucia-mendes",
+    (patient) => patient.patientId === "lucia-martin",
   );
 
   if (!sarah || !omar || !lucia) {
     throw new Error(
-      "Demo seed integrity error: missing one or more required demo patients (sarah-bennett, omar-haddad, lucia-mendes).",
+      "Demo seed integrity error: missing one or more required demo patients (sarah-bennett, omar-haddad, lucia-martin).",
     );
   }
 
@@ -365,9 +365,18 @@ function chunkMedicalText(
     labels: RegExp;
     noteType: string;
   }> = [
-    { labels: /\b(?:allerg(?:ies|y)|adverse reactions?)\b/i, noteType: "allergy" },
-    { labels: /\b(?:current )?medications?\b|medicines\b/i, noteType: "medication_safety" },
-    { labels: /\b(?:active |major )?conditions?\b|diagnoses|problems\b/i, noteType: "chronic_condition" },
+    {
+      labels: /\b(?:allerg(?:ies|y)|adverse reactions?)\b/i,
+      noteType: "allergy",
+    },
+    {
+      labels: /\b(?:current )?medications?\b|medicines\b/i,
+      noteType: "medication_safety",
+    },
+    {
+      labels: /\b(?:active |major )?conditions?\b|diagnoses|problems\b/i,
+      noteType: "chronic_condition",
+    },
     { labels: /\bemergency (?:contact|alerts?)\b/i, noteType: "care_plan" },
     { labels: /\brecent discharge\b/i, noteType: "procedure_history" },
     { labels: /\bblood type\b/i, noteType: "lab_trend" },
@@ -391,7 +400,10 @@ function chunkMedicalText(
           text: currentLines.join("\n").trim(),
         });
       }
-      currentSection = match[1].replace(/\s*:?\s*$/, "").trim().toLowerCase();
+      currentSection = match[1]
+        .replace(/\s*:?\s*$/, "")
+        .trim()
+        .toLowerCase();
       currentLines = [line.replace(match[1], "").trim()].filter(Boolean);
       headingPattern.lastIndex = 0;
     } else {
@@ -416,9 +428,7 @@ function chunkMedicalText(
       }
     }
 
-    chunks.push(
-      toCanonicalItem(patientHash, noteType, section.text, now),
-    );
+    chunks.push(toCanonicalItem(patientHash, noteType, section.text, now));
   }
 
   // If no sections were detected, index the whole text as a single chunk
