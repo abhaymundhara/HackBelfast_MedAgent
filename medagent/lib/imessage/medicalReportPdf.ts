@@ -228,6 +228,51 @@ export function buildPatientId(fullName: string, dob: string, handle: string) {
   return `imessage-${sha256Hash(handle).slice(0, 12)}`;
 }
 
+/**
+ * Extract patient name and DOB directly from the PDF report text.
+ * Looks for patterns like "Name: Ciara Byrne" and "Date of Birth: 1994-02-17".
+ */
+export function extractNameDobFromReport(reportText: string): {
+  name: string | null;
+  dob: string | null;
+} {
+  const namePatterns = [
+    /\bname[:\s]+([A-Z][a-zA-Z'-]+(?:\s+[A-Z][a-zA-Z'-]+)+)/m,
+    /\bpatient[:\s]+([A-Z][a-zA-Z'-]+(?:\s+[A-Z][a-zA-Z'-]+)+)/m,
+  ];
+
+  const dobPatterns = [
+    /\b(?:date of birth|dob|d\.o\.b\.?)[:\s]+(\d{4}-\d{2}-\d{2})/i,
+    /\b(?:date of birth|dob|d\.o\.b\.?)[:\s]+(\d{2}[\/.-]\d{2}[\/.-]\d{4})/i,
+  ];
+
+  let name: string | null = null;
+  for (const pattern of namePatterns) {
+    const match = pattern.exec(reportText);
+    if (match?.[1]) {
+      name = match[1].trim();
+      break;
+    }
+  }
+
+  let dob: string | null = null;
+  for (const pattern of dobPatterns) {
+    const match = pattern.exec(reportText);
+    if (match?.[1]) {
+      let raw = match[1].trim();
+      // Normalize DD/MM/YYYY or DD-MM-YYYY to YYYY-MM-DD
+      const dmyMatch = raw.match(/^(\d{2})[\/.-](\d{2})[\/.-](\d{4})$/);
+      if (dmyMatch) {
+        raw = `${dmyMatch[3]}-${dmyMatch[2]}-${dmyMatch[1]}`;
+      }
+      dob = raw;
+      break;
+    }
+  }
+
+  return { name, dob };
+}
+
 function resolveAttachmentPath(attachment: InboundAttachment) {
   const rawPath = attachment.path ?? attachment.filename ?? "";
   if (!rawPath) return "";

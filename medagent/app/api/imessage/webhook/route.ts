@@ -50,6 +50,7 @@ import {
 } from "@/lib/db";
 import { parseNameDobInput } from "@/lib/imessage/onboardingNlp";
 import {
+  extractNameDobFromReport,
   isPdfAttachment,
   processMedicalReportPdfOnboarding,
 } from "@/lib/imessage/medicalReportPdf";
@@ -413,13 +414,13 @@ async function startBaymaxOnboarding(
   bridge: ReturnType<typeof getBridge>,
 ) {
   debugLog("start onboarding", { handle });
-  conv.awaiting = "onboarding_name_dob";
-  conv.metadata.onboardingMode = "unknown";
+  conv.awaiting = "onboarding_new_user_record";
+  conv.metadata.onboardingMode = "new_user";
   conv.metadata.onboardingPatientId = null;
   conv.metadata.onboardingName = null;
   conv.metadata.onboardingDob = null;
   updateImessageUser(handle, {
-    stage: "awaiting_name_dob",
+    stage: "awaiting_new_user_record",
     fullName: null,
     dob: null,
     patientId: null,
@@ -427,11 +428,11 @@ async function startBaymaxOnboarding(
   });
   await bridge.sendText({
     chatGuid,
-    text: "Hi, I'm BayMax — your secure emergency medical summary helper for cross-border care on the island of Ireland. This is private and auditable.",
+    text: "hey! i'm baymax — your secure medical assistant for cross-border care on the island of ireland. everything's private and auditable on solana.",
   });
   await bridge.sendText({
     chatGuid,
-    text: "To get started, reply with your full name and DOB in YYYY-MM-DD format. Example: Sarah Bennett 1991-08-14",
+    text: "why don't you send me your medical history report as a PDF, and i'll get you onboarded! i'll pull your name, DOB, allergies, medications, and conditions straight from it.",
   });
 }
 
@@ -605,30 +606,68 @@ async function handleOnboardingMedicalReportUpload(
   if (!pdfAttachment) {
     await bridge.sendText({
       chatGuid,
-      text: "Please upload your medical report as a PDF attachment so I can finish your emergency profile.",
+      text: "just send me your medical report as a PDF and i'll take care of the rest!",
     });
     return;
   }
 
-  const name =
+  // Try to get name/DOB from conversation metadata first, then extract from PDF
+  let name =
     typeof conv.metadata.onboardingName === "string"
       ? conv.metadata.onboardingName
       : "";
-  const dob =
+  let dob =
     typeof conv.metadata.onboardingDob === "string"
       ? conv.metadata.onboardingDob
       : "";
+
+  await pulseTypingIndicator(bridge, chatGuid);
+
+  // If name/DOB not known yet, pre-read the PDF to extract them
+  if (!name || !dob) {
+    try {
+      const pdfPath = pdfAttachment.path ?? pdfAttachment.filename ?? "";
+      const resolvedPath = pdfPath.startsWith("~/")
+        ? require("path").join(require("os").homedir(), pdfPath.slice(2))
+        : pdfPath;
+      if (resolvedPath && require("fs").existsSync(resolvedPath)) {
+        const { execFile } = require("child_process");
+        const { promisify } = require("util");
+        const execFileAsync = promisify(execFile);
+        // Quick text extraction for name/DOB only
+        let previewText = "";
+        try {
+          const { stdout } = await execFileAsync(
+            "/usr/bin/mdls",
+            ["-raw", "-name", "kMDItemTextContent", resolvedPath],
+            { encoding: "utf8", timeout: 10_000, maxBuffer: 1024 * 1024 },
+          );
+          previewText = stdout.trim() === "(null)" ? "" : stdout;
+        } catch {
+          // Non-macOS or extraction failed — will fall back below
+        }
+        if (previewText) {
+          const extracted = extractNameDobFromReport(previewText);
+          if (extracted.name && !name) name = extracted.name;
+          if (extracted.dob && !dob) dob = extracted.dob;
+        }
+      }
+    } catch {
+      debugLog("pre-extract name/dob failed, continuing", { handle });
+    }
+  }
+
+  // If still no name/DOB, ask the user — but only as a fallback
   if (!name || !dob) {
     conv.awaiting = "onboarding_name_dob";
     updateImessageUser(handle, { stage: "awaiting_name_dob" });
     await bridge.sendText({
       chatGuid,
-      text: "I need your name and DOB before I can attach this PDF to a profile. Reply with your full name and DOB in YYYY-MM-DD format.",
+      text: "i couldn't find your name and date of birth in the PDF. could you send them to me? just type something like: Ciara Byrne 1994-02-17",
     });
     return;
   }
 
-  await pulseTypingIndicator(bridge, chatGuid);
   try {
     const profile = await processMedicalReportPdfOnboarding({
       attachment: pdfAttachment,
@@ -653,12 +692,14 @@ async function handleOnboardingMedicalReportUpload(
     await bridge.sendText({
       chatGuid,
       text: [
-        `Thanks ${profile.summary.demographics.name}. I read your medical report PDF and created your emergency profile.`,
-        `• Patient ID: ${profile.patientId}`,
-        `• Allergies: ${profile.summary.allergies.length}`,
-        `• Medications: ${profile.summary.medications.length}`,
-        `• Major conditions: ${profile.summary.conditions.length}`,
-        "Your profile is ready for audited emergency sharing.",
+        `nice to meet you, ${profile.summary.demographics.name}! i've read your medical report and set up your emergency profile.`,
+        "",
+        `here's what i found:`,
+        `• allergies: ${profile.summary.allergies.length}`,
+        `• medications: ${profile.summary.medications.length}`,
+        `• conditions: ${profile.summary.conditions.length}`,
+        "",
+        "you're all set! you can now ask me about your record (\"what are my allergies?\") or book a GP appointment in belfast. just text me anytime.",
       ].join("\n"),
     });
   } catch (error) {
@@ -668,7 +709,7 @@ async function handleOnboardingMedicalReportUpload(
     });
     await bridge.sendText({
       chatGuid,
-      text: "I couldn't read enough emergency information from that PDF. Please upload a medical report PDF that includes allergies, medications, conditions, and an emergency contact.",
+      text: "hmm, i couldn't pull enough medical info from that PDF. could you try sending one that has your allergies, medications, conditions, and emergency contact? a GP summary works great.",
     });
   }
 }
