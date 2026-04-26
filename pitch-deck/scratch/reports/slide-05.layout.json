@@ -1,0 +1,3533 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/ma14jw",
+    "id": "ma14jw",
+    "slide": 5,
+    "layoutId": "0af95391-a13b-4a3c-b532-3552755e4c1a",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "3f5a9256-fc31-4a95-9ff9-d60207f8e03e",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1920,
+      "height": 1080
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "0af95391-a13b-4a3c-b532-3552755e4c1a",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "3f5a9256-fc31-4a95-9ff9-d60207f8e03e",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "3f5a9256-fc31-4a95-9ff9-d60207f8e03e",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ex0nuxc3",
+      "id": "1",
+      "name": "background",
+      "bbox": [
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "fillColor": "#06121B",
+      "lineColor": "#06121B",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/loj2t83i",
+      "id": "2",
+      "name": "eyebrow",
+      "bbox": [
+        116,
+        86,
+        1080,
+        22
+      ],
+      "composeSource": {
+        "run": 2,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "WHY DETERMINISTIC POLICY",
+      "textPreview": "WHY DETERMINISTIC POLICY",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "fontSize": 22,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "WHY DETERMINISTIC POLICY"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "WHY DETERMINISTIC POLICY",
+          "runs": [
+            {
+              "index": 1,
+              "text": "WHY DETERMINISTIC POLICY",
+              "fontSize": 22,
+              "color": "#53E0A5",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/w3m94fu1",
+      "id": "3",
+      "name": "slide-title",
+      "bbox": [
+        116,
+        136,
+        1280,
+        116
+      ],
+      "composeSource": {
+        "run": 3,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "The model helps with language. It never decides access.",
+      "textPreview": "The model helps with language. It never decides access.",
+      "resolvedFontSize": 58,
+      "resolvedTextStyle": {
+        "fontSize": 58,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "The model helps with language. It never"
+          },
+          {
+            "index": 2,
+            "text": "decides access."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "The model helps with language. It never decides access.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "The model helps with language. It never decides access.",
+              "fontSize": 58,
+              "color": "#F7FBFF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3q5o7qpg",
+      "id": "4",
+      "name": "slide-subtitle",
+      "bbox": [
+        116,
+        290,
+        1060,
+        30
+      ],
+      "composeSource": {
+        "run": 4,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Medical authorization needs rules that can be tested, replayed, and defended.",
+      "textPreview": "Medical authorization needs rules that can be tested, replayed, and defended.",
+      "resolvedFontSize": 30,
+      "resolvedTextStyle": {
+        "fontSize": 30,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Medical authorization needs rules that can be tested, replayed, and defended."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Medical authorization needs rules that can be tested, replayed, and defended.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Medical authorization needs rules that can be tested, replayed, and defended.",
+              "fontSize": 30,
+              "color": "#A7B7C7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/e9cvixcz",
+      "id": "5",
+      "name": "footer-left",
+      "bbox": [
+        116,
+        1016,
+        600,
+        16
+      ],
+      "composeSource": {
+        "run": 5,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "MedAgent pitch / 05",
+      "textPreview": "MedAgent pitch / 05",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "MedAgent pitch / 05"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "MedAgent pitch / 05",
+          "runs": [
+            {
+              "index": 1,
+              "text": "MedAgent pitch / 05",
+              "fontSize": 16,
+              "color": "#607A8E"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lwval87e",
+      "id": "6",
+      "name": "footer-rule",
+      "bbox": [
+        1640,
+        1030,
+        164,
+        2
+      ],
+      "composeSource": {
+        "run": 6,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "fillColor": "#1F4054",
+      "lineColor": "#1F4054",
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wb2hwfyx",
+      "id": "7",
+      "name": "table-top",
+      "bbox": [
+        120,
+        424,
+        1688,
+        1
+      ],
+      "composeSource": {
+        "run": 7,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "fillColor": "#1F4054",
+      "lineColor": "#1F4054",
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/32lszqtc",
+      "id": "8",
+      "name": "policy-header-0",
+      "bbox": [
+        130,
+        452,
+        230,
+        22
+      ],
+      "composeSource": {
+        "run": 8,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Path",
+      "textPreview": "Path",
+      "resolvedFontSize": 21,
+      "resolvedTextStyle": {
+        "fontSize": 21,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Path"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Path",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Path",
+              "fontSize": 21,
+              "color": "#53E0A5",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ahoza1gv",
+      "id": "9",
+      "name": "policy-header-1",
+      "bbox": [
+        430,
+        452,
+        300,
+        22
+      ],
+      "composeSource": {
+        "run": 9,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Requester condition",
+      "textPreview": "Requester condition",
+      "resolvedFontSize": 21,
+      "resolvedTextStyle": {
+        "fontSize": 21,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Requester condition"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Requester condition",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Requester condition",
+              "fontSize": 21,
+              "color": "#53E0A5",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cj6tovah",
+      "id": "10",
+      "name": "policy-header-2",
+      "bbox": [
+        786,
+        452,
+        300,
+        22
+      ],
+      "composeSource": {
+        "run": 10,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Release scope",
+      "textPreview": "Release scope",
+      "resolvedFontSize": 21,
+      "resolvedTextStyle": {
+        "fontSize": 21,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Release scope"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Release scope",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Release scope",
+              "fontSize": 21,
+              "color": "#53E0A5",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/54zidony",
+      "id": "11",
+      "name": "policy-header-3",
+      "bbox": [
+        1140,
+        452,
+        300,
+        22
+      ],
+      "composeSource": {
+        "run": 11,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Human role",
+      "textPreview": "Human role",
+      "resolvedFontSize": 21,
+      "resolvedTextStyle": {
+        "fontSize": 21,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Human role"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Human role",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Human role",
+              "fontSize": 21,
+              "color": "#53E0A5",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/udg7adsj",
+      "id": "12",
+      "name": "policy-header-4",
+      "bbox": [
+        1490,
+        452,
+        300,
+        22
+      ],
+      "composeSource": {
+        "run": 12,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Audit",
+      "textPreview": "Audit",
+      "resolvedFontSize": 21,
+      "resolvedTextStyle": {
+        "fontSize": 21,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Audit"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Audit",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Audit",
+              "fontSize": 21,
+              "color": "#53E0A5",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nyd0z610",
+      "id": "13",
+      "name": "policy-row-rule-0",
+      "bbox": [
+        120,
+        504,
+        1688,
+        1
+      ],
+      "composeSource": {
+        "run": 13,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "fillColor": "#1F4054",
+      "lineColor": "#1F4054",
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cvixczed",
+      "id": "14",
+      "name": "policy-cell-0-0",
+      "bbox": [
+        130,
+        526,
+        300,
+        30
+      ],
+      "composeSource": {
+        "run": 14,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Tier 1",
+      "textPreview": "Tier 1",
+      "resolvedFontSize": 30,
+      "resolvedTextStyle": {
+        "fontSize": 30,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Tier 1"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Tier 1",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Tier 1",
+              "fontSize": 30,
+              "color": "#48C6FF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5gbq1ory",
+      "id": "15",
+      "name": "policy-cell-0-1",
+      "bbox": [
+        430,
+        526,
+        300,
+        48
+      ],
+      "composeSource": {
+        "run": 15,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Verified clinician, same jurisdiction",
+      "textPreview": "Verified clinician, same jurisdiction",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Verified clinician, same"
+          },
+          {
+            "index": 2,
+            "text": "jurisdiction"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Verified clinician, same jurisdiction",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Verified clinician, same jurisdiction",
+              "fontSize": 24,
+              "color": "#F7FBFF"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/upwb2hwf",
+      "id": "16",
+      "name": "policy-cell-0-2",
+      "bbox": [
+        786,
+        526,
+        330,
+        24
+      ],
+      "composeSource": {
+        "run": 16,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Emergency summary",
+      "textPreview": "Emergency summary",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Emergency summary"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Emergency summary",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Emergency summary",
+              "fontSize": 24,
+              "color": "#F7FBFF"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nap4r65w",
+      "id": "17",
+      "name": "policy-cell-0-3",
+      "bbox": [
+        1140,
+        526,
+        300,
+        24
+      ],
+      "composeSource": {
+        "run": 17,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "None",
+      "textPreview": "None",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "None"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "None",
+          "runs": [
+            {
+              "index": 1,
+              "text": "None",
+              "fontSize": 24,
+              "color": "#F7FBFF"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/c7u54zid",
+      "id": "18",
+      "name": "policy-cell-0-4",
+      "bbox": [
+        1490,
+        526,
+        300,
+        24
+      ],
+      "composeSource": {
+        "run": 18,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Granted",
+      "textPreview": "Granted",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Granted"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Granted",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Granted",
+              "fontSize": 24,
+              "color": "#F7FBFF"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1orytsvu",
+      "id": "19",
+      "name": "policy-row-rule-1",
+      "bbox": [
+        120,
+        608,
+        1688,
+        1
+      ],
+      "composeSource": {
+        "run": 19,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "fillColor": "#173247",
+      "lineColor": "#173247",
+      "lineWidth": 0
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5kb6xkf6",
+      "id": "20",
+      "name": "policy-cell-1-0",
+      "bbox": [
+        130,
+        630,
+        300,
+        30
+      ],
+      "composeSource": {
+        "run": 20,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Tier 2",
+      "textPreview": "Tier 2",
+      "resolvedFontSize": 30,
+      "resolvedTextStyle": {
+        "fontSize": 30,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Tier 2"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Tier 2",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Tier 2",
+              "fontSize": 30,
+              "color": "#48C6FF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/czed8v6p",
+      "id": "21",
+      "name": "policy-cell-1-1",
+      "bbox": [
+        430,
+        630,
+        300,
+        48
+      ],
+      "composeSource": {
+        "run": 21,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Verified clinician, cross-jurisdiction",
+      "textPreview": "Verified clinician, cross-jurisdiction",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Verified clinician,"
+          },
+          {
+            "index": 2,
+            "text": "cross-jurisdiction"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Verified clinician, cross-jurisdiction",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Verified clinician, cross-jurisdiction",
+              "fontSize": 24,
+              "color": "#F7FBFF"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/neloj2t8",
+      "id": "22",
+      "name": "policy-cell-1-2",
+      "bbox": [
+        786,
+        630,
+        330,
+        24
+      ],
+      "composeSource": {
+        "run": 22,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Fuller summary after approval",
+      "textPreview": "Fuller summary after approval",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Fuller summary after approval"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Fuller summary after approval",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Fuller summary after approval",
+              "fontSize": 24,
+              "color": "#F7FBFF"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ytsvu9kn",
+      "id": "23",
+      "name": "policy-cell-1-3",
+      "bbox": [
+        1140,
+        630,
+        300,
+        24
+      ],
+      "composeSource": {
+        "run": 23,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Patient YES",
+      "textPreview": "Patient YES",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Patient YES"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Patient YES",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Patient YES",
+              "fontSize": 24,
+              "color": "#F7FBFF"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5sneloj2",
+      "id": "24",
+      "name": "policy-cell-1-4",
+      "bbox": [
+        1490,
+        630,
+        300,
+        24
+      ],
+      "composeSource": {
+        "run": 24,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Granted",
+      "textPreview": "Granted",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Granted"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Granted",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Granted",
+              "fontSize": 24,
+              "color": "#F7FBFF"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cbulwval",
+      "id": "25",
+      "name": "policy-row-rule-2",
+      "bbox": [
+        120,
+        712,
+        1688,
+        1
+      ],
+      "composeSource": {
+        "run": 25,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "fillColor": "#173247",
+      "lineColor": "#173247",
+      "lineWidth": 0
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nqxs72x4",
+      "id": "26",
+      "name": "policy-cell-2-0",
+      "bbox": [
+        130,
+        734,
+        300,
+        30
+      ],
+      "composeSource": {
+        "run": 26,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Tier 3",
+      "textPreview": "Tier 3",
+      "resolvedFontSize": 30,
+      "resolvedTextStyle": {
+        "fontSize": 30,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Tier 3"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Tier 3",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Tier 3",
+              "fontSize": 30,
+              "color": "#48C6FF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/u54zidon",
+      "id": "27",
+      "name": "policy-cell-2-1",
+      "bbox": [
+        430,
+        734,
+        300,
+        24
+      ],
+      "composeSource": {
+        "run": 27,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Break-glass emergency",
+      "textPreview": "Break-glass emergency",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Break-glass emergency"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Break-glass emergency",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Break-glass emergency",
+              "fontSize": 24,
+              "color": "#F7FBFF"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 28,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5wjudg7a",
+      "id": "28",
+      "name": "policy-cell-2-2",
+      "bbox": [
+        786,
+        734,
+        330,
+        24
+      ],
+      "composeSource": {
+        "run": 28,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Critical-only fields",
+      "textPreview": "Critical-only fields",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Critical-only fields"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Critical-only fields",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Critical-only fields",
+              "fontSize": 24,
+              "color": "#F7FBFF"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 29,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gbq1oryt",
+      "id": "29",
+      "name": "policy-cell-2-3",
+      "bbox": [
+        1140,
+        734,
+        300,
+        24
+      ],
+      "composeSource": {
+        "run": 29,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Unavailable patient",
+      "textPreview": "Unavailable patient",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Unavailable patient"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Unavailable patient",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Unavailable patient",
+              "fontSize": 24,
+              "color": "#F7FBFF"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 30,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qd4vmtwr",
+      "id": "30",
+      "name": "policy-cell-2-4",
+      "bbox": [
+        1490,
+        734,
+        300,
+        24
+      ],
+      "composeSource": {
+        "run": 30,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Granted",
+      "textPreview": "Granted",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Granted"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Granted",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Granted",
+              "fontSize": 24,
+              "color": "#F7FBFF"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 31,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fyxobm58",
+      "id": "31",
+      "name": "policy-row-rule-3",
+      "bbox": [
+        120,
+        816,
+        1688,
+        1
+      ],
+      "composeSource": {
+        "run": 31,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "fillColor": "#173247",
+      "lineColor": "#173247",
+      "lineWidth": 0
+    },
+    {
+      "order": 32,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8jqh0fep",
+      "id": "32",
+      "name": "policy-cell-3-0",
+      "bbox": [
+        130,
+        838,
+        300,
+        30
+      ],
+      "composeSource": {
+        "run": 32,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Denied",
+      "textPreview": "Denied",
+      "resolvedFontSize": 30,
+      "resolvedTextStyle": {
+        "fontSize": 30,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Denied"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Denied",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Denied",
+              "fontSize": 30,
+              "color": "#FF6B7A",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 33,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/x4nap4r6",
+      "id": "33",
+      "name": "policy-cell-3-1",
+      "bbox": [
+        430,
+        838,
+        300,
+        24
+      ],
+      "composeSource": {
+        "run": 33,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "No valid path",
+      "textPreview": "No valid path",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "No valid path"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "No valid path",
+          "runs": [
+            {
+              "index": 1,
+              "text": "No valid path",
+              "fontSize": 24,
+              "color": "#F7FBFF"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 34,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qpg3ex0n",
+      "id": "34",
+      "name": "policy-cell-3-2",
+      "bbox": [
+        786,
+        838,
+        330,
+        24
+      ],
+      "composeSource": {
+        "run": 34,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "No data released",
+      "textPreview": "No data released",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "No data released"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "No data released",
+          "runs": [
+            {
+              "index": 1,
+              "text": "No data released",
+              "fontSize": 24,
+              "color": "#F7FBFF"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 35,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fa9w3m94",
+      "id": "35",
+      "name": "policy-cell-3-3",
+      "bbox": [
+        1140,
+        838,
+        300,
+        24
+      ],
+      "composeSource": {
+        "run": 35,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "None",
+      "textPreview": "None",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "None"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "None",
+          "runs": [
+            {
+              "index": 1,
+              "text": "None",
+              "fontSize": 24,
+              "color": "#F7FBFF"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 36,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8v6psfil",
+      "id": "36",
+      "name": "policy-cell-3-4",
+      "bbox": [
+        1490,
+        838,
+        300,
+        24
+      ],
+      "composeSource": {
+        "run": 36,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Logged",
+      "textPreview": "Logged",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Logged"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Logged",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Logged",
+              "fontSize": 24,
+              "color": "#F7FBFF"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 37,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/xczed8v6",
+      "id": "37",
+      "name": "policy-bottom",
+      "bbox": [
+        190,
+        904,
+        1540,
+        58
+      ],
+      "composeSource": {
+        "run": 37,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "The LLM only interprets requests, translates approved content, and answers follow-up questions from the released subset.",
+      "textPreview": "The LLM only interprets requests, translates approved content, and answers follow-up questions from the released subset.",
+      "resolvedFontSize": 29,
+      "resolvedTextStyle": {
+        "fontSize": 29,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "The LLM only interprets requests, translates approved content, and answers follow-up questions from the released"
+          },
+          {
+            "index": 2,
+            "text": "subset."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "The LLM only interprets requests, translates approved content, and answers follow-up questions from the released subset.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "The LLM only interprets requests, translates approved content, and answers follow-up questions from the released subset.",
+              "fontSize": 29,
+              "color": "#C9FFE5"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "composeRuns": [
+    {
+      "index": 1,
+      "frame": {
+        "left": 0,
+        "top": 0,
+        "width": 1920,
+        "height": 1080
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "shape",
+        "name": "background",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 0,
+          "top": 0,
+          "width": 1920,
+          "height": 1080
+        },
+        "snappedFrame": {
+          "left": 0,
+          "top": 0,
+          "width": 1920,
+          "height": 1080
+        },
+        "children": [],
+        "geometry": "rect",
+        "element": {
+          "aid": "sh/ex0nuxc3",
+          "id": "1",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 2,
+      "frame": {
+        "left": 116,
+        "top": 86,
+        "width": 1080,
+        "height": 36
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "eyebrow",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 22
+        },
+        "frame": {
+          "left": 116,
+          "top": 86,
+          "width": 1080,
+          "height": 22
+        },
+        "snappedFrame": {
+          "left": 116,
+          "top": 86,
+          "width": 1080,
+          "height": 22
+        },
+        "children": [],
+        "text": "WHY DETERMINISTIC POLICY",
+        "transform": "none",
+        "element": {
+          "aid": "sh/loj2t83i",
+          "id": "2",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 3,
+      "frame": {
+        "left": 116,
+        "top": 136,
+        "width": 1280,
+        "height": 150
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "slide-title",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 58
+        },
+        "frame": {
+          "left": 116,
+          "top": 136,
+          "width": 1280,
+          "height": 116
+        },
+        "snappedFrame": {
+          "left": 116,
+          "top": 136,
+          "width": 1280,
+          "height": 116
+        },
+        "children": [],
+        "text": "The model helps with language. It never decides access.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/w3m94fu1",
+          "id": "3",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 4,
+      "frame": {
+        "left": 116,
+        "top": 290,
+        "width": 1060,
+        "height": 90
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "slide-subtitle",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 30
+        },
+        "frame": {
+          "left": 116,
+          "top": 290,
+          "width": 1060,
+          "height": 30
+        },
+        "snappedFrame": {
+          "left": 116,
+          "top": 290,
+          "width": 1060,
+          "height": 30
+        },
+        "children": [],
+        "text": "Medical authorization needs rules that can be tested, replayed, and defended.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/3q5o7qpg",
+          "id": "4",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 5,
+      "frame": {
+        "left": 116,
+        "top": 1016,
+        "width": 600,
+        "height": 32
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "footer-left",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 16
+        },
+        "frame": {
+          "left": 116,
+          "top": 1016,
+          "width": 600,
+          "height": 16
+        },
+        "snappedFrame": {
+          "left": 116,
+          "top": 1016,
+          "width": 600,
+          "height": 16
+        },
+        "children": [],
+        "text": "MedAgent pitch / 05",
+        "transform": "none",
+        "element": {
+          "aid": "sh/e9cvixcz",
+          "id": "5",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 6,
+      "frame": {
+        "left": 1640,
+        "top": 1030,
+        "width": 164,
+        "height": 4
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "rule",
+        "name": "footer-rule",
+        "requestedSize": {
+          "width": {
+            "mode": "fixed",
+            "value": 164
+          },
+          "height": {
+            "mode": "fixed",
+            "value": 2
+          }
+        },
+        "intrinsicSize": {
+          "width": 164,
+          "height": 2
+        },
+        "frame": {
+          "left": 1640,
+          "top": 1030,
+          "width": 164,
+          "height": 2
+        },
+        "snappedFrame": {
+          "left": 1640,
+          "top": 1030,
+          "width": 164,
+          "height": 2
+        },
+        "children": [],
+        "weight": 2,
+        "element": {
+          "aid": "sh/lwval87e",
+          "id": "6",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 7,
+      "frame": {
+        "left": 118,
+        "top": 424,
+        "width": 1686,
+        "height": 2
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "shape",
+        "name": "table-top",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 118,
+          "top": 424,
+          "width": 1686,
+          "height": 2
+        },
+        "snappedFrame": {
+          "left": 120,
+          "top": 424,
+          "width": 1688,
+          "height": 1
+        },
+        "children": [],
+        "geometry": "rect",
+        "element": {
+          "aid": "sh/wb2hwfyx",
+          "id": "7",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 8,
+      "frame": {
+        "left": 130,
+        "top": 452,
+        "width": 230,
+        "height": 38
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "policy-header-0",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 21
+        },
+        "frame": {
+          "left": 130,
+          "top": 452,
+          "width": 230,
+          "height": 21
+        },
+        "snappedFrame": {
+          "left": 130,
+          "top": 452,
+          "width": 230,
+          "height": 22
+        },
+        "children": [],
+        "text": "Path",
+        "transform": "none",
+        "element": {
+          "aid": "sh/32lszqtc",
+          "id": "8",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 9,
+      "frame": {
+        "left": 430,
+        "top": 452,
+        "width": 300,
+        "height": 38
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "policy-header-1",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 21
+        },
+        "frame": {
+          "left": 430,
+          "top": 452,
+          "width": 300,
+          "height": 21
+        },
+        "snappedFrame": {
+          "left": 430,
+          "top": 452,
+          "width": 300,
+          "height": 22
+        },
+        "children": [],
+        "text": "Requester condition",
+        "transform": "none",
+        "element": {
+          "aid": "sh/ahoza1gv",
+          "id": "9",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 10,
+      "frame": {
+        "left": 785,
+        "top": 452,
+        "width": 300,
+        "height": 38
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "policy-header-2",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 21
+        },
+        "frame": {
+          "left": 785,
+          "top": 452,
+          "width": 300,
+          "height": 21
+        },
+        "snappedFrame": {
+          "left": 786,
+          "top": 452,
+          "width": 300,
+          "height": 22
+        },
+        "children": [],
+        "text": "Release scope",
+        "transform": "none",
+        "element": {
+          "aid": "sh/cj6tovah",
+          "id": "10",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 11,
+      "frame": {
+        "left": 1140,
+        "top": 452,
+        "width": 300,
+        "height": 38
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "policy-header-3",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 21
+        },
+        "frame": {
+          "left": 1140,
+          "top": 452,
+          "width": 300,
+          "height": 21
+        },
+        "snappedFrame": {
+          "left": 1140,
+          "top": 452,
+          "width": 300,
+          "height": 22
+        },
+        "children": [],
+        "text": "Human role",
+        "transform": "none",
+        "element": {
+          "aid": "sh/54zidony",
+          "id": "11",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 12,
+      "frame": {
+        "left": 1490,
+        "top": 452,
+        "width": 300,
+        "height": 38
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "policy-header-4",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 21
+        },
+        "frame": {
+          "left": 1490,
+          "top": 452,
+          "width": 300,
+          "height": 21
+        },
+        "snappedFrame": {
+          "left": 1490,
+          "top": 452,
+          "width": 300,
+          "height": 22
+        },
+        "children": [],
+        "text": "Audit",
+        "transform": "none",
+        "element": {
+          "aid": "sh/udg7adsj",
+          "id": "12",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 13,
+      "frame": {
+        "left": 118,
+        "top": 501,
+        "width": 1686,
+        "height": 1
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "shape",
+        "name": "policy-row-rule-0",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 118,
+          "top": 501,
+          "width": 1686,
+          "height": 1
+        },
+        "snappedFrame": {
+          "left": 120,
+          "top": 504,
+          "width": 1688,
+          "height": 1
+        },
+        "children": [],
+        "geometry": "rect",
+        "element": {
+          "aid": "sh/nyd0z610",
+          "id": "13",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 14,
+      "frame": {
+        "left": 130,
+        "top": 525,
+        "width": 300,
+        "height": 66
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "policy-cell-0-0",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 30
+        },
+        "frame": {
+          "left": 130,
+          "top": 525,
+          "width": 300,
+          "height": 30
+        },
+        "snappedFrame": {
+          "left": 130,
+          "top": 526,
+          "width": 300,
+          "height": 30
+        },
+        "children": [],
+        "text": "Tier 1",
+        "transform": "none",
+        "element": {
+          "aid": "sh/cvixczed",
+          "id": "14",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 15,
+      "frame": {
+        "left": 430,
+        "top": 525,
+        "width": 300,
+        "height": 66
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "policy-cell-0-1",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 24
+        },
+        "frame": {
+          "left": 430,
+          "top": 525,
+          "width": 300,
+          "height": 48
+        },
+        "snappedFrame": {
+          "left": 430,
+          "top": 526,
+          "width": 300,
+          "height": 48
+        },
+        "children": [],
+        "text": "Verified clinician, same jurisdiction",
+        "transform": "none",
+        "element": {
+          "aid": "sh/5gbq1ory",
+          "id": "15",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 16,
+      "frame": {
+        "left": 785,
+        "top": 525,
+        "width": 330,
+        "height": 66
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "policy-cell-0-2",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 24
+        },
+        "frame": {
+          "left": 785,
+          "top": 525,
+          "width": 330,
+          "height": 24
+        },
+        "snappedFrame": {
+          "left": 786,
+          "top": 526,
+          "width": 330,
+          "height": 24
+        },
+        "children": [],
+        "text": "Emergency summary",
+        "transform": "none",
+        "element": {
+          "aid": "sh/upwb2hwf",
+          "id": "16",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 17,
+      "frame": {
+        "left": 1140,
+        "top": 525,
+        "width": 300,
+        "height": 66
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "policy-cell-0-3",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 24
+        },
+        "frame": {
+          "left": 1140,
+          "top": 525,
+          "width": 300,
+          "height": 24
+        },
+        "snappedFrame": {
+          "left": 1140,
+          "top": 526,
+          "width": 300,
+          "height": 24
+        },
+        "children": [],
+        "text": "None",
+        "transform": "none",
+        "element": {
+          "aid": "sh/nap4r65w",
+          "id": "17",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 18,
+      "frame": {
+        "left": 1490,
+        "top": 525,
+        "width": 300,
+        "height": 66
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "policy-cell-0-4",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 24
+        },
+        "frame": {
+          "left": 1490,
+          "top": 525,
+          "width": 300,
+          "height": 24
+        },
+        "snappedFrame": {
+          "left": 1490,
+          "top": 526,
+          "width": 300,
+          "height": 24
+        },
+        "children": [],
+        "text": "Granted",
+        "transform": "none",
+        "element": {
+          "aid": "sh/c7u54zid",
+          "id": "18",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 19,
+      "frame": {
+        "left": 118,
+        "top": 605,
+        "width": 1686,
+        "height": 1
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "shape",
+        "name": "policy-row-rule-1",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 118,
+          "top": 605,
+          "width": 1686,
+          "height": 1
+        },
+        "snappedFrame": {
+          "left": 120,
+          "top": 608,
+          "width": 1688,
+          "height": 1
+        },
+        "children": [],
+        "geometry": "rect",
+        "element": {
+          "aid": "sh/1orytsvu",
+          "id": "19",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 20,
+      "frame": {
+        "left": 130,
+        "top": 629,
+        "width": 300,
+        "height": 66
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "policy-cell-1-0",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 30
+        },
+        "frame": {
+          "left": 130,
+          "top": 629,
+          "width": 300,
+          "height": 30
+        },
+        "snappedFrame": {
+          "left": 130,
+          "top": 630,
+          "width": 300,
+          "height": 30
+        },
+        "children": [],
+        "text": "Tier 2",
+        "transform": "none",
+        "element": {
+          "aid": "sh/5kb6xkf6",
+          "id": "20",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 21,
+      "frame": {
+        "left": 430,
+        "top": 629,
+        "width": 300,
+        "height": 66
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "policy-cell-1-1",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 24
+        },
+        "frame": {
+          "left": 430,
+          "top": 629,
+          "width": 300,
+          "height": 48
+        },
+        "snappedFrame": {
+          "left": 430,
+          "top": 630,
+          "width": 300,
+          "height": 48
+        },
+        "children": [],
+        "text": "Verified clinician, cross-jurisdiction",
+        "transform": "none",
+        "element": {
+          "aid": "sh/czed8v6p",
+          "id": "21",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 22,
+      "frame": {
+        "left": 785,
+        "top": 629,
+        "width": 330,
+        "height": 66
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "policy-cell-1-2",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 24
+        },
+        "frame": {
+          "left": 785,
+          "top": 629,
+          "width": 330,
+          "height": 24
+        },
+        "snappedFrame": {
+          "left": 786,
+          "top": 630,
+          "width": 330,
+          "height": 24
+        },
+        "children": [],
+        "text": "Fuller summary after approval",
+        "transform": "none",
+        "element": {
+          "aid": "sh/neloj2t8",
+          "id": "22",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 23,
+      "frame": {
+        "left": 1140,
+        "top": 629,
+        "width": 300,
+        "height": 66
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "policy-cell-1-3",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 24
+        },
+        "frame": {
+          "left": 1140,
+          "top": 629,
+          "width": 300,
+          "height": 24
+        },
+        "snappedFrame": {
+          "left": 1140,
+          "top": 630,
+          "width": 300,
+          "height": 24
+        },
+        "children": [],
+        "text": "Patient YES",
+        "transform": "none",
+        "element": {
+          "aid": "sh/ytsvu9kn",
+          "id": "23",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 24,
+      "frame": {
+        "left": 1490,
+        "top": 629,
+        "width": 300,
+        "height": 66
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "policy-cell-1-4",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 24
+        },
+        "frame": {
+          "left": 1490,
+          "top": 629,
+          "width": 300,
+          "height": 24
+        },
+        "snappedFrame": {
+          "left": 1490,
+          "top": 630,
+          "width": 300,
+          "height": 24
+        },
+        "children": [],
+        "text": "Granted",
+        "transform": "none",
+        "element": {
+          "aid": "sh/5sneloj2",
+          "id": "24",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 25,
+      "frame": {
+        "left": 118,
+        "top": 709,
+        "width": 1686,
+        "height": 1
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "shape",
+        "name": "policy-row-rule-2",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 118,
+          "top": 709,
+          "width": 1686,
+          "height": 1
+        },
+        "snappedFrame": {
+          "left": 120,
+          "top": 712,
+          "width": 1688,
+          "height": 1
+        },
+        "children": [],
+        "geometry": "rect",
+        "element": {
+          "aid": "sh/cbulwval",
+          "id": "25",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 26,
+      "frame": {
+        "left": 130,
+        "top": 733,
+        "width": 300,
+        "height": 66
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "policy-cell-2-0",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 30
+        },
+        "frame": {
+          "left": 130,
+          "top": 733,
+          "width": 300,
+          "height": 30
+        },
+        "snappedFrame": {
+          "left": 130,
+          "top": 734,
+          "width": 300,
+          "height": 30
+        },
+        "children": [],
+        "text": "Tier 3",
+        "transform": "none",
+        "element": {
+          "aid": "sh/nqxs72x4",
+          "id": "26",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 27,
+      "frame": {
+        "left": 430,
+        "top": 733,
+        "width": 300,
+        "height": 66
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "policy-cell-2-1",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 24
+        },
+        "frame": {
+          "left": 430,
+          "top": 733,
+          "width": 300,
+          "height": 24
+        },
+        "snappedFrame": {
+          "left": 430,
+          "top": 734,
+          "width": 300,
+          "height": 24
+        },
+        "children": [],
+        "text": "Break-glass emergency",
+        "transform": "none",
+        "element": {
+          "aid": "sh/u54zidon",
+          "id": "27",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 28,
+      "frame": {
+        "left": 785,
+        "top": 733,
+        "width": 330,
+        "height": 66
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "policy-cell-2-2",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 24
+        },
+        "frame": {
+          "left": 785,
+          "top": 733,
+          "width": 330,
+          "height": 24
+        },
+        "snappedFrame": {
+          "left": 786,
+          "top": 734,
+          "width": 330,
+          "height": 24
+        },
+        "children": [],
+        "text": "Critical-only fields",
+        "transform": "none",
+        "element": {
+          "aid": "sh/5wjudg7a",
+          "id": "28",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 29,
+      "frame": {
+        "left": 1140,
+        "top": 733,
+        "width": 300,
+        "height": 66
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "policy-cell-2-3",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 24
+        },
+        "frame": {
+          "left": 1140,
+          "top": 733,
+          "width": 300,
+          "height": 24
+        },
+        "snappedFrame": {
+          "left": 1140,
+          "top": 734,
+          "width": 300,
+          "height": 24
+        },
+        "children": [],
+        "text": "Unavailable patient",
+        "transform": "none",
+        "element": {
+          "aid": "sh/gbq1oryt",
+          "id": "29",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 30,
+      "frame": {
+        "left": 1490,
+        "top": 733,
+        "width": 300,
+        "height": 66
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "policy-cell-2-4",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 24
+        },
+        "frame": {
+          "left": 1490,
+          "top": 733,
+          "width": 300,
+          "height": 24
+        },
+        "snappedFrame": {
+          "left": 1490,
+          "top": 734,
+          "width": 300,
+          "height": 24
+        },
+        "children": [],
+        "text": "Granted",
+        "transform": "none",
+        "element": {
+          "aid": "sh/qd4vmtwr",
+          "id": "30",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 31,
+      "frame": {
+        "left": 118,
+        "top": 813,
+        "width": 1686,
+        "height": 1
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "shape",
+        "name": "policy-row-rule-3",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 118,
+          "top": 813,
+          "width": 1686,
+          "height": 1
+        },
+        "snappedFrame": {
+          "left": 120,
+          "top": 816,
+          "width": 1688,
+          "height": 1
+        },
+        "children": [],
+        "geometry": "rect",
+        "element": {
+          "aid": "sh/fyxobm58",
+          "id": "31",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 32,
+      "frame": {
+        "left": 130,
+        "top": 837,
+        "width": 300,
+        "height": 66
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "policy-cell-3-0",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 30
+        },
+        "frame": {
+          "left": 130,
+          "top": 837,
+          "width": 300,
+          "height": 30
+        },
+        "snappedFrame": {
+          "left": 130,
+          "top": 838,
+          "width": 300,
+          "height": 30
+        },
+        "children": [],
+        "text": "Denied",
+        "transform": "none",
+        "element": {
+          "aid": "sh/8jqh0fep",
+          "id": "32",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 33,
+      "frame": {
+        "left": 430,
+        "top": 837,
+        "width": 300,
+        "height": 66
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "policy-cell-3-1",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 24
+        },
+        "frame": {
+          "left": 430,
+          "top": 837,
+          "width": 300,
+          "height": 24
+        },
+        "snappedFrame": {
+          "left": 430,
+          "top": 838,
+          "width": 300,
+          "height": 24
+        },
+        "children": [],
+        "text": "No valid path",
+        "transform": "none",
+        "element": {
+          "aid": "sh/x4nap4r6",
+          "id": "33",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 34,
+      "frame": {
+        "left": 785,
+        "top": 837,
+        "width": 330,
+        "height": 66
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "policy-cell-3-2",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 24
+        },
+        "frame": {
+          "left": 785,
+          "top": 837,
+          "width": 330,
+          "height": 24
+        },
+        "snappedFrame": {
+          "left": 786,
+          "top": 838,
+          "width": 330,
+          "height": 24
+        },
+        "children": [],
+        "text": "No data released",
+        "transform": "none",
+        "element": {
+          "aid": "sh/qpg3ex0n",
+          "id": "34",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 35,
+      "frame": {
+        "left": 1140,
+        "top": 837,
+        "width": 300,
+        "height": 66
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "policy-cell-3-3",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 24
+        },
+        "frame": {
+          "left": 1140,
+          "top": 837,
+          "width": 300,
+          "height": 24
+        },
+        "snappedFrame": {
+          "left": 1140,
+          "top": 838,
+          "width": 300,
+          "height": 24
+        },
+        "children": [],
+        "text": "None",
+        "transform": "none",
+        "element": {
+          "aid": "sh/fa9w3m94",
+          "id": "35",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 36,
+      "frame": {
+        "left": 1490,
+        "top": 837,
+        "width": 300,
+        "height": 66
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "policy-cell-3-4",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 24
+        },
+        "frame": {
+          "left": 1490,
+          "top": 837,
+          "width": 300,
+          "height": 24
+        },
+        "snappedFrame": {
+          "left": 1490,
+          "top": 838,
+          "width": 300,
+          "height": 24
+        },
+        "children": [],
+        "text": "Logged",
+        "transform": "none",
+        "element": {
+          "aid": "sh/8v6psfil",
+          "id": "36",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 37,
+      "frame": {
+        "left": 190,
+        "top": 904,
+        "width": 1540,
+        "height": 72
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "policy-bottom",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 29
+        },
+        "frame": {
+          "left": 190,
+          "top": 904,
+          "width": 1540,
+          "height": 58
+        },
+        "snappedFrame": {
+          "left": 190,
+          "top": 904,
+          "width": 1540,
+          "height": 58
+        },
+        "children": [],
+        "text": "The LLM only interprets requests, translates approved content, and answers follow-up questions from the released subset.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/xczed8v6",
+          "id": "37",
+          "kind": "shape"
+        }
+      }
+    }
+  ]
+}

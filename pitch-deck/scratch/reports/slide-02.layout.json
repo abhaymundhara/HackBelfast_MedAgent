@@ -1,0 +1,1709 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/7mm8mg",
+    "id": "7mm8mg",
+    "slide": 2,
+    "layoutId": "0af95391-a13b-4a3c-b532-3552755e4c1a",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "3f5a9256-fc31-4a95-9ff9-d60207f8e03e",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1920,
+      "height": 1080
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "0af95391-a13b-4a3c-b532-3552755e4c1a",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "3f5a9256-fc31-4a95-9ff9-d60207f8e03e",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "3f5a9256-fc31-4a95-9ff9-d60207f8e03e",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/loj2t83i",
+      "id": "1",
+      "name": "background",
+      "bbox": [
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "fillColor": "#06121B",
+      "lineColor": "#06121B",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ex0nuxc3",
+      "id": "2",
+      "name": "eyebrow",
+      "bbox": [
+        116,
+        86,
+        1080,
+        22
+      ],
+      "composeSource": {
+        "run": 2,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "WHY THIS PROBLEM",
+      "textPreview": "WHY THIS PROBLEM",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "fontSize": 22,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "WHY THIS PROBLEM"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "WHY THIS PROBLEM",
+          "runs": [
+            {
+              "index": 1,
+              "text": "WHY THIS PROBLEM",
+              "fontSize": 22,
+              "color": "#53E0A5",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3itgfmlk",
+      "id": "3",
+      "name": "slide-title",
+      "bbox": [
+        116,
+        136,
+        1280,
+        116
+      ],
+      "composeSource": {
+        "run": 3,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Emergency care fails in the gap between systems.",
+      "textPreview": "Emergency care fails in the gap between systems.",
+      "resolvedFontSize": 58,
+      "resolvedTextStyle": {
+        "fontSize": 58,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Emergency care fails in the gap between"
+          },
+          {
+            "index": 2,
+            "text": "systems."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Emergency care fails in the gap between systems.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Emergency care fails in the gap between systems.",
+              "fontSize": 58,
+              "color": "#F7FBFF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wb2hwfyx",
+      "id": "4",
+      "name": "slide-subtitle",
+      "bbox": [
+        116,
+        290,
+        1060,
+        60
+      ],
+      "composeSource": {
+        "run": 4,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "The need is not another portal. It is fast, narrow, auditable access when a traveler becomes a patient.",
+      "textPreview": "The need is not another portal. It is fast, narrow, auditable access when a traveler becomes a patient.",
+      "resolvedFontSize": 30,
+      "resolvedTextStyle": {
+        "fontSize": 30,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "The need is not another portal. It is fast, narrow, auditable access when a"
+          },
+          {
+            "index": 2,
+            "text": "traveler becomes a patient."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "The need is not another portal. It is fast, narrow, auditable access when a traveler becomes a patient.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "The need is not another portal. It is fast, narrow, auditable access when a traveler becomes a patient.",
+              "fontSize": 30,
+              "color": "#A7B7C7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lwval87e",
+      "id": "5",
+      "name": "footer-left",
+      "bbox": [
+        116,
+        1016,
+        600,
+        16
+      ],
+      "composeSource": {
+        "run": 5,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "MedAgent pitch / 02",
+      "textPreview": "MedAgent pitch / 02",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "MedAgent pitch / 02"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "MedAgent pitch / 02",
+          "runs": [
+            {
+              "index": 1,
+              "text": "MedAgent pitch / 02",
+              "fontSize": 16,
+              "color": "#607A8E"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/e9cvixcz",
+      "id": "6",
+      "name": "footer-rule",
+      "bbox": [
+        1640,
+        1030,
+        164,
+        2
+      ],
+      "composeSource": {
+        "run": 6,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "fillColor": "#1F4054",
+      "lineColor": "#1F4054",
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3q5o7qpg",
+      "id": "7",
+      "name": "route-line",
+      "bbox": [
+        120,
+        440,
+        1688,
+        1
+      ],
+      "composeSource": {
+        "run": 7,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "fillColor": "#1F4054",
+      "lineColor": "#1F4054",
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/sneloj2t",
+      "id": "8",
+      "name": "problem-num-1",
+      "bbox": [
+        120,
+        508,
+        74,
+        84
+      ],
+      "composeSource": {
+        "run": 8,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "1",
+      "textPreview": "1",
+      "resolvedFontSize": 84,
+      "resolvedTextStyle": {
+        "fontSize": 84,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "1"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "1",
+          "runs": [
+            {
+              "index": 1,
+              "text": "1",
+              "fontSize": 84,
+              "color": "#53E0A5",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/l87ed8ba",
+      "id": "9",
+      "name": "problem-head-1",
+      "bbox": [
+        212,
+        520,
+        380,
+        34
+      ],
+      "composeSource": {
+        "run": 9,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Clinician has minutes",
+      "textPreview": "Clinician has minutes",
+      "resolvedFontSize": 34,
+      "resolvedTextStyle": {
+        "fontSize": 34,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Clinician has minutes"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Clinician has minutes",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Clinician has minutes",
+              "fontSize": 34,
+              "color": "#F7FBFF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5kb6xkf6",
+      "id": "10",
+      "name": "problem-body-1",
+      "bbox": [
+        212,
+        594,
+        410,
+        82
+      ],
+      "composeSource": {
+        "run": 10,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "A treating doctor needs allergies, meds, risks, and context before the home system can be reached.",
+      "textPreview": "A treating doctor needs allergies, meds, risks, and context before the home system can be reached.",
+      "resolvedFontSize": 27,
+      "resolvedTextStyle": {
+        "fontSize": 27,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "A treating doctor needs allergies,"
+          },
+          {
+            "index": 2,
+            "text": "meds, risks, and context before"
+          },
+          {
+            "index": 3,
+            "text": "the home system can be reached."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "A treating doctor needs allergies, meds, risks, and context before the home system can be reached.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "A treating doctor needs allergies, meds, risks, and context before the home system can be reached.",
+              "fontSize": 27,
+              "color": "#A7B7C7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/czed8v6p",
+      "id": "11",
+      "name": "problem-num-2",
+      "bbox": [
+        690,
+        508,
+        74,
+        84
+      ],
+      "composeSource": {
+        "run": 11,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "2",
+      "textPreview": "2",
+      "resolvedFontSize": 84,
+      "resolvedTextStyle": {
+        "fontSize": 84,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "2"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "2",
+          "runs": [
+            {
+              "index": 1,
+              "text": "2",
+              "fontSize": 84,
+              "color": "#48C6FF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/neloj2t8",
+      "id": "12",
+      "name": "problem-head-2",
+      "bbox": [
+        782,
+        520,
+        380,
+        68
+      ],
+      "composeSource": {
+        "run": 12,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Patient may be unavailable",
+      "textPreview": "Patient may be unavailable",
+      "resolvedFontSize": 34,
+      "resolvedTextStyle": {
+        "fontSize": 34,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Patient may be"
+          },
+          {
+            "index": 2,
+            "text": "unavailable"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Patient may be unavailable",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Patient may be unavailable",
+              "fontSize": 34,
+              "color": "#F7FBFF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ytsvu9kn",
+      "id": "13",
+      "name": "problem-body-2",
+      "bbox": [
+        782,
+        594,
+        410,
+        82
+      ],
+      "composeSource": {
+        "run": 13,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Consent matters, but unconscious-patient emergencies need a narrow break-glass path.",
+      "textPreview": "Consent matters, but unconscious-patient emergencies need a narrow break-glass path.",
+      "resolvedFontSize": 27,
+      "resolvedTextStyle": {
+        "fontSize": 27,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Consent matters, but"
+          },
+          {
+            "index": 2,
+            "text": "unconscious-patient emergencies"
+          },
+          {
+            "index": 3,
+            "text": "need a narrow break-glass path."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Consent matters, but unconscious-patient emergencies need a narrow break-glass path.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Consent matters, but unconscious-patient emergencies need a narrow break-glass path.",
+              "fontSize": 27,
+              "color": "#A7B7C7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5sneloj2",
+      "id": "14",
+      "name": "problem-num-3",
+      "bbox": [
+        1260,
+        508,
+        74,
+        84
+      ],
+      "composeSource": {
+        "run": 14,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "3",
+      "textPreview": "3",
+      "resolvedFontSize": 84,
+      "resolvedTextStyle": {
+        "fontSize": 84,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "3"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "3",
+          "runs": [
+            {
+              "index": 1,
+              "text": "3",
+              "fontSize": 84,
+              "color": "#53E0A5",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cbulwval",
+      "id": "15",
+      "name": "problem-head-3",
+      "bbox": [
+        1352,
+        520,
+        380,
+        68
+      ],
+      "composeSource": {
+        "run": 15,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Trust crosses borders badly",
+      "textPreview": "Trust crosses borders badly",
+      "resolvedFontSize": 34,
+      "resolvedTextStyle": {
+        "fontSize": 34,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Trust crosses borders"
+          },
+          {
+            "index": 2,
+            "text": "badly"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Trust crosses borders badly",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Trust crosses borders badly",
+              "fontSize": 34,
+              "color": "#F7FBFF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nqxs72x4",
+      "id": "16",
+      "name": "problem-body-3",
+      "bbox": [
+        1352,
+        594,
+        410,
+        82
+      ],
+      "composeSource": {
+        "run": 16,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Different jurisdictions, boards, and hospitals create uncertainty around who should see what.",
+      "textPreview": "Different jurisdictions, boards, and hospitals create uncertainty around who should see what.",
+      "resolvedFontSize": 27,
+      "resolvedTextStyle": {
+        "fontSize": 27,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Different jurisdictions, boards,"
+          },
+          {
+            "index": 2,
+            "text": "and hospitals create uncertainty"
+          },
+          {
+            "index": 3,
+            "text": "around who should see what."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Different jurisdictions, boards, and hospitals create uncertainty around who should see what.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Different jurisdictions, boards, and hospitals create uncertainty around who should see what.",
+              "fontSize": 27,
+              "color": "#A7B7C7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/u54zidon",
+      "id": "17",
+      "name": "problem-landing",
+      "bbox": [
+        250,
+        826,
+        1420,
+        68
+      ],
+      "composeSource": {
+        "run": 17,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "MedAgent narrows the question: what emergency subset can be released, to this requester, for this reason, for this amount of time?",
+      "textPreview": "MedAgent narrows the question: what emergency subset can be released, to this requester, for this reason, for this amount of time?",
+      "resolvedFontSize": 34,
+      "resolvedTextStyle": {
+        "fontSize": 34,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "MedAgent narrows the question: what emergency subset can be released, to this"
+          },
+          {
+            "index": 2,
+            "text": "requester, for this reason, for this amount of time?"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "MedAgent narrows the question: what emergency subset can be released, to this requester, for this reason, for this amount of time?",
+          "runs": [
+            {
+              "index": 1,
+              "text": "MedAgent narrows the question: what emergency subset can be released, to this requester, for this reason, for this amount of time?",
+              "fontSize": 34,
+              "color": "#F7FBFF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "composeRuns": [
+    {
+      "index": 1,
+      "frame": {
+        "left": 0,
+        "top": 0,
+        "width": 1920,
+        "height": 1080
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "shape",
+        "name": "background",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 0,
+          "top": 0,
+          "width": 1920,
+          "height": 1080
+        },
+        "snappedFrame": {
+          "left": 0,
+          "top": 0,
+          "width": 1920,
+          "height": 1080
+        },
+        "children": [],
+        "geometry": "rect",
+        "element": {
+          "aid": "sh/loj2t83i",
+          "id": "1",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 2,
+      "frame": {
+        "left": 116,
+        "top": 86,
+        "width": 1080,
+        "height": 36
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "eyebrow",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 22
+        },
+        "frame": {
+          "left": 116,
+          "top": 86,
+          "width": 1080,
+          "height": 22
+        },
+        "snappedFrame": {
+          "left": 116,
+          "top": 86,
+          "width": 1080,
+          "height": 22
+        },
+        "children": [],
+        "text": "WHY THIS PROBLEM",
+        "transform": "none",
+        "element": {
+          "aid": "sh/ex0nuxc3",
+          "id": "2",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 3,
+      "frame": {
+        "left": 116,
+        "top": 136,
+        "width": 1280,
+        "height": 150
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "slide-title",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 58
+        },
+        "frame": {
+          "left": 116,
+          "top": 136,
+          "width": 1280,
+          "height": 116
+        },
+        "snappedFrame": {
+          "left": 116,
+          "top": 136,
+          "width": 1280,
+          "height": 116
+        },
+        "children": [],
+        "text": "Emergency care fails in the gap between systems.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/3itgfmlk",
+          "id": "3",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 4,
+      "frame": {
+        "left": 116,
+        "top": 290,
+        "width": 1060,
+        "height": 90
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "slide-subtitle",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 30
+        },
+        "frame": {
+          "left": 116,
+          "top": 290,
+          "width": 1060,
+          "height": 60
+        },
+        "snappedFrame": {
+          "left": 116,
+          "top": 290,
+          "width": 1060,
+          "height": 60
+        },
+        "children": [],
+        "text": "The need is not another portal. It is fast, narrow, auditable access when a traveler becomes a patient.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/wb2hwfyx",
+          "id": "4",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 5,
+      "frame": {
+        "left": 116,
+        "top": 1016,
+        "width": 600,
+        "height": 32
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "footer-left",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 16
+        },
+        "frame": {
+          "left": 116,
+          "top": 1016,
+          "width": 600,
+          "height": 16
+        },
+        "snappedFrame": {
+          "left": 116,
+          "top": 1016,
+          "width": 600,
+          "height": 16
+        },
+        "children": [],
+        "text": "MedAgent pitch / 02",
+        "transform": "none",
+        "element": {
+          "aid": "sh/lwval87e",
+          "id": "5",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 6,
+      "frame": {
+        "left": 1640,
+        "top": 1030,
+        "width": 164,
+        "height": 4
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "rule",
+        "name": "footer-rule",
+        "requestedSize": {
+          "width": {
+            "mode": "fixed",
+            "value": 164
+          },
+          "height": {
+            "mode": "fixed",
+            "value": 2
+          }
+        },
+        "intrinsicSize": {
+          "width": 164,
+          "height": 2
+        },
+        "frame": {
+          "left": 1640,
+          "top": 1030,
+          "width": 164,
+          "height": 2
+        },
+        "snappedFrame": {
+          "left": 1640,
+          "top": 1030,
+          "width": 164,
+          "height": 2
+        },
+        "children": [],
+        "weight": 2,
+        "element": {
+          "aid": "sh/e9cvixcz",
+          "id": "6",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 7,
+      "frame": {
+        "left": 116,
+        "top": 438,
+        "width": 1688,
+        "height": 2
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "shape",
+        "name": "route-line",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 116,
+          "top": 438,
+          "width": 1688,
+          "height": 2
+        },
+        "snappedFrame": {
+          "left": 120,
+          "top": 440,
+          "width": 1688,
+          "height": 1
+        },
+        "children": [],
+        "geometry": "rect",
+        "element": {
+          "aid": "sh/3q5o7qpg",
+          "id": "7",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 8,
+      "frame": {
+        "left": 120,
+        "top": 508,
+        "width": 74,
+        "height": 78
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "problem-num-1",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 84
+        },
+        "frame": {
+          "left": 120,
+          "top": 508,
+          "width": 74,
+          "height": 84
+        },
+        "snappedFrame": {
+          "left": 120,
+          "top": 508,
+          "width": 74,
+          "height": 84
+        },
+        "children": [],
+        "text": "1",
+        "transform": "none",
+        "element": {
+          "aid": "sh/sneloj2t",
+          "id": "8",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 9,
+      "frame": {
+        "left": 212,
+        "top": 520,
+        "width": 380,
+        "height": 54
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "problem-head-1",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 34
+        },
+        "frame": {
+          "left": 212,
+          "top": 520,
+          "width": 380,
+          "height": 34
+        },
+        "snappedFrame": {
+          "left": 212,
+          "top": 520,
+          "width": 380,
+          "height": 34
+        },
+        "children": [],
+        "text": "Clinician has minutes",
+        "transform": "none",
+        "element": {
+          "aid": "sh/l87ed8ba",
+          "id": "9",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 10,
+      "frame": {
+        "left": 212,
+        "top": 594,
+        "width": 410,
+        "height": 172
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "problem-body-1",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 27
+        },
+        "frame": {
+          "left": 212,
+          "top": 594,
+          "width": 410,
+          "height": 81
+        },
+        "snappedFrame": {
+          "left": 212,
+          "top": 594,
+          "width": 410,
+          "height": 82
+        },
+        "children": [],
+        "text": "A treating doctor needs allergies, meds, risks, and context before the home system can be reached.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/5kb6xkf6",
+          "id": "10",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 11,
+      "frame": {
+        "left": 690,
+        "top": 508,
+        "width": 74,
+        "height": 78
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "problem-num-2",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 84
+        },
+        "frame": {
+          "left": 690,
+          "top": 508,
+          "width": 74,
+          "height": 84
+        },
+        "snappedFrame": {
+          "left": 690,
+          "top": 508,
+          "width": 74,
+          "height": 84
+        },
+        "children": [],
+        "text": "2",
+        "transform": "none",
+        "element": {
+          "aid": "sh/czed8v6p",
+          "id": "11",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 12,
+      "frame": {
+        "left": 782,
+        "top": 520,
+        "width": 380,
+        "height": 54
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "problem-head-2",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 34
+        },
+        "frame": {
+          "left": 782,
+          "top": 520,
+          "width": 380,
+          "height": 68
+        },
+        "snappedFrame": {
+          "left": 782,
+          "top": 520,
+          "width": 380,
+          "height": 68
+        },
+        "children": [],
+        "text": "Patient may be unavailable",
+        "transform": "none",
+        "element": {
+          "aid": "sh/neloj2t8",
+          "id": "12",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 13,
+      "frame": {
+        "left": 782,
+        "top": 594,
+        "width": 410,
+        "height": 172
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "problem-body-2",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 27
+        },
+        "frame": {
+          "left": 782,
+          "top": 594,
+          "width": 410,
+          "height": 81
+        },
+        "snappedFrame": {
+          "left": 782,
+          "top": 594,
+          "width": 410,
+          "height": 82
+        },
+        "children": [],
+        "text": "Consent matters, but unconscious-patient emergencies need a narrow break-glass path.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/ytsvu9kn",
+          "id": "13",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 14,
+      "frame": {
+        "left": 1260,
+        "top": 508,
+        "width": 74,
+        "height": 78
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "problem-num-3",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 84
+        },
+        "frame": {
+          "left": 1260,
+          "top": 508,
+          "width": 74,
+          "height": 84
+        },
+        "snappedFrame": {
+          "left": 1260,
+          "top": 508,
+          "width": 74,
+          "height": 84
+        },
+        "children": [],
+        "text": "3",
+        "transform": "none",
+        "element": {
+          "aid": "sh/5sneloj2",
+          "id": "14",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 15,
+      "frame": {
+        "left": 1352,
+        "top": 520,
+        "width": 380,
+        "height": 54
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "problem-head-3",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 34
+        },
+        "frame": {
+          "left": 1352,
+          "top": 520,
+          "width": 380,
+          "height": 68
+        },
+        "snappedFrame": {
+          "left": 1352,
+          "top": 520,
+          "width": 380,
+          "height": 68
+        },
+        "children": [],
+        "text": "Trust crosses borders badly",
+        "transform": "none",
+        "element": {
+          "aid": "sh/cbulwval",
+          "id": "15",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 16,
+      "frame": {
+        "left": 1352,
+        "top": 594,
+        "width": 410,
+        "height": 172
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "problem-body-3",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 27
+        },
+        "frame": {
+          "left": 1352,
+          "top": 594,
+          "width": 410,
+          "height": 81
+        },
+        "snappedFrame": {
+          "left": 1352,
+          "top": 594,
+          "width": 410,
+          "height": 82
+        },
+        "children": [],
+        "text": "Different jurisdictions, boards, and hospitals create uncertainty around who should see what.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/nqxs72x4",
+          "id": "16",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 17,
+      "frame": {
+        "left": 250,
+        "top": 826,
+        "width": 1420,
+        "height": 96
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "problem-landing",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 34
+        },
+        "frame": {
+          "left": 250,
+          "top": 826,
+          "width": 1420,
+          "height": 68
+        },
+        "snappedFrame": {
+          "left": 250,
+          "top": 826,
+          "width": 1420,
+          "height": 68
+        },
+        "children": [],
+        "text": "MedAgent narrows the question: what emergency subset can be released, to this requester, for this reason, for this amount of time?",
+        "transform": "none",
+        "element": {
+          "aid": "sh/u54zidon",
+          "id": "17",
+          "kind": "shape"
+        }
+      }
+    }
+  ]
+}

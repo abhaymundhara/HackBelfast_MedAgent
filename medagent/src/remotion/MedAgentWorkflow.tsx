@@ -118,8 +118,19 @@ const messages: ChatMessage[] = [
     lines: [
       "done. your medical record is shared with Dr. Chidi Okonkwo.",
       "doctor link created",
-      "Solana audit receipt stored",
+      "Solana receipt: 632NPjgP...LP4nY",
       "revoke access anytime from your dashboard",
+    ],
+  },
+  {
+    id: "dashboard",
+    from: 548,
+    side: "baymax",
+    lines: [
+      "i've also updated your patient dashboard.",
+      "Live record share: ACTIVE",
+      "Access log: record_shared",
+      "You can revoke the doctor link anytime.",
     ],
   },
 ];
@@ -583,8 +594,16 @@ const ChatTranscript = () => {
   const { fps } = useVideoConfig();
   const scroll = interpolate(
     frame,
-    [0, frameFor(4.7, fps), frameFor(8.2, fps), frameFor(11.9, fps), frameFor(15.25, fps)],
-    [0, 0, -208, -486, -694],
+    [
+      0,
+      frameFor(4.7, fps),
+      frameFor(8.2, fps),
+      frameFor(11.9, fps),
+      frameFor(15.25, fps),
+      frameFor(18.4, fps),
+      frameFor(21.2, fps),
+    ],
+    [0, 0, -208, -486, -694, -846, -970],
     { ...clamp, easing: Easing.inOut(Easing.sin) },
   );
 
@@ -812,7 +831,7 @@ const TapIndicator = () => {
 const SpotlightLabels = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const opacity = interpolate(frame, [frameFor(14.0, fps), frameFor(15.0, fps)], [0, 1], clamp);
+  const opacity = interpolate(frame, [frameFor(15.2, fps), frameFor(16.1, fps)], [0, 1], clamp);
 
   return (
     <div
@@ -825,11 +844,214 @@ const SpotlightLabels = () => {
         opacity,
       }}
     >
-      <div style={{ fontSize: 22, fontWeight: 800, color: "#14f195", marginBottom: 10 }}>
-        audit confirmed
+      <div style={{ fontSize: 21, fontWeight: 800, color: "#14f195", marginBottom: 10 }}>
+        frontend updated
       </div>
       <div style={{ fontSize: 34, lineHeight: 1.04, fontWeight: 900, letterSpacing: 0 }}>
-        Consent, share link, and Solana receipt all happen in chat.
+        Consent, share link, Solana proof, and revocation all surface in the app.
+      </div>
+    </div>
+  );
+};
+
+const StatusDot = ({ tone }: { tone: "green" | "blue" | "amber" }) => {
+  const color = tone === "green" ? "#22c55e" : tone === "blue" ? "#0a84ff" : "#f59e0b";
+  return (
+    <span
+      style={{
+        width: 9,
+        height: 9,
+        borderRadius: 999,
+        background: color,
+        boxShadow: `0 0 18px ${color}88`,
+        flex: "0 0 auto",
+      }}
+    />
+  );
+};
+
+const AuditLogPanel = () => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const opacity = interpolate(frame, [frameFor(13.7, fps), frameFor(14.6, fps)], [0, 1], clamp);
+  const lift = interpolate(opacity, [0, 1], [22, 0], clamp);
+
+  return (
+    <div
+      style={{
+        position: "absolute",
+        left: 92,
+        top: 548,
+        width: 500,
+        borderRadius: 24,
+        background: "rgba(248,250,252,0.94)",
+        color: "#0f172a",
+        border: "1px solid rgba(148,163,184,0.32)",
+        boxShadow: "0 28px 90px rgba(0,0,0,0.34)",
+        overflow: "hidden",
+        opacity,
+        transform: `translateY(${lift}px)`,
+      }}
+    >
+      <div style={{ padding: "20px 22px 16px", borderBottom: "1px solid #dbe3ef" }}>
+        <div
+          style={{
+            fontSize: 13,
+            letterSpacing: 1.8,
+            textTransform: "uppercase",
+            color: "#64748b",
+            fontWeight: 800,
+          }}
+        >
+          Access log
+        </div>
+        <div style={{ marginTop: 7, display: "flex", alignItems: "center", gap: 10 }}>
+          <StatusDot tone="green" />
+          <div style={{ fontSize: 18, fontWeight: 850 }}>Live Solana mode</div>
+        </div>
+        <div style={{ marginTop: 5, color: "#166534", fontSize: 14, lineHeight: 1.25 }}>
+          Audit logging is configured for Solana. Non-PHI metadata only.
+        </div>
+      </div>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1.4fr 1fr 0.8fr 0.9fr",
+          padding: "12px 18px",
+          gap: 12,
+          color: "#64748b",
+          fontSize: 12,
+          fontWeight: 800,
+          borderBottom: "1px solid #e2e8f0",
+        }}
+      >
+        <div>Time</div>
+        <div>Event</div>
+        <div>Decision</div>
+        <div>Tx</div>
+      </div>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1.4fr 1fr 0.8fr 0.9fr",
+          padding: "15px 18px 18px",
+          gap: 12,
+          fontSize: 13,
+          alignItems: "center",
+        }}
+      >
+        <div style={{ fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace", color: "#334155" }}>
+          04/26/2026
+          <br />
+          07:19 UTC
+        </div>
+        <div style={{ fontWeight: 800 }}>record_shared</div>
+        <div style={{ display: "flex", alignItems: "center", gap: 7, color: "#15803d", fontWeight: 800 }}>
+          <StatusDot tone="green" /> Allowed
+        </div>
+        <div style={{ color: "#2563eb", fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace", fontWeight: 800 }}>
+          632NP...LP4nY
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const PatientDashboardPanel = () => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const opacity = interpolate(frame, [frameFor(17.8, fps), frameFor(18.7, fps)], [0, 1], clamp);
+  const lift = interpolate(opacity, [0, 1], [24, 0], clamp);
+
+  return (
+    <div
+      style={{
+        position: "absolute",
+        right: 84,
+        top: 96,
+        width: 518,
+        borderRadius: 28,
+        background: "rgba(255,255,255,0.94)",
+        color: "#111827",
+        border: "1px solid rgba(203,213,225,0.72)",
+        boxShadow: "0 30px 100px rgba(0,0,0,0.36)",
+        opacity,
+        transform: `translateY(${lift}px)`,
+        overflow: "hidden",
+      }}
+    >
+      <div style={{ padding: "23px 25px", borderBottom: "1px solid #e5e7eb" }}>
+        <div
+          style={{
+            color: "#94a3b8",
+            fontSize: 12,
+            letterSpacing: 2.4,
+            textTransform: "uppercase",
+            fontWeight: 900,
+          }}
+        >
+          Patient portal
+        </div>
+        <div style={{ marginTop: 8, fontSize: 30, fontWeight: 900, letterSpacing: 0 }}>
+          Patient dashboard
+        </div>
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1.1fr", gap: 10, padding: "18px 18px 14px" }}>
+        {[
+          ["Total interactions", "1"],
+          ["Unique doctors", "1"],
+          ["Last access", "just now"],
+        ].map(([label, value]) => (
+          <div key={label} style={{ border: "1px solid #dbe3ef", borderRadius: 14, padding: "14px 12px" }}>
+            <div style={{ color: "#94a3b8", fontSize: 10, letterSpacing: 1.4, textTransform: "uppercase", fontWeight: 900 }}>
+              {label}
+            </div>
+            <div style={{ marginTop: 7, fontSize: value === "just now" ? 15 : 26, fontWeight: 900 }}>
+              {value}
+            </div>
+          </div>
+        ))}
+      </div>
+      <div style={{ padding: "0 18px 20px", display: "grid", gap: 12 }}>
+        <div style={{ border: "1px solid #dbe3ef", borderRadius: 16, overflow: "hidden" }}>
+          <div style={{ padding: "12px 15px", fontSize: 15, fontWeight: 850, borderBottom: "1px solid #e5e7eb" }}>
+            Live record shares
+          </div>
+          <div style={{ padding: "13px 15px", display: "flex", justifyContent: "space-between", gap: 12, alignItems: "center" }}>
+            <div>
+              <div style={{ fontSize: 14, fontWeight: 850 }}>
+                Full medical record shared with Dr. Chidi Okonkwo
+              </div>
+              <div style={{ marginTop: 4, color: "#64748b", fontSize: 12 }}>
+                Royal Victoria Hospital · expires in 15 min
+              </div>
+            </div>
+            <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+              <span style={{ borderRadius: 999, padding: "5px 9px", background: "#dcfce7", color: "#166534", fontSize: 11, fontWeight: 900 }}>
+                LIVE
+              </span>
+              <span style={{ borderRadius: 999, padding: "5px 9px", background: "#fee2e2", color: "#991b1b", fontSize: 11, fontWeight: 900 }}>
+                Revoke
+              </span>
+            </div>
+          </div>
+        </div>
+        <div style={{ border: "1px solid #dbe3ef", borderRadius: 16, overflow: "hidden" }}>
+          <div style={{ padding: "12px 15px", fontSize: 15, fontWeight: 850, borderBottom: "1px solid #e5e7eb" }}>
+            Interaction timeline
+          </div>
+          <div style={{ padding: "13px 15px", display: "flex", justifyContent: "space-between", gap: 12, alignItems: "center" }}>
+            <div>
+              <div style={{ fontSize: 14, fontWeight: 850 }}>record_shared</div>
+              <div style={{ marginTop: 4, color: "#64748b", fontSize: 12 }}>
+                Fields: full_record · NI · Dr. Chidi Okonkwo
+              </div>
+            </div>
+            <span style={{ borderRadius: 999, padding: "5px 9px", background: "#dbeafe", color: "#1d4ed8", fontSize: 11, fontWeight: 900 }}>
+              Verified on Solana
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -888,6 +1110,8 @@ export const MedAgentWorkflow = ({ title }: MedAgentWorkflowProps) => {
         <TapIndicator />
         <Keyboard />
       </IPhoneShell>
+      <AuditLogPanel />
+      <PatientDashboardPanel />
       <SpotlightLabels />
     </AbsoluteFill>
   );

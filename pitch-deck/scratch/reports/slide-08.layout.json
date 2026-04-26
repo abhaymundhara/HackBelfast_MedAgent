@@ -1,0 +1,2667 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/7bkwkg",
+    "id": "7bkwkg",
+    "slide": 8,
+    "layoutId": "0af95391-a13b-4a3c-b532-3552755e4c1a",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "3f5a9256-fc31-4a95-9ff9-d60207f8e03e",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1920,
+      "height": 1080
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "0af95391-a13b-4a3c-b532-3552755e4c1a",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "3f5a9256-fc31-4a95-9ff9-d60207f8e03e",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "3f5a9256-fc31-4a95-9ff9-d60207f8e03e",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/90je9cvi",
+      "id": "1",
+      "name": "background",
+      "bbox": [
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "fillColor": "#06121B",
+      "lineColor": "#06121B",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/yd0z6103",
+      "id": "2",
+      "name": "eyebrow",
+      "bbox": [
+        116,
+        86,
+        1080,
+        22
+      ],
+      "composeSource": {
+        "run": 2,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "DEMO PROOF",
+      "textPreview": "DEMO PROOF",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "fontSize": 22,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "DEMO PROOF"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "DEMO PROOF",
+          "runs": [
+            {
+              "index": 1,
+              "text": "DEMO PROOF",
+              "fontSize": 22,
+              "color": "#53E0A5",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/rytsvu9k",
+      "id": "3",
+      "name": "slide-title",
+      "bbox": [
+        116,
+        136,
+        1280,
+        116
+      ],
+      "composeSource": {
+        "run": 3,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Four scenes prove the policy, the interface, and the audit trail.",
+      "textPreview": "Four scenes prove the policy, the interface, and the audit trail.",
+      "resolvedFontSize": 58,
+      "resolvedTextStyle": {
+        "fontSize": 58,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Four scenes prove the policy, the interface,"
+          },
+          {
+            "index": 2,
+            "text": "and the audit trail."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Four scenes prove the policy, the interface, and the audit trail.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Four scenes prove the policy, the interface, and the audit trail.",
+              "fontSize": 58,
+              "color": "#F7FBFF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/g7adsji5",
+      "id": "4",
+      "name": "slide-subtitle",
+      "bbox": [
+        116,
+        290,
+        1060,
+        60
+      ],
+      "composeSource": {
+        "run": 4,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Each path creates an understandable result in iMessage and a patient-visible audit event.",
+      "textPreview": "Each path creates an understandable result in iMessage and a patient-visible audit event.",
+      "resolvedFontSize": 30,
+      "resolvedTextStyle": {
+        "fontSize": 30,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Each path creates an understandable result in iMessage and a patient-visible"
+          },
+          {
+            "index": 2,
+            "text": "audit event."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Each path creates an understandable result in iMessage and a patient-visible audit event.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Each path creates an understandable result in iMessage and a patient-visible audit event.",
+              "fontSize": 30,
+              "color": "#A7B7C7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9s36hcrm",
+      "id": "5",
+      "name": "footer-left",
+      "bbox": [
+        116,
+        1016,
+        600,
+        16
+      ],
+      "composeSource": {
+        "run": 5,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "MedAgent pitch / 08",
+      "textPreview": "MedAgent pitch / 08",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "MedAgent pitch / 08"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "MedAgent pitch / 08",
+          "runs": [
+            {
+              "index": 1,
+              "text": "MedAgent pitch / 08",
+              "fontSize": 16,
+              "color": "#607A8E"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/y1kre1w7",
+      "id": "6",
+      "name": "footer-rule",
+      "bbox": [
+        1640,
+        1030,
+        164,
+        2
+      ],
+      "composeSource": {
+        "run": 6,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "fillColor": "#1F4054",
+      "lineColor": "#1F4054",
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/rmhk3q5o",
+      "id": "7",
+      "name": "demo-track",
+      "bbox": [
+        184,
+        560,
+        1560,
+        1
+      ],
+      "composeSource": {
+        "run": 7,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "fillColor": "#1F4054",
+      "lineColor": "#1F4054",
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/g3ex0nux",
+      "id": "8",
+      "name": "demo-dot-0",
+      "bbox": [
+        172,
+        528,
+        80,
+        80
+      ],
+      "composeSource": {
+        "run": 8,
+        "path": "0"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#53E0A5",
+      "lineColor": "#53E0A5",
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5o7qpg3e",
+      "id": "9",
+      "name": "demo-num-0",
+      "bbox": [
+        194,
+        544,
+        50,
+        30
+      ],
+      "composeSource": {
+        "run": 9,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "1",
+      "textPreview": "1",
+      "resolvedFontSize": 30,
+      "resolvedTextStyle": {
+        "fontSize": 30,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "1"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "1",
+          "runs": [
+            {
+              "index": 1,
+              "text": "1",
+              "fontSize": 30,
+              "color": "#06121B",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5gbq1ory",
+      "id": "10",
+      "name": "demo-head-0",
+      "bbox": [
+        170,
+        644,
+        260,
+        34
+      ],
+      "composeSource": {
+        "run": 10,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Tier 1",
+      "textPreview": "Tier 1",
+      "resolvedFontSize": 34,
+      "resolvedTextStyle": {
+        "fontSize": 34,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Tier 1"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Tier 1",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Tier 1",
+              "fontSize": 34,
+              "color": "#F7FBFF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cvixczed",
+      "id": "11",
+      "name": "demo-actor-0",
+      "bbox": [
+        170,
+        700,
+        300,
+        20
+      ],
+      "composeSource": {
+        "run": 11,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "HSE clinician",
+      "textPreview": "HSE clinician",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "HSE clinician"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "HSE clinician",
+          "runs": [
+            {
+              "index": 1,
+              "text": "HSE clinician",
+              "fontSize": 20,
+              "color": "#48C6FF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nap4r65w",
+      "id": "12",
+      "name": "demo-body-0",
+      "bbox": [
+        170,
+        744,
+        316,
+        48
+      ],
+      "composeSource": {
+        "run": 12,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Same-jurisdiction verified access",
+      "textPreview": "Same-jurisdiction verified access",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Same-jurisdiction verified"
+          },
+          {
+            "index": 2,
+            "text": "access"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Same-jurisdiction verified access",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Same-jurisdiction verified access",
+              "fontSize": 24,
+              "color": "#A7B7C7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/upwb2hwf",
+      "id": "13",
+      "name": "demo-dot-1",
+      "bbox": [
+        580,
+        528,
+        80,
+        80
+      ],
+      "composeSource": {
+        "run": 13,
+        "path": "0"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#53E0A5",
+      "lineColor": "#53E0A5",
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/54zidony",
+      "id": "14",
+      "name": "demo-num-1",
+      "bbox": [
+        604,
+        544,
+        50,
+        30
+      ],
+      "composeSource": {
+        "run": 14,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "2",
+      "textPreview": "2",
+      "resolvedFontSize": 30,
+      "resolvedTextStyle": {
+        "fontSize": 30,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "2"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "2",
+          "runs": [
+            {
+              "index": 1,
+              "text": "2",
+              "fontSize": 30,
+              "color": "#06121B",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cj6tovah",
+      "id": "15",
+      "name": "demo-head-1",
+      "bbox": [
+        580,
+        644,
+        260,
+        34
+      ],
+      "composeSource": {
+        "run": 15,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Tier 2",
+      "textPreview": "Tier 2",
+      "resolvedFontSize": 34,
+      "resolvedTextStyle": {
+        "fontSize": 34,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Tier 2"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Tier 2",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Tier 2",
+              "fontSize": 34,
+              "color": "#F7FBFF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nyd0z610",
+      "id": "16",
+      "name": "demo-actor-1",
+      "bbox": [
+        580,
+        700,
+        300,
+        20
+      ],
+      "composeSource": {
+        "run": 16,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "NHS NI clinician",
+      "textPreview": "NHS NI clinician",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "NHS NI clinician"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "NHS NI clinician",
+          "runs": [
+            {
+              "index": 1,
+              "text": "NHS NI clinician",
+              "fontSize": 20,
+              "color": "#48C6FF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/udg7adsj",
+      "id": "17",
+      "name": "demo-body-1",
+      "bbox": [
+        580,
+        744,
+        316,
+        24
+      ],
+      "composeSource": {
+        "run": 17,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Patient approval then release",
+      "textPreview": "Patient approval then release",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Patient approval then release"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Patient approval then release",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Patient approval then release",
+              "fontSize": 24,
+              "color": "#A7B7C7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1032lszq",
+      "id": "18",
+      "name": "demo-dot-2",
+      "bbox": [
+        992,
+        528,
+        80,
+        80
+      ],
+      "composeSource": {
+        "run": 18,
+        "path": "0"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#FFCF5A",
+      "lineColor": "#FFCF5A",
+      "lineWidth": 0
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cfa9w3m9",
+      "id": "19",
+      "name": "demo-num-2",
+      "bbox": [
+        1014,
+        544,
+        50,
+        30
+      ],
+      "composeSource": {
+        "run": 19,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "3",
+      "textPreview": "3",
+      "resolvedFontSize": 30,
+      "resolvedTextStyle": {
+        "fontSize": 30,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "3"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "3",
+          "runs": [
+            {
+              "index": 1,
+              "text": "3",
+              "fontSize": 30,
+              "color": "#06121B",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/obm58z25",
+      "id": "20",
+      "name": "demo-head-2",
+      "bbox": [
+        990,
+        644,
+        260,
+        34
+      ],
+      "composeSource": {
+        "run": 20,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Tier 3",
+      "textPreview": "Tier 3",
+      "resolvedFontSize": 34,
+      "resolvedTextStyle": {
+        "fontSize": 34,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Tier 3"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Tier 3",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Tier 3",
+              "fontSize": 34,
+              "color": "#F7FBFF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hwfyxobm",
+      "id": "21",
+      "name": "demo-actor-2",
+      "bbox": [
+        990,
+        700,
+        300,
+        20
+      ],
+      "composeSource": {
+        "run": 21,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Break glass",
+      "textPreview": "Break glass",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Break glass"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Break glass",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Break glass",
+              "fontSize": 20,
+              "color": "#48C6FF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/65wjudg7",
+      "id": "22",
+      "name": "demo-body-2",
+      "bbox": [
+        990,
+        744,
+        316,
+        48
+      ],
+      "composeSource": {
+        "run": 22,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Critical-only emergency access",
+      "textPreview": "Critical-only emergency access",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Critical-only emergency"
+          },
+          {
+            "index": 2,
+            "text": "access"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Critical-only emergency access",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Critical-only emergency access",
+              "fontSize": 24,
+              "color": "#A7B7C7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zqtcj6to",
+      "id": "23",
+      "name": "demo-dot-3",
+      "bbox": [
+        1400,
+        528,
+        80,
+        80
+      ],
+      "composeSource": {
+        "run": 23,
+        "path": "0"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#FF6B7A",
+      "lineColor": "#FF6B7A",
+      "lineWidth": 0
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/oza1gvy9",
+      "id": "24",
+      "name": "demo-num-3",
+      "bbox": [
+        1424,
+        544,
+        50,
+        30
+      ],
+      "composeSource": {
+        "run": 24,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "4",
+      "textPreview": "4",
+      "resolvedFontSize": 30,
+      "resolvedTextStyle": {
+        "fontSize": 30,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "4"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "4",
+          "runs": [
+            {
+              "index": 1,
+              "text": "4",
+              "fontSize": 30,
+              "color": "#06121B",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hk3q5o7q",
+      "id": "25",
+      "name": "demo-head-3",
+      "bbox": [
+        1400,
+        644,
+        260,
+        34
+      ],
+      "composeSource": {
+        "run": 25,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Denied",
+      "textPreview": "Denied",
+      "resolvedFontSize": 34,
+      "resolvedTextStyle": {
+        "fontSize": 34,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Denied"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Denied",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Denied",
+              "fontSize": 34,
+              "color": "#FF6B7A",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6xkf6dcb",
+      "id": "26",
+      "name": "demo-actor-3",
+      "bbox": [
+        1400,
+        700,
+        300,
+        20
+      ],
+      "composeSource": {
+        "run": 26,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Invalid path",
+      "textPreview": "Invalid path",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Invalid path"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Invalid path",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Invalid path",
+              "fontSize": 20,
+              "color": "#48C6FF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zed8v6ps",
+      "id": "27",
+      "name": "demo-body-3",
+      "bbox": [
+        1400,
+        744,
+        316,
+        48
+      ],
+      "composeSource": {
+        "run": 27,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "No data release, denial logged",
+      "textPreview": "No data release, denial logged",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "No data release, denial"
+          },
+          {
+            "index": 2,
+            "text": "logged"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "No data release, denial logged",
+          "runs": [
+            {
+              "index": 1,
+              "text": "No data release, denial logged",
+              "fontSize": 24,
+              "color": "#A7B7C7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 28,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/orytsvu9",
+      "id": "28",
+      "name": "demo-landing",
+      "bbox": [
+        198,
+        904,
+        1490,
+        62
+      ],
+      "composeSource": {
+        "run": 28,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Pitch beat: Every access has a reason, a scope, an expiry, and a Solana receipt. PHI stays encrypted off-chain.",
+      "textPreview": "Pitch beat: Every access has a reason, a scope, an expiry, and a Solana receipt. PHI stays encrypted off-chain.",
+      "resolvedFontSize": 31,
+      "resolvedTextStyle": {
+        "fontSize": 31,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Pitch beat: Every access has a reason, a scope, an expiry, and a Solana receipt. PHI stays encrypted"
+          },
+          {
+            "index": 2,
+            "text": "off-chain."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Pitch beat: Every access has a reason, a scope, an expiry, and a Solana receipt. PHI stays encrypted off-chain.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Pitch beat: Every access has a reason, a scope, an expiry, and a Solana receipt. PHI stays encrypted off-chain.",
+              "fontSize": 31,
+              "color": "#F7FBFF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "composeRuns": [
+    {
+      "index": 1,
+      "frame": {
+        "left": 0,
+        "top": 0,
+        "width": 1920,
+        "height": 1080
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "shape",
+        "name": "background",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 0,
+          "top": 0,
+          "width": 1920,
+          "height": 1080
+        },
+        "snappedFrame": {
+          "left": 0,
+          "top": 0,
+          "width": 1920,
+          "height": 1080
+        },
+        "children": [],
+        "geometry": "rect",
+        "element": {
+          "aid": "sh/90je9cvi",
+          "id": "1",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 2,
+      "frame": {
+        "left": 116,
+        "top": 86,
+        "width": 1080,
+        "height": 36
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "eyebrow",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 22
+        },
+        "frame": {
+          "left": 116,
+          "top": 86,
+          "width": 1080,
+          "height": 22
+        },
+        "snappedFrame": {
+          "left": 116,
+          "top": 86,
+          "width": 1080,
+          "height": 22
+        },
+        "children": [],
+        "text": "DEMO PROOF",
+        "transform": "none",
+        "element": {
+          "aid": "sh/yd0z6103",
+          "id": "2",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 3,
+      "frame": {
+        "left": 116,
+        "top": 136,
+        "width": 1280,
+        "height": 150
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "slide-title",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 58
+        },
+        "frame": {
+          "left": 116,
+          "top": 136,
+          "width": 1280,
+          "height": 116
+        },
+        "snappedFrame": {
+          "left": 116,
+          "top": 136,
+          "width": 1280,
+          "height": 116
+        },
+        "children": [],
+        "text": "Four scenes prove the policy, the interface, and the audit trail.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/rytsvu9k",
+          "id": "3",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 4,
+      "frame": {
+        "left": 116,
+        "top": 290,
+        "width": 1060,
+        "height": 90
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "slide-subtitle",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 30
+        },
+        "frame": {
+          "left": 116,
+          "top": 290,
+          "width": 1060,
+          "height": 60
+        },
+        "snappedFrame": {
+          "left": 116,
+          "top": 290,
+          "width": 1060,
+          "height": 60
+        },
+        "children": [],
+        "text": "Each path creates an understandable result in iMessage and a patient-visible audit event.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/g7adsji5",
+          "id": "4",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 5,
+      "frame": {
+        "left": 116,
+        "top": 1016,
+        "width": 600,
+        "height": 32
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "footer-left",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 16
+        },
+        "frame": {
+          "left": 116,
+          "top": 1016,
+          "width": 600,
+          "height": 16
+        },
+        "snappedFrame": {
+          "left": 116,
+          "top": 1016,
+          "width": 600,
+          "height": 16
+        },
+        "children": [],
+        "text": "MedAgent pitch / 08",
+        "transform": "none",
+        "element": {
+          "aid": "sh/9s36hcrm",
+          "id": "5",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 6,
+      "frame": {
+        "left": 1640,
+        "top": 1030,
+        "width": 164,
+        "height": 4
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "rule",
+        "name": "footer-rule",
+        "requestedSize": {
+          "width": {
+            "mode": "fixed",
+            "value": 164
+          },
+          "height": {
+            "mode": "fixed",
+            "value": 2
+          }
+        },
+        "intrinsicSize": {
+          "width": 164,
+          "height": 2
+        },
+        "frame": {
+          "left": 1640,
+          "top": 1030,
+          "width": 164,
+          "height": 2
+        },
+        "snappedFrame": {
+          "left": 1640,
+          "top": 1030,
+          "width": 164,
+          "height": 2
+        },
+        "children": [],
+        "weight": 2,
+        "element": {
+          "aid": "sh/y1kre1w7",
+          "id": "6",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 7,
+      "frame": {
+        "left": 180,
+        "top": 560,
+        "width": 1560,
+        "height": 3
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "shape",
+        "name": "demo-track",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 180,
+          "top": 560,
+          "width": 1560,
+          "height": 3
+        },
+        "snappedFrame": {
+          "left": 184,
+          "top": 560,
+          "width": 1560,
+          "height": 1
+        },
+        "children": [],
+        "geometry": "rect",
+        "element": {
+          "aid": "sh/rmhk3q5o",
+          "id": "7",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 8,
+      "frame": {
+        "left": 170,
+        "top": 528,
+        "width": 80,
+        "height": 80
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "shape",
+        "name": "demo-dot-0",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 170,
+          "top": 528,
+          "width": 80,
+          "height": 80
+        },
+        "snappedFrame": {
+          "left": 172,
+          "top": 528,
+          "width": 80,
+          "height": 80
+        },
+        "children": [],
+        "geometry": "rect",
+        "element": {
+          "aid": "sh/g3ex0nux",
+          "id": "8",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 9,
+      "frame": {
+        "left": 194,
+        "top": 544,
+        "width": 50,
+        "height": 48
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "demo-num-0",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 30
+        },
+        "frame": {
+          "left": 194,
+          "top": 544,
+          "width": 50,
+          "height": 30
+        },
+        "snappedFrame": {
+          "left": 194,
+          "top": 544,
+          "width": 50,
+          "height": 30
+        },
+        "children": [],
+        "text": "1",
+        "transform": "none",
+        "element": {
+          "aid": "sh/5o7qpg3e",
+          "id": "9",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 10,
+      "frame": {
+        "left": 170,
+        "top": 644,
+        "width": 260,
+        "height": 48
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "demo-head-0",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 34
+        },
+        "frame": {
+          "left": 170,
+          "top": 644,
+          "width": 260,
+          "height": 34
+        },
+        "snappedFrame": {
+          "left": 170,
+          "top": 644,
+          "width": 260,
+          "height": 34
+        },
+        "children": [],
+        "text": "Tier 1",
+        "transform": "none",
+        "element": {
+          "aid": "sh/5gbq1ory",
+          "id": "10",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 11,
+      "frame": {
+        "left": 170,
+        "top": 700,
+        "width": 300,
+        "height": 40
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "demo-actor-0",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 20
+        },
+        "frame": {
+          "left": 170,
+          "top": 700,
+          "width": 300,
+          "height": 20
+        },
+        "snappedFrame": {
+          "left": 170,
+          "top": 700,
+          "width": 300,
+          "height": 20
+        },
+        "children": [],
+        "text": "HSE clinician",
+        "transform": "none",
+        "element": {
+          "aid": "sh/cvixczed",
+          "id": "11",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 12,
+      "frame": {
+        "left": 170,
+        "top": 744,
+        "width": 315,
+        "height": 86
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "demo-body-0",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 24
+        },
+        "frame": {
+          "left": 170,
+          "top": 744,
+          "width": 315,
+          "height": 48
+        },
+        "snappedFrame": {
+          "left": 170,
+          "top": 744,
+          "width": 316,
+          "height": 48
+        },
+        "children": [],
+        "text": "Same-jurisdiction verified access",
+        "transform": "none",
+        "element": {
+          "aid": "sh/nap4r65w",
+          "id": "12",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 13,
+      "frame": {
+        "left": 580,
+        "top": 528,
+        "width": 80,
+        "height": 80
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "shape",
+        "name": "demo-dot-1",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 580,
+          "top": 528,
+          "width": 80,
+          "height": 80
+        },
+        "snappedFrame": {
+          "left": 580,
+          "top": 528,
+          "width": 80,
+          "height": 80
+        },
+        "children": [],
+        "geometry": "rect",
+        "element": {
+          "aid": "sh/upwb2hwf",
+          "id": "13",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 14,
+      "frame": {
+        "left": 604,
+        "top": 544,
+        "width": 50,
+        "height": 48
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "demo-num-1",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 30
+        },
+        "frame": {
+          "left": 604,
+          "top": 544,
+          "width": 50,
+          "height": 30
+        },
+        "snappedFrame": {
+          "left": 604,
+          "top": 544,
+          "width": 50,
+          "height": 30
+        },
+        "children": [],
+        "text": "2",
+        "transform": "none",
+        "element": {
+          "aid": "sh/54zidony",
+          "id": "14",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 15,
+      "frame": {
+        "left": 580,
+        "top": 644,
+        "width": 260,
+        "height": 48
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "demo-head-1",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 34
+        },
+        "frame": {
+          "left": 580,
+          "top": 644,
+          "width": 260,
+          "height": 34
+        },
+        "snappedFrame": {
+          "left": 580,
+          "top": 644,
+          "width": 260,
+          "height": 34
+        },
+        "children": [],
+        "text": "Tier 2",
+        "transform": "none",
+        "element": {
+          "aid": "sh/cj6tovah",
+          "id": "15",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 16,
+      "frame": {
+        "left": 580,
+        "top": 700,
+        "width": 300,
+        "height": 40
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "demo-actor-1",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 20
+        },
+        "frame": {
+          "left": 580,
+          "top": 700,
+          "width": 300,
+          "height": 20
+        },
+        "snappedFrame": {
+          "left": 580,
+          "top": 700,
+          "width": 300,
+          "height": 20
+        },
+        "children": [],
+        "text": "NHS NI clinician",
+        "transform": "none",
+        "element": {
+          "aid": "sh/nyd0z610",
+          "id": "16",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 17,
+      "frame": {
+        "left": 580,
+        "top": 744,
+        "width": 315,
+        "height": 86
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "demo-body-1",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 24
+        },
+        "frame": {
+          "left": 580,
+          "top": 744,
+          "width": 315,
+          "height": 24
+        },
+        "snappedFrame": {
+          "left": 580,
+          "top": 744,
+          "width": 316,
+          "height": 24
+        },
+        "children": [],
+        "text": "Patient approval then release",
+        "transform": "none",
+        "element": {
+          "aid": "sh/udg7adsj",
+          "id": "17",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 18,
+      "frame": {
+        "left": 990,
+        "top": 528,
+        "width": 80,
+        "height": 80
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "shape",
+        "name": "demo-dot-2",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 990,
+          "top": 528,
+          "width": 80,
+          "height": 80
+        },
+        "snappedFrame": {
+          "left": 992,
+          "top": 528,
+          "width": 80,
+          "height": 80
+        },
+        "children": [],
+        "geometry": "rect",
+        "element": {
+          "aid": "sh/1032lszq",
+          "id": "18",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 19,
+      "frame": {
+        "left": 1014,
+        "top": 544,
+        "width": 50,
+        "height": 48
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "demo-num-2",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 30
+        },
+        "frame": {
+          "left": 1014,
+          "top": 544,
+          "width": 50,
+          "height": 30
+        },
+        "snappedFrame": {
+          "left": 1014,
+          "top": 544,
+          "width": 50,
+          "height": 30
+        },
+        "children": [],
+        "text": "3",
+        "transform": "none",
+        "element": {
+          "aid": "sh/cfa9w3m9",
+          "id": "19",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 20,
+      "frame": {
+        "left": 990,
+        "top": 644,
+        "width": 260,
+        "height": 48
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "demo-head-2",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 34
+        },
+        "frame": {
+          "left": 990,
+          "top": 644,
+          "width": 260,
+          "height": 34
+        },
+        "snappedFrame": {
+          "left": 990,
+          "top": 644,
+          "width": 260,
+          "height": 34
+        },
+        "children": [],
+        "text": "Tier 3",
+        "transform": "none",
+        "element": {
+          "aid": "sh/obm58z25",
+          "id": "20",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 21,
+      "frame": {
+        "left": 990,
+        "top": 700,
+        "width": 300,
+        "height": 40
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "demo-actor-2",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 20
+        },
+        "frame": {
+          "left": 990,
+          "top": 700,
+          "width": 300,
+          "height": 20
+        },
+        "snappedFrame": {
+          "left": 990,
+          "top": 700,
+          "width": 300,
+          "height": 20
+        },
+        "children": [],
+        "text": "Break glass",
+        "transform": "none",
+        "element": {
+          "aid": "sh/hwfyxobm",
+          "id": "21",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 22,
+      "frame": {
+        "left": 990,
+        "top": 744,
+        "width": 315,
+        "height": 86
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "demo-body-2",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 24
+        },
+        "frame": {
+          "left": 990,
+          "top": 744,
+          "width": 315,
+          "height": 48
+        },
+        "snappedFrame": {
+          "left": 990,
+          "top": 744,
+          "width": 316,
+          "height": 48
+        },
+        "children": [],
+        "text": "Critical-only emergency access",
+        "transform": "none",
+        "element": {
+          "aid": "sh/65wjudg7",
+          "id": "22",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 23,
+      "frame": {
+        "left": 1400,
+        "top": 528,
+        "width": 80,
+        "height": 80
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "shape",
+        "name": "demo-dot-3",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 1400,
+          "top": 528,
+          "width": 80,
+          "height": 80
+        },
+        "snappedFrame": {
+          "left": 1400,
+          "top": 528,
+          "width": 80,
+          "height": 80
+        },
+        "children": [],
+        "geometry": "rect",
+        "element": {
+          "aid": "sh/zqtcj6to",
+          "id": "23",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 24,
+      "frame": {
+        "left": 1424,
+        "top": 544,
+        "width": 50,
+        "height": 48
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "demo-num-3",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 30
+        },
+        "frame": {
+          "left": 1424,
+          "top": 544,
+          "width": 50,
+          "height": 30
+        },
+        "snappedFrame": {
+          "left": 1424,
+          "top": 544,
+          "width": 50,
+          "height": 30
+        },
+        "children": [],
+        "text": "4",
+        "transform": "none",
+        "element": {
+          "aid": "sh/oza1gvy9",
+          "id": "24",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 25,
+      "frame": {
+        "left": 1400,
+        "top": 644,
+        "width": 260,
+        "height": 48
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "demo-head-3",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 34
+        },
+        "frame": {
+          "left": 1400,
+          "top": 644,
+          "width": 260,
+          "height": 34
+        },
+        "snappedFrame": {
+          "left": 1400,
+          "top": 644,
+          "width": 260,
+          "height": 34
+        },
+        "children": [],
+        "text": "Denied",
+        "transform": "none",
+        "element": {
+          "aid": "sh/hk3q5o7q",
+          "id": "25",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 26,
+      "frame": {
+        "left": 1400,
+        "top": 700,
+        "width": 300,
+        "height": 40
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "demo-actor-3",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 20
+        },
+        "frame": {
+          "left": 1400,
+          "top": 700,
+          "width": 300,
+          "height": 20
+        },
+        "snappedFrame": {
+          "left": 1400,
+          "top": 700,
+          "width": 300,
+          "height": 20
+        },
+        "children": [],
+        "text": "Invalid path",
+        "transform": "none",
+        "element": {
+          "aid": "sh/6xkf6dcb",
+          "id": "26",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 27,
+      "frame": {
+        "left": 1400,
+        "top": 744,
+        "width": 315,
+        "height": 86
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "demo-body-3",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 24
+        },
+        "frame": {
+          "left": 1400,
+          "top": 744,
+          "width": 315,
+          "height": 48
+        },
+        "snappedFrame": {
+          "left": 1400,
+          "top": 744,
+          "width": 316,
+          "height": 48
+        },
+        "children": [],
+        "text": "No data release, denial logged",
+        "transform": "none",
+        "element": {
+          "aid": "sh/zed8v6ps",
+          "id": "27",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 28,
+      "frame": {
+        "left": 198,
+        "top": 904,
+        "width": 1490,
+        "height": 72
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "demo-landing",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 31
+        },
+        "frame": {
+          "left": 198,
+          "top": 904,
+          "width": 1490,
+          "height": 62
+        },
+        "snappedFrame": {
+          "left": 198,
+          "top": 904,
+          "width": 1490,
+          "height": 62
+        },
+        "children": [],
+        "text": "Pitch beat: Every access has a reason, a scope, an expiry, and a Solana receipt. PHI stays encrypted off-chain.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/orytsvu9",
+          "id": "28",
+          "kind": "shape"
+        }
+      }
+    }
+  ]
+}

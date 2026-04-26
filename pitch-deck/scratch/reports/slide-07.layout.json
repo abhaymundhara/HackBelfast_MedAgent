@@ -1,0 +1,2579 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/8dbhrd",
+    "id": "8dbhrd",
+    "slide": 7,
+    "layoutId": "0af95391-a13b-4a3c-b532-3552755e4c1a",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "3f5a9256-fc31-4a95-9ff9-d60207f8e03e",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1920,
+      "height": 1080
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "0af95391-a13b-4a3c-b532-3552755e4c1a",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "3f5a9256-fc31-4a95-9ff9-d60207f8e03e",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "3f5a9256-fc31-4a95-9ff9-d60207f8e03e",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ed8bat47",
+      "id": "1",
+      "name": "background",
+      "bbox": [
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "fillColor": "#06121B",
+      "lineColor": "#06121B",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/l0rqd4vm",
+      "id": "2",
+      "name": "eyebrow",
+      "bbox": [
+        116,
+        86,
+        1080,
+        22
+      ],
+      "composeSource": {
+        "run": 2,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "WHY AGENTIC",
+      "textPreview": "WHY AGENTIC",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "fontSize": 22,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "WHY AGENTIC"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "WHY AGENTIC",
+          "runs": [
+            {
+              "index": 1,
+              "text": "WHY AGENTIC",
+              "fontSize": 22,
+              "color": "#53E0A5",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wfyxobm5",
+      "id": "3",
+      "name": "slide-title",
+      "bbox": [
+        116,
+        136,
+        1280,
+        116
+      ],
+      "composeSource": {
+        "run": 3,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Agentic where it reduces friction. Deterministic where it controls risk.",
+      "textPreview": "Agentic where it reduces friction. Deterministic where it controls risk.",
+      "resolvedFontSize": 58,
+      "resolvedTextStyle": {
+        "fontSize": 58,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Agentic where it reduces friction."
+          },
+          {
+            "index": 2,
+            "text": "Deterministic where it controls risk."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Agentic where it reduces friction. Deterministic where it controls risk.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Agentic where it reduces friction. Deterministic where it controls risk.",
+              "fontSize": 58,
+              "color": "#F7FBFF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/36hcrmhk",
+      "id": "4",
+      "name": "slide-subtitle",
+      "bbox": [
+        116,
+        290,
+        1060,
+        60
+      ],
+      "composeSource": {
+        "run": 4,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "The workflow branches, pauses, resumes, and records evidence. It is not a chatbot deciding access.",
+      "textPreview": "The workflow branches, pauses, resumes, and records evidence. It is not a chatbot deciding access.",
+      "resolvedFontSize": 30,
+      "resolvedTextStyle": {
+        "fontSize": 30,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "The workflow branches, pauses, resumes, and records evidence. It is not a"
+          },
+          {
+            "index": 2,
+            "text": "chatbot deciding access."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "The workflow branches, pauses, resumes, and records evidence. It is not a chatbot deciding access.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "The workflow branches, pauses, resumes, and records evidence. It is not a chatbot deciding access.",
+              "fontSize": 30,
+              "color": "#A7B7C7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/eloj2t83",
+      "id": "5",
+      "name": "footer-left",
+      "bbox": [
+        116,
+        1016,
+        600,
+        16
+      ],
+      "composeSource": {
+        "run": 5,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "MedAgent pitch / 07",
+      "textPreview": "MedAgent pitch / 07",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "MedAgent pitch / 07"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "MedAgent pitch / 07",
+          "runs": [
+            {
+              "index": 1,
+              "text": "MedAgent pitch / 07",
+              "fontSize": 16,
+              "color": "#607A8E"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lc7u54zi",
+      "id": "6",
+      "name": "footer-rule",
+      "bbox": [
+        1640,
+        1030,
+        164,
+        2
+      ],
+      "composeSource": {
+        "run": 6,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "fillColor": "#1F4054",
+      "lineColor": "#1F4054",
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wra5gbq1",
+      "id": "7",
+      "name": "agent-line-0",
+      "bbox": [
+        136,
+        528,
+        248,
+        8
+      ],
+      "composeSource": {
+        "run": 7,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "fillColor": "#1696FF",
+      "lineColor": "#1696FF",
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7adsji5s",
+      "id": "8",
+      "name": "agent-head-0",
+      "bbox": [
+        132,
+        570,
+        250,
+        62
+      ],
+      "composeSource": {
+        "run": 8,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Natural language",
+      "textPreview": "Natural language",
+      "resolvedFontSize": 31,
+      "resolvedTextStyle": {
+        "fontSize": 31,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Natural"
+          },
+          {
+            "index": 2,
+            "text": "language"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Natural language",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Natural language",
+              "fontSize": 31,
+              "color": "#1696FF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/epkzupwb",
+      "id": "9",
+      "name": "agent-body-0",
+      "bbox": [
+        132,
+        628,
+        252,
+        24
+      ],
+      "composeSource": {
+        "run": 9,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "clinician or patient text",
+      "textPreview": "clinician or patient text",
+      "resolvedFontSize": 23,
+      "resolvedTextStyle": {
+        "fontSize": 23,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "clinician or patient text"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "clinician or patient text",
+          "runs": [
+            {
+              "index": 1,
+              "text": "clinician or patient text",
+              "fontSize": 23,
+              "color": "#A7B7C7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8jqh0fep",
+      "id": "10",
+      "name": "agent-arrow-0",
+      "bbox": [
+        404,
+        600,
+        44,
+        42
+      ],
+      "composeSource": {
+        "run": 10,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": ">",
+      "textPreview": ">",
+      "resolvedFontSize": 42,
+      "resolvedTextStyle": {
+        "fontSize": 42,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ">"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": ">",
+          "runs": [
+            {
+              "index": 1,
+              "text": ">",
+              "fontSize": 42,
+              "color": "#6E7F91",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/x4nap4r6",
+      "id": "11",
+      "name": "agent-line-1",
+      "bbox": [
+        472,
+        528,
+        248,
+        8
+      ],
+      "composeSource": {
+        "run": 11,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "fillColor": "#48C6FF",
+      "lineColor": "#48C6FF",
+      "lineWidth": 0
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qd4vmtwr",
+      "id": "12",
+      "name": "agent-head-1",
+      "bbox": [
+        474,
+        570,
+        250,
+        32
+      ],
+      "composeSource": {
+        "run": 12,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Tool calls",
+      "textPreview": "Tool calls",
+      "resolvedFontSize": 31,
+      "resolvedTextStyle": {
+        "fontSize": 31,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Tool calls"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Tool calls",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Tool calls",
+              "fontSize": 31,
+              "color": "#48C6FF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fyxobm58",
+      "id": "13",
+      "name": "agent-body-1",
+      "bbox": [
+        474,
+        628,
+        252,
+        46
+      ],
+      "composeSource": {
+        "run": 13,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "identity, patient, booking, retrieval",
+      "textPreview": "identity, patient, booking, retrieval",
+      "resolvedFontSize": 23,
+      "resolvedTextStyle": {
+        "fontSize": 23,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "identity, patient,"
+          },
+          {
+            "index": 2,
+            "text": "booking, retrieval"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "identity, patient, booking, retrieval",
+          "runs": [
+            {
+              "index": 1,
+              "text": "identity, patient, booking, retrieval",
+              "fontSize": 23,
+              "color": "#A7B7C7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8v6psfil",
+      "id": "14",
+      "name": "agent-arrow-1",
+      "bbox": [
+        746,
+        600,
+        44,
+        42
+      ],
+      "composeSource": {
+        "run": 14,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": ">",
+      "textPreview": ">",
+      "resolvedFontSize": 42,
+      "resolvedTextStyle": {
+        "fontSize": 42,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ">"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": ">",
+          "runs": [
+            {
+              "index": 1,
+              "text": ">",
+              "fontSize": 42,
+              "color": "#6E7F91",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/xczed8v6",
+      "id": "15",
+      "name": "agent-line-2",
+      "bbox": [
+        816,
+        528,
+        248,
+        8
+      ],
+      "composeSource": {
+        "run": 15,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "fillColor": "#53E0A5",
+      "lineColor": "#53E0A5",
+      "lineWidth": 0
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qpg3ex0n",
+      "id": "16",
+      "name": "agent-head-2",
+      "bbox": [
+        816,
+        570,
+        250,
+        32
+      ],
+      "composeSource": {
+        "run": 16,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Policy gate",
+      "textPreview": "Policy gate",
+      "resolvedFontSize": 31,
+      "resolvedTextStyle": {
+        "fontSize": 31,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Policy gate"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Policy gate",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Policy gate",
+              "fontSize": 31,
+              "color": "#53E0A5",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fa9w3m94",
+      "id": "17",
+      "name": "agent-body-2",
+      "bbox": [
+        816,
+        628,
+        252,
+        46
+      ],
+      "composeSource": {
+        "run": 17,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "tier logic outside the LLM",
+      "textPreview": "tier logic outside the LLM",
+      "resolvedFontSize": 23,
+      "resolvedTextStyle": {
+        "fontSize": 23,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "tier logic outside the"
+          },
+          {
+            "index": 2,
+            "text": "LLM"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "tier logic outside the LLM",
+          "runs": [
+            {
+              "index": 1,
+              "text": "tier logic outside the LLM",
+              "fontSize": 23,
+              "color": "#A7B7C7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8z25kb6x",
+      "id": "18",
+      "name": "agent-arrow-2",
+      "bbox": [
+        1088,
+        600,
+        44,
+        42
+      ],
+      "composeSource": {
+        "run": 18,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": ">",
+      "textPreview": ">",
+      "resolvedFontSize": 42,
+      "resolvedTextStyle": {
+        "fontSize": 42,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ">"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": ">",
+          "runs": [
+            {
+              "index": 1,
+              "text": ">",
+              "fontSize": 42,
+              "color": "#6E7F91",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1gvy90je",
+      "id": "19",
+      "name": "agent-line-3",
+      "bbox": [
+        1160,
+        528,
+        248,
+        8
+      ],
+      "composeSource": {
+        "run": 19,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "fillColor": "#FFCF5A",
+      "lineColor": "#FFCF5A",
+      "lineWidth": 0
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/loj2t83i",
+      "id": "20",
+      "name": "agent-head-3",
+      "bbox": [
+        1158,
+        570,
+        250,
+        62
+      ],
+      "composeSource": {
+        "run": 20,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Authorized subset",
+      "textPreview": "Authorized subset",
+      "resolvedFontSize": 31,
+      "resolvedTextStyle": {
+        "fontSize": 31,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Authorized"
+          },
+          {
+            "index": 2,
+            "text": "subset"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Authorized subset",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Authorized subset",
+              "fontSize": 31,
+              "color": "#FFCF5A",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/w3m94fu1",
+      "id": "21",
+      "name": "agent-body-3",
+      "bbox": [
+        1158,
+        628,
+        252,
+        46
+      ],
+      "composeSource": {
+        "run": 21,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "released vs withheld fields",
+      "textPreview": "released vs withheld fields",
+      "resolvedFontSize": 23,
+      "resolvedTextStyle": {
+        "fontSize": 23,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "released vs withheld"
+          },
+          {
+            "index": 2,
+            "text": "fields"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "released vs withheld fields",
+          "runs": [
+            {
+              "index": 1,
+              "text": "released vs withheld fields",
+              "fontSize": 23,
+              "color": "#A7B7C7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3itgfmlk",
+      "id": "22",
+      "name": "agent-arrow-3",
+      "bbox": [
+        1430,
+        600,
+        44,
+        42
+      ],
+      "composeSource": {
+        "run": 22,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": ">",
+      "textPreview": ">",
+      "resolvedFontSize": 42,
+      "resolvedTextStyle": {
+        "fontSize": 42,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": ">"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": ">",
+          "runs": [
+            {
+              "index": 1,
+              "text": ">",
+              "fontSize": 42,
+              "color": "#6E7F91",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ex0nuxc3",
+      "id": "23",
+      "name": "agent-line-4",
+      "bbox": [
+        1504,
+        528,
+        248,
+        8
+      ],
+      "composeSource": {
+        "run": 23,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "fillColor": "#53E0A5",
+      "lineColor": "#53E0A5",
+      "lineWidth": 0
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lwval87e",
+      "id": "24",
+      "name": "agent-head-4",
+      "bbox": [
+        1500,
+        570,
+        250,
+        32
+      ],
+      "composeSource": {
+        "run": 24,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Audit receipt",
+      "textPreview": "Audit receipt",
+      "resolvedFontSize": 31,
+      "resolvedTextStyle": {
+        "fontSize": 31,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Audit receipt"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Audit receipt",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Audit receipt",
+              "fontSize": 31,
+              "color": "#53E0A5",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wb2hwfyx",
+      "id": "25",
+      "name": "agent-body-4",
+      "bbox": [
+        1500,
+        628,
+        252,
+        46
+      ],
+      "composeSource": {
+        "run": 25,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "hashes, scope, tx, expiry",
+      "textPreview": "hashes, scope, tx, expiry",
+      "resolvedFontSize": 23,
+      "resolvedTextStyle": {
+        "fontSize": 23,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "hashes, scope, tx,"
+          },
+          {
+            "index": 2,
+            "text": "expiry"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "hashes, scope, tx, expiry",
+          "runs": [
+            {
+              "index": 1,
+              "text": "hashes, scope, tx, expiry",
+              "fontSize": 23,
+              "color": "#A7B7C7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3q5o7qpg",
+      "id": "26",
+      "name": "agent-hitl",
+      "bbox": [
+        132,
+        812,
+        420,
+        108
+      ],
+      "composeSource": {
+        "run": 26,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Tier 2 pause/resume",
+      "textPreview": "Tier 2 pause/resume",
+      "resolvedFontSize": 54,
+      "resolvedTextStyle": {
+        "fontSize": 54,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Tier 2"
+          },
+          {
+            "index": 2,
+            "text": "pause/resume"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Tier 2 pause/resume",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Tier 2 pause/resume",
+              "fontSize": 54,
+              "color": "#53E0A5",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/e9cvixcz",
+      "id": "27",
+      "name": "agent-hitl-copy",
+      "bbox": [
+        560,
+        820,
+        1050,
+        60
+      ],
+      "composeSource": {
+        "run": 27,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "The same request waits for patient approval, then resumes with the original request id. That is operational agent behavior the judge can see.",
+      "textPreview": "The same request waits for patient approval, then resumes with the original request id. That is operational agent behavior the judge can ...",
+      "resolvedFontSize": 30,
+      "resolvedTextStyle": {
+        "fontSize": 30,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "The same request waits for patient approval, then resumes with the original"
+          },
+          {
+            "index": 2,
+            "text": "request id. That is operational agent behavior the judge can see."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "The same request waits for patient approval, then resumes with the original request id. That is operational agent behavior the judge can see.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "The same request waits for patient approval, then resumes with the original request id. That is operational agent behavior the judge can see.",
+              "fontSize": 30,
+              "color": "#F7FBFF"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "composeRuns": [
+    {
+      "index": 1,
+      "frame": {
+        "left": 0,
+        "top": 0,
+        "width": 1920,
+        "height": 1080
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "shape",
+        "name": "background",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 0,
+          "top": 0,
+          "width": 1920,
+          "height": 1080
+        },
+        "snappedFrame": {
+          "left": 0,
+          "top": 0,
+          "width": 1920,
+          "height": 1080
+        },
+        "children": [],
+        "geometry": "rect",
+        "element": {
+          "aid": "sh/ed8bat47",
+          "id": "1",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 2,
+      "frame": {
+        "left": 116,
+        "top": 86,
+        "width": 1080,
+        "height": 36
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "eyebrow",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 22
+        },
+        "frame": {
+          "left": 116,
+          "top": 86,
+          "width": 1080,
+          "height": 22
+        },
+        "snappedFrame": {
+          "left": 116,
+          "top": 86,
+          "width": 1080,
+          "height": 22
+        },
+        "children": [],
+        "text": "WHY AGENTIC",
+        "transform": "none",
+        "element": {
+          "aid": "sh/l0rqd4vm",
+          "id": "2",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 3,
+      "frame": {
+        "left": 116,
+        "top": 136,
+        "width": 1280,
+        "height": 150
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "slide-title",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 58
+        },
+        "frame": {
+          "left": 116,
+          "top": 136,
+          "width": 1280,
+          "height": 116
+        },
+        "snappedFrame": {
+          "left": 116,
+          "top": 136,
+          "width": 1280,
+          "height": 116
+        },
+        "children": [],
+        "text": "Agentic where it reduces friction. Deterministic where it controls risk.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/wfyxobm5",
+          "id": "3",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 4,
+      "frame": {
+        "left": 116,
+        "top": 290,
+        "width": 1060,
+        "height": 90
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "slide-subtitle",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 30
+        },
+        "frame": {
+          "left": 116,
+          "top": 290,
+          "width": 1060,
+          "height": 60
+        },
+        "snappedFrame": {
+          "left": 116,
+          "top": 290,
+          "width": 1060,
+          "height": 60
+        },
+        "children": [],
+        "text": "The workflow branches, pauses, resumes, and records evidence. It is not a chatbot deciding access.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/36hcrmhk",
+          "id": "4",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 5,
+      "frame": {
+        "left": 116,
+        "top": 1016,
+        "width": 600,
+        "height": 32
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "footer-left",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 16
+        },
+        "frame": {
+          "left": 116,
+          "top": 1016,
+          "width": 600,
+          "height": 16
+        },
+        "snappedFrame": {
+          "left": 116,
+          "top": 1016,
+          "width": 600,
+          "height": 16
+        },
+        "children": [],
+        "text": "MedAgent pitch / 07",
+        "transform": "none",
+        "element": {
+          "aid": "sh/eloj2t83",
+          "id": "5",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 6,
+      "frame": {
+        "left": 1640,
+        "top": 1030,
+        "width": 164,
+        "height": 4
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "rule",
+        "name": "footer-rule",
+        "requestedSize": {
+          "width": {
+            "mode": "fixed",
+            "value": 164
+          },
+          "height": {
+            "mode": "fixed",
+            "value": 2
+          }
+        },
+        "intrinsicSize": {
+          "width": 164,
+          "height": 2
+        },
+        "frame": {
+          "left": 1640,
+          "top": 1030,
+          "width": 164,
+          "height": 2
+        },
+        "snappedFrame": {
+          "left": 1640,
+          "top": 1030,
+          "width": 164,
+          "height": 2
+        },
+        "children": [],
+        "weight": 2,
+        "element": {
+          "aid": "sh/lc7u54zi",
+          "id": "6",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 7,
+      "frame": {
+        "left": 132,
+        "top": 530,
+        "width": 250,
+        "height": 4
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "shape",
+        "name": "agent-line-0",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 132,
+          "top": 530,
+          "width": 250,
+          "height": 4
+        },
+        "snappedFrame": {
+          "left": 136,
+          "top": 528,
+          "width": 248,
+          "height": 8
+        },
+        "children": [],
+        "geometry": "rect",
+        "element": {
+          "aid": "sh/wra5gbq1",
+          "id": "7",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 8,
+      "frame": {
+        "left": 132,
+        "top": 570,
+        "width": 250,
+        "height": 48
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "agent-head-0",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 31
+        },
+        "frame": {
+          "left": 132,
+          "top": 570,
+          "width": 250,
+          "height": 62
+        },
+        "snappedFrame": {
+          "left": 132,
+          "top": 570,
+          "width": 250,
+          "height": 62
+        },
+        "children": [],
+        "text": "Natural language",
+        "transform": "none",
+        "element": {
+          "aid": "sh/7adsji5s",
+          "id": "8",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 9,
+      "frame": {
+        "left": 132,
+        "top": 628,
+        "width": 252,
+        "height": 90
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "agent-body-0",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 23
+        },
+        "frame": {
+          "left": 132,
+          "top": 628,
+          "width": 252,
+          "height": 23
+        },
+        "snappedFrame": {
+          "left": 132,
+          "top": 628,
+          "width": 252,
+          "height": 24
+        },
+        "children": [],
+        "text": "clinician or patient text",
+        "transform": "none",
+        "element": {
+          "aid": "sh/epkzupwb",
+          "id": "9",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 10,
+      "frame": {
+        "left": 404,
+        "top": 600,
+        "width": 44,
+        "height": 54
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "agent-arrow-0",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 42
+        },
+        "frame": {
+          "left": 404,
+          "top": 600,
+          "width": 44,
+          "height": 42
+        },
+        "snappedFrame": {
+          "left": 404,
+          "top": 600,
+          "width": 44,
+          "height": 42
+        },
+        "children": [],
+        "text": ">",
+        "transform": "none",
+        "element": {
+          "aid": "sh/8jqh0fep",
+          "id": "10",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 11,
+      "frame": {
+        "left": 474,
+        "top": 530,
+        "width": 250,
+        "height": 4
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "shape",
+        "name": "agent-line-1",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 474,
+          "top": 530,
+          "width": 250,
+          "height": 4
+        },
+        "snappedFrame": {
+          "left": 472,
+          "top": 528,
+          "width": 248,
+          "height": 8
+        },
+        "children": [],
+        "geometry": "rect",
+        "element": {
+          "aid": "sh/x4nap4r6",
+          "id": "11",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 12,
+      "frame": {
+        "left": 474,
+        "top": 570,
+        "width": 250,
+        "height": 48
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "agent-head-1",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 31
+        },
+        "frame": {
+          "left": 474,
+          "top": 570,
+          "width": 250,
+          "height": 31
+        },
+        "snappedFrame": {
+          "left": 474,
+          "top": 570,
+          "width": 250,
+          "height": 32
+        },
+        "children": [],
+        "text": "Tool calls",
+        "transform": "none",
+        "element": {
+          "aid": "sh/qd4vmtwr",
+          "id": "12",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 13,
+      "frame": {
+        "left": 474,
+        "top": 628,
+        "width": 252,
+        "height": 90
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "agent-body-1",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 23
+        },
+        "frame": {
+          "left": 474,
+          "top": 628,
+          "width": 252,
+          "height": 46
+        },
+        "snappedFrame": {
+          "left": 474,
+          "top": 628,
+          "width": 252,
+          "height": 46
+        },
+        "children": [],
+        "text": "identity, patient, booking, retrieval",
+        "transform": "none",
+        "element": {
+          "aid": "sh/fyxobm58",
+          "id": "13",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 14,
+      "frame": {
+        "left": 746,
+        "top": 600,
+        "width": 44,
+        "height": 54
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "agent-arrow-1",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 42
+        },
+        "frame": {
+          "left": 746,
+          "top": 600,
+          "width": 44,
+          "height": 42
+        },
+        "snappedFrame": {
+          "left": 746,
+          "top": 600,
+          "width": 44,
+          "height": 42
+        },
+        "children": [],
+        "text": ">",
+        "transform": "none",
+        "element": {
+          "aid": "sh/8v6psfil",
+          "id": "14",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 15,
+      "frame": {
+        "left": 816,
+        "top": 530,
+        "width": 250,
+        "height": 4
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "shape",
+        "name": "agent-line-2",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 816,
+          "top": 530,
+          "width": 250,
+          "height": 4
+        },
+        "snappedFrame": {
+          "left": 816,
+          "top": 528,
+          "width": 248,
+          "height": 8
+        },
+        "children": [],
+        "geometry": "rect",
+        "element": {
+          "aid": "sh/xczed8v6",
+          "id": "15",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 16,
+      "frame": {
+        "left": 816,
+        "top": 570,
+        "width": 250,
+        "height": 48
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "agent-head-2",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 31
+        },
+        "frame": {
+          "left": 816,
+          "top": 570,
+          "width": 250,
+          "height": 31
+        },
+        "snappedFrame": {
+          "left": 816,
+          "top": 570,
+          "width": 250,
+          "height": 32
+        },
+        "children": [],
+        "text": "Policy gate",
+        "transform": "none",
+        "element": {
+          "aid": "sh/qpg3ex0n",
+          "id": "16",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 17,
+      "frame": {
+        "left": 816,
+        "top": 628,
+        "width": 252,
+        "height": 90
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "agent-body-2",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 23
+        },
+        "frame": {
+          "left": 816,
+          "top": 628,
+          "width": 252,
+          "height": 46
+        },
+        "snappedFrame": {
+          "left": 816,
+          "top": 628,
+          "width": 252,
+          "height": 46
+        },
+        "children": [],
+        "text": "tier logic outside the LLM",
+        "transform": "none",
+        "element": {
+          "aid": "sh/fa9w3m94",
+          "id": "17",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 18,
+      "frame": {
+        "left": 1088,
+        "top": 600,
+        "width": 44,
+        "height": 54
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "agent-arrow-2",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 42
+        },
+        "frame": {
+          "left": 1088,
+          "top": 600,
+          "width": 44,
+          "height": 42
+        },
+        "snappedFrame": {
+          "left": 1088,
+          "top": 600,
+          "width": 44,
+          "height": 42
+        },
+        "children": [],
+        "text": ">",
+        "transform": "none",
+        "element": {
+          "aid": "sh/8z25kb6x",
+          "id": "18",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 19,
+      "frame": {
+        "left": 1158,
+        "top": 530,
+        "width": 250,
+        "height": 4
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "shape",
+        "name": "agent-line-3",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 1158,
+          "top": 530,
+          "width": 250,
+          "height": 4
+        },
+        "snappedFrame": {
+          "left": 1160,
+          "top": 528,
+          "width": 248,
+          "height": 8
+        },
+        "children": [],
+        "geometry": "rect",
+        "element": {
+          "aid": "sh/1gvy90je",
+          "id": "19",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 20,
+      "frame": {
+        "left": 1158,
+        "top": 570,
+        "width": 250,
+        "height": 48
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "agent-head-3",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 31
+        },
+        "frame": {
+          "left": 1158,
+          "top": 570,
+          "width": 250,
+          "height": 62
+        },
+        "snappedFrame": {
+          "left": 1158,
+          "top": 570,
+          "width": 250,
+          "height": 62
+        },
+        "children": [],
+        "text": "Authorized subset",
+        "transform": "none",
+        "element": {
+          "aid": "sh/loj2t83i",
+          "id": "20",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 21,
+      "frame": {
+        "left": 1158,
+        "top": 628,
+        "width": 252,
+        "height": 90
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "agent-body-3",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 23
+        },
+        "frame": {
+          "left": 1158,
+          "top": 628,
+          "width": 252,
+          "height": 46
+        },
+        "snappedFrame": {
+          "left": 1158,
+          "top": 628,
+          "width": 252,
+          "height": 46
+        },
+        "children": [],
+        "text": "released vs withheld fields",
+        "transform": "none",
+        "element": {
+          "aid": "sh/w3m94fu1",
+          "id": "21",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 22,
+      "frame": {
+        "left": 1430,
+        "top": 600,
+        "width": 44,
+        "height": 54
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "agent-arrow-3",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 42
+        },
+        "frame": {
+          "left": 1430,
+          "top": 600,
+          "width": 44,
+          "height": 42
+        },
+        "snappedFrame": {
+          "left": 1430,
+          "top": 600,
+          "width": 44,
+          "height": 42
+        },
+        "children": [],
+        "text": ">",
+        "transform": "none",
+        "element": {
+          "aid": "sh/3itgfmlk",
+          "id": "22",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 23,
+      "frame": {
+        "left": 1500,
+        "top": 530,
+        "width": 250,
+        "height": 4
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "shape",
+        "name": "agent-line-4",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 1500,
+          "top": 530,
+          "width": 250,
+          "height": 4
+        },
+        "snappedFrame": {
+          "left": 1504,
+          "top": 528,
+          "width": 248,
+          "height": 8
+        },
+        "children": [],
+        "geometry": "rect",
+        "element": {
+          "aid": "sh/ex0nuxc3",
+          "id": "23",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 24,
+      "frame": {
+        "left": 1500,
+        "top": 570,
+        "width": 250,
+        "height": 48
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "agent-head-4",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 31
+        },
+        "frame": {
+          "left": 1500,
+          "top": 570,
+          "width": 250,
+          "height": 31
+        },
+        "snappedFrame": {
+          "left": 1500,
+          "top": 570,
+          "width": 250,
+          "height": 32
+        },
+        "children": [],
+        "text": "Audit receipt",
+        "transform": "none",
+        "element": {
+          "aid": "sh/lwval87e",
+          "id": "24",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 25,
+      "frame": {
+        "left": 1500,
+        "top": 628,
+        "width": 252,
+        "height": 90
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "agent-body-4",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 23
+        },
+        "frame": {
+          "left": 1500,
+          "top": 628,
+          "width": 252,
+          "height": 46
+        },
+        "snappedFrame": {
+          "left": 1500,
+          "top": 628,
+          "width": 252,
+          "height": 46
+        },
+        "children": [],
+        "text": "hashes, scope, tx, expiry",
+        "transform": "none",
+        "element": {
+          "aid": "sh/wb2hwfyx",
+          "id": "25",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 26,
+      "frame": {
+        "left": 132,
+        "top": 812,
+        "width": 420,
+        "height": 52
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "agent-hitl",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 54
+        },
+        "frame": {
+          "left": 132,
+          "top": 812,
+          "width": 420,
+          "height": 108
+        },
+        "snappedFrame": {
+          "left": 132,
+          "top": 812,
+          "width": 420,
+          "height": 108
+        },
+        "children": [],
+        "text": "Tier 2 pause/resume",
+        "transform": "none",
+        "element": {
+          "aid": "sh/3q5o7qpg",
+          "id": "26",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 27,
+      "frame": {
+        "left": 560,
+        "top": 820,
+        "width": 1050,
+        "height": 86
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "agent-hitl-copy",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 30
+        },
+        "frame": {
+          "left": 560,
+          "top": 820,
+          "width": 1050,
+          "height": 60
+        },
+        "snappedFrame": {
+          "left": 560,
+          "top": 820,
+          "width": 1050,
+          "height": 60
+        },
+        "children": [],
+        "text": "The same request waits for patient approval, then resumes with the original request id. That is operational agent behavior the judge can see.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/e9cvixcz",
+          "id": "27",
+          "kind": "shape"
+        }
+      }
+    }
+  ]
+}

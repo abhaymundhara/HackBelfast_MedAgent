@@ -1,0 +1,27 @@
+{
+  "slideCount": 10,
+  "renders": [
+    "scratch/renders/slide-01.png",
+    "scratch/renders/slide-02.png",
+    "scratch/renders/slide-03.png",
+    "scratch/renders/slide-04.png",
+    "scratch/renders/slide-05.png",
+    "scratch/renders/slide-06.png",
+    "scratch/renders/slide-07.png",
+    "scratch/renders/slide-08.png",
+    "scratch/renders/slide-09.png",
+    "scratch/renders/slide-10.png"
+  ],
+  "layouts": [
+    "scratch/reports/slide-01.layout.json",
+    "scratch/reports/slide-02.layout.json",
+    "scratch/reports/slide-03.layout.json",
+    "scratch/reports/slide-04.layout.json",
+    "scratch/reports/slide-05.layout.json",
+    "scratch/reports/slide-06.layout.json",
+    "scratch/reports/slide-07.layout.json",
+    "scratch/reports/slide-08.layout.json",
+    "scratch/reports/slide-09.layout.json",
+    "scratch/reports/slide-10.layout.json"
+  ]
+}

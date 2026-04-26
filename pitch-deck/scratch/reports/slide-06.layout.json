@@ -1,0 +1,1397 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/aellfu",
+    "id": "aellfu",
+    "slide": 6,
+    "layoutId": "0af95391-a13b-4a3c-b532-3552755e4c1a",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "3f5a9256-fc31-4a95-9ff9-d60207f8e03e",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1920,
+      "height": 1080
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "0af95391-a13b-4a3c-b532-3552755e4c1a",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "3f5a9256-fc31-4a95-9ff9-d60207f8e03e",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "3f5a9256-fc31-4a95-9ff9-d60207f8e03e",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zidonyd0",
+      "id": "1",
+      "name": "background",
+      "bbox": [
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "fillColor": "#06121B",
+      "lineColor": "#06121B",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/s36hcrmh",
+      "id": "2",
+      "name": "eyebrow",
+      "bbox": [
+        116,
+        86,
+        1080,
+        22
+      ],
+      "composeSource": {
+        "run": 2,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "WHY SOLANA",
+      "textPreview": "WHY SOLANA",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "fontSize": 22,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "WHY SOLANA"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "WHY SOLANA",
+          "runs": [
+            {
+              "index": 1,
+              "text": "WHY SOLANA",
+              "fontSize": 22,
+              "color": "#53E0A5",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hoza1gvy",
+      "id": "3",
+      "name": "slide-title",
+      "bbox": [
+        116,
+        136,
+        610,
+        116
+      ],
+      "composeSource": {
+        "run": 3,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Solana is the receipt layer.",
+      "textPreview": "Solana is the receipt layer.",
+      "resolvedFontSize": 58,
+      "resolvedTextStyle": {
+        "fontSize": 58,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Solana is the receipt"
+          },
+          {
+            "index": 2,
+            "text": "layer."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Solana is the receipt layer.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Solana is the receipt layer.",
+              "fontSize": 58,
+              "color": "#F7FBFF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ap4r65wj",
+      "id": "4",
+      "name": "slide-subtitle",
+      "bbox": [
+        116,
+        290,
+        620,
+        90
+      ],
+      "composeSource": {
+        "run": 4,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "The medical record stays off-chain. The chain proves access happened under a specific scope and decision.",
+      "textPreview": "The medical record stays off-chain. The chain proves access happened under a specific scope and decision.",
+      "resolvedFontSize": 30,
+      "resolvedTextStyle": {
+        "fontSize": 30,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "The medical record stays off-chain. The chain"
+          },
+          {
+            "index": 2,
+            "text": "proves access happened under a specific"
+          },
+          {
+            "index": 3,
+            "text": "scope and decision."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "The medical record stays off-chain. The chain proves access happened under a specific scope and decision.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "The medical record stays off-chain. The chain proves access happened under a specific scope and decision.",
+              "fontSize": 30,
+              "color": "#A7B7C7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/za1gvy90",
+      "id": "5",
+      "name": "footer-left",
+      "bbox": [
+        116,
+        1016,
+        600,
+        16
+      ],
+      "composeSource": {
+        "run": 5,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "MedAgent pitch / 06",
+      "textPreview": "MedAgent pitch / 06",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "MedAgent pitch / 06"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "MedAgent pitch / 06",
+          "runs": [
+            {
+              "index": 1,
+              "text": "MedAgent pitch / 06",
+              "fontSize": 16,
+              "color": "#607A8E"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/svu9knih",
+      "id": "6",
+      "name": "footer-rule",
+      "bbox": [
+        1640,
+        1030,
+        164,
+        2
+      ],
+      "composeSource": {
+        "run": 6,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "fillColor": "#1F4054",
+      "lineColor": "#1F4054",
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/kjm1cfa9",
+      "id": "7",
+      "name": "solana-product-proof",
+      "bbox": [
+        808,
+        142,
+        994,
+        758
+      ],
+      "composeSource": {
+        "run": 7,
+        "path": "0"
+      },
+      "geometry": "roundRect",
+      "alt": "solana-product-proof",
+      "contentType": "image/png",
+      "asset": {
+        "assetId": "e290bbc5-8240-4579-9660-d80997bcb09b",
+        "contentType": "image/png",
+        "byteLength": 1419239
+      }
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/adsji5sn",
+      "id": "8",
+      "name": "metric-0",
+      "bbox": [
+        126,
+        438,
+        300,
+        108
+      ],
+      "composeSource": {
+        "run": 8,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "0",
+      "textPreview": "0",
+      "resolvedFontSize": 108,
+      "resolvedTextStyle": {
+        "fontSize": 108,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "0"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "0",
+          "runs": [
+            {
+              "index": 1,
+              "text": "0",
+              "fontSize": 108,
+              "color": "#53E0A5",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3ylc7u54",
+      "id": "9",
+      "name": "metric-label-0",
+      "bbox": [
+        126,
+        558,
+        300,
+        54
+      ],
+      "composeSource": {
+        "run": 9,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "PHI fields written on-chain",
+      "textPreview": "PHI fields written on-chain",
+      "resolvedFontSize": 27,
+      "resolvedTextStyle": {
+        "fontSize": 27,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "PHI fields written"
+          },
+          {
+            "index": 2,
+            "text": "on-chain"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "PHI fields written on-chain",
+          "runs": [
+            {
+              "index": 1,
+              "text": "PHI fields written on-chain",
+              "fontSize": 27,
+              "color": "#A7B7C7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bat47y1k",
+      "id": "10",
+      "name": "metric-4",
+      "bbox": [
+        430,
+        438,
+        360,
+        108
+      ],
+      "composeSource": {
+        "run": 10,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "4",
+      "textPreview": "4",
+      "resolvedFontSize": 108,
+      "resolvedTextStyle": {
+        "fontSize": 108,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "4"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "4",
+          "runs": [
+            {
+              "index": 1,
+              "text": "4",
+              "fontSize": 108,
+              "color": "#48C6FF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mp0bi9s3",
+      "id": "11",
+      "name": "metric-label-4",
+      "bbox": [
+        430,
+        558,
+        360,
+        28
+      ],
+      "composeSource": {
+        "run": 11,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Core demo decisions logged",
+      "textPreview": "Core demo decisions logged",
+      "resolvedFontSize": 27,
+      "resolvedTextStyle": {
+        "fontSize": 27,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Core demo decisions logged"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Core demo decisions logged",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Core demo decisions logged",
+              "fontSize": 27,
+              "color": "#A7B7C7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/tgfmlkjm",
+      "id": "12",
+      "name": "solana-point-0",
+      "bbox": [
+        132,
+        716,
+        620,
+        54
+      ],
+      "composeSource": {
+        "run": 12,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Anchor-backed audit writes create live network evidence.",
+      "textPreview": "Anchor-backed audit writes create live network evidence.",
+      "resolvedFontSize": 27,
+      "resolvedTextStyle": {
+        "fontSize": 27,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Anchor-backed audit writes create live network"
+          },
+          {
+            "index": 2,
+            "text": "evidence."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Anchor-backed audit writes create live network evidence.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Anchor-backed audit writes create live network evidence.",
+              "fontSize": 27,
+              "color": "#F7FBFF"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4vmtwra5",
+      "id": "13",
+      "name": "solana-point-1",
+      "bbox": [
+        132,
+        772,
+        620,
+        54
+      ],
+      "composeSource": {
+        "run": 13,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Audit payloads use hashes, scope, decision, expiry, and transaction metadata.",
+      "textPreview": "Audit payloads use hashes, scope, decision, expiry, and transaction metadata.",
+      "resolvedFontSize": 27,
+      "resolvedTextStyle": {
+        "fontSize": 27,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Audit payloads use hashes, scope, decision,"
+          },
+          {
+            "index": 2,
+            "text": "expiry, and transaction metadata."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Audit payloads use hashes, scope, decision, expiry, and transaction metadata.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Audit payloads use hashes, scope, decision, expiry, and transaction metadata.",
+              "fontSize": 27,
+              "color": "#F7FBFF"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bm58z25k",
+      "id": "14",
+      "name": "solana-point-2",
+      "bbox": [
+        132,
+        828,
+        620,
+        54
+      ],
+      "composeSource": {
+        "run": 14,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Solscan links make the proof inspectable outside MedAgent.",
+      "textPreview": "Solscan links make the proof inspectable outside MedAgent.",
+      "resolvedFontSize": 27,
+      "resolvedTextStyle": {
+        "fontSize": 27,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Solscan links make the proof inspectable outside"
+          },
+          {
+            "index": 2,
+            "text": "MedAgent."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Solscan links make the proof inspectable outside MedAgent.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Solscan links make the proof inspectable outside MedAgent.",
+              "fontSize": 27,
+              "color": "#F7FBFF"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "composeRuns": [
+    {
+      "index": 1,
+      "frame": {
+        "left": 0,
+        "top": 0,
+        "width": 1920,
+        "height": 1080
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "shape",
+        "name": "background",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 0,
+          "top": 0,
+          "width": 1920,
+          "height": 1080
+        },
+        "snappedFrame": {
+          "left": 0,
+          "top": 0,
+          "width": 1920,
+          "height": 1080
+        },
+        "children": [],
+        "geometry": "rect",
+        "element": {
+          "aid": "sh/zidonyd0",
+          "id": "1",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 2,
+      "frame": {
+        "left": 116,
+        "top": 86,
+        "width": 1080,
+        "height": 36
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "eyebrow",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 22
+        },
+        "frame": {
+          "left": 116,
+          "top": 86,
+          "width": 1080,
+          "height": 22
+        },
+        "snappedFrame": {
+          "left": 116,
+          "top": 86,
+          "width": 1080,
+          "height": 22
+        },
+        "children": [],
+        "text": "WHY SOLANA",
+        "transform": "none",
+        "element": {
+          "aid": "sh/s36hcrmh",
+          "id": "2",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 3,
+      "frame": {
+        "left": 116,
+        "top": 136,
+        "width": 610,
+        "height": 150
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "slide-title",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 58
+        },
+        "frame": {
+          "left": 116,
+          "top": 136,
+          "width": 610,
+          "height": 116
+        },
+        "snappedFrame": {
+          "left": 116,
+          "top": 136,
+          "width": 610,
+          "height": 116
+        },
+        "children": [],
+        "text": "Solana is the receipt layer.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/hoza1gvy",
+          "id": "3",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 4,
+      "frame": {
+        "left": 116,
+        "top": 290,
+        "width": 620,
+        "height": 90
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "slide-subtitle",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 30
+        },
+        "frame": {
+          "left": 116,
+          "top": 290,
+          "width": 620,
+          "height": 90
+        },
+        "snappedFrame": {
+          "left": 116,
+          "top": 290,
+          "width": 620,
+          "height": 90
+        },
+        "children": [],
+        "text": "The medical record stays off-chain. The chain proves access happened under a specific scope and decision.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/ap4r65wj",
+          "id": "4",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 5,
+      "frame": {
+        "left": 116,
+        "top": 1016,
+        "width": 600,
+        "height": 32
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "footer-left",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 16
+        },
+        "frame": {
+          "left": 116,
+          "top": 1016,
+          "width": 600,
+          "height": 16
+        },
+        "snappedFrame": {
+          "left": 116,
+          "top": 1016,
+          "width": 600,
+          "height": 16
+        },
+        "children": [],
+        "text": "MedAgent pitch / 06",
+        "transform": "none",
+        "element": {
+          "aid": "sh/za1gvy90",
+          "id": "5",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 6,
+      "frame": {
+        "left": 1640,
+        "top": 1030,
+        "width": 164,
+        "height": 4
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "rule",
+        "name": "footer-rule",
+        "requestedSize": {
+          "width": {
+            "mode": "fixed",
+            "value": 164
+          },
+          "height": {
+            "mode": "fixed",
+            "value": 2
+          }
+        },
+        "intrinsicSize": {
+          "width": 164,
+          "height": 2
+        },
+        "frame": {
+          "left": 1640,
+          "top": 1030,
+          "width": 164,
+          "height": 2
+        },
+        "snappedFrame": {
+          "left": 1640,
+          "top": 1030,
+          "width": 164,
+          "height": 2
+        },
+        "children": [],
+        "weight": 2,
+        "element": {
+          "aid": "sh/svu9knih",
+          "id": "6",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 7,
+      "frame": {
+        "left": 808,
+        "top": 142,
+        "width": 994,
+        "height": 758
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "image",
+        "name": "solana-product-proof",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 808,
+          "top": 142,
+          "width": 994,
+          "height": 758
+        },
+        "snappedFrame": {
+          "left": 808,
+          "top": 142,
+          "width": 994,
+          "height": 758
+        },
+        "children": [],
+        "source": {
+          "kind": "dataUrl"
+        },
+        "fit": "cover",
+        "alt": "solana-product-proof",
+        "element": {
+          "aid": "im/kjm1cfa9",
+          "id": "7",
+          "kind": "image"
+        }
+      }
+    },
+    {
+      "index": 8,
+      "frame": {
+        "left": 126,
+        "top": 438,
+        "width": 300,
+        "height": 120
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "metric-0",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 108
+        },
+        "frame": {
+          "left": 126,
+          "top": 438,
+          "width": 300,
+          "height": 108
+        },
+        "snappedFrame": {
+          "left": 126,
+          "top": 438,
+          "width": 300,
+          "height": 108
+        },
+        "children": [],
+        "text": "0",
+        "transform": "none",
+        "element": {
+          "aid": "sh/adsji5sn",
+          "id": "8",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 9,
+      "frame": {
+        "left": 126,
+        "top": 558,
+        "width": 300,
+        "height": 92
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "metric-label-0",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 27
+        },
+        "frame": {
+          "left": 126,
+          "top": 558,
+          "width": 300,
+          "height": 54
+        },
+        "snappedFrame": {
+          "left": 126,
+          "top": 558,
+          "width": 300,
+          "height": 54
+        },
+        "children": [],
+        "text": "PHI fields written on-chain",
+        "transform": "none",
+        "element": {
+          "aid": "sh/3ylc7u54",
+          "id": "9",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 10,
+      "frame": {
+        "left": 430,
+        "top": 438,
+        "width": 360,
+        "height": 120
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "metric-4",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 108
+        },
+        "frame": {
+          "left": 430,
+          "top": 438,
+          "width": 360,
+          "height": 108
+        },
+        "snappedFrame": {
+          "left": 430,
+          "top": 438,
+          "width": 360,
+          "height": 108
+        },
+        "children": [],
+        "text": "4",
+        "transform": "none",
+        "element": {
+          "aid": "sh/bat47y1k",
+          "id": "10",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 11,
+      "frame": {
+        "left": 430,
+        "top": 558,
+        "width": 360,
+        "height": 92
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "metric-label-4",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 27
+        },
+        "frame": {
+          "left": 430,
+          "top": 558,
+          "width": 360,
+          "height": 27
+        },
+        "snappedFrame": {
+          "left": 430,
+          "top": 558,
+          "width": 360,
+          "height": 28
+        },
+        "children": [],
+        "text": "Core demo decisions logged",
+        "transform": "none",
+        "element": {
+          "aid": "sh/mp0bi9s3",
+          "id": "11",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 12,
+      "frame": {
+        "left": 132,
+        "top": 716,
+        "width": 620,
+        "height": 48
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "solana-point-0",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 27
+        },
+        "frame": {
+          "left": 132,
+          "top": 716,
+          "width": 620,
+          "height": 54
+        },
+        "snappedFrame": {
+          "left": 132,
+          "top": 716,
+          "width": 620,
+          "height": 54
+        },
+        "children": [],
+        "text": "Anchor-backed audit writes create live network evidence.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/tgfmlkjm",
+          "id": "12",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 13,
+      "frame": {
+        "left": 132,
+        "top": 772,
+        "width": 620,
+        "height": 48
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "solana-point-1",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 27
+        },
+        "frame": {
+          "left": 132,
+          "top": 772,
+          "width": 620,
+          "height": 54
+        },
+        "snappedFrame": {
+          "left": 132,
+          "top": 772,
+          "width": 620,
+          "height": 54
+        },
+        "children": [],
+        "text": "Audit payloads use hashes, scope, decision, expiry, and transaction metadata.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/4vmtwra5",
+          "id": "13",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 14,
+      "frame": {
+        "left": 132,
+        "top": 828,
+        "width": 620,
+        "height": 48
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "solana-point-2",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 27
+        },
+        "frame": {
+          "left": 132,
+          "top": 828,
+          "width": 620,
+          "height": 54
+        },
+        "snappedFrame": {
+          "left": 132,
+          "top": 828,
+          "width": 620,
+          "height": 54
+        },
+        "children": [],
+        "text": "Solscan links make the proof inspectable outside MedAgent.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/bm58z25k",
+          "id": "14",
+          "kind": "shape"
+        }
+      }
+    }
+  ]
+}

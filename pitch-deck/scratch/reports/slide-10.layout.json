@@ -1,0 +1,1377 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/rbo1st",
+    "id": "rbo1st",
+    "slide": 10,
+    "layoutId": "0af95391-a13b-4a3c-b532-3552755e4c1a",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "3f5a9256-fc31-4a95-9ff9-d60207f8e03e",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1920,
+      "height": 1080
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "0af95391-a13b-4a3c-b532-3552755e4c1a",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "3f5a9256-fc31-4a95-9ff9-d60207f8e03e",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "3f5a9256-fc31-4a95-9ff9-d60207f8e03e",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nuxc3ylc",
+      "id": "1",
+      "name": "background",
+      "bbox": [
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "fillColor": "#06121B",
+      "lineColor": "#06121B",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/tcj6tova",
+      "id": "2",
+      "name": "dashboard-proof",
+      "bbox": [
+        1260,
+        150,
+        540,
+        304
+      ],
+      "composeSource": {
+        "run": 2,
+        "path": "0"
+      },
+      "geometry": "roundRect",
+      "alt": "dashboard-proof",
+      "contentType": "image/png",
+      "asset": {
+        "assetId": "3727c278-9613-450e-9125-b425d3bd9259",
+        "contentType": "image/png",
+        "byteLength": 1307615
+      }
+    },
+    {
+      "order": 3,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/0rqd4vmt",
+      "id": "3",
+      "name": "solana-proof-strip",
+      "bbox": [
+        1260,
+        574,
+        540,
+        304
+      ],
+      "composeSource": {
+        "run": 3,
+        "path": "0"
+      },
+      "geometry": "roundRect",
+      "alt": "solana-proof-strip",
+      "contentType": "image/png",
+      "asset": {
+        "assetId": "ef82b35e-f8ff-4b70-8177-4d82b9bc6386",
+        "contentType": "image/png",
+        "byteLength": 1419239
+      }
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/yhgn29gr",
+      "id": "4",
+      "name": "close-eyebrow",
+      "bbox": [
+        112,
+        92,
+        400,
+        22
+      ],
+      "composeSource": {
+        "run": 4,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "THE CLAIM",
+      "textPreview": "THE CLAIM",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "fontSize": 22,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "THE CLAIM"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "THE CLAIM",
+          "runs": [
+            {
+              "index": 1,
+              "text": "THE CLAIM",
+              "fontSize": 22,
+              "color": "#53E0A5",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/n29gr2p8",
+      "id": "5",
+      "name": "close-title",
+      "bbox": [
+        112,
+        156,
+        1040,
+        336
+      ],
+      "composeSource": {
+        "run": 5,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Emergency records should be accessible, narrow, temporary, and provable.",
+      "textPreview": "Emergency records should be accessible, narrow, temporary, and provable.",
+      "resolvedFontSize": 84,
+      "resolvedTextStyle": {
+        "fontSize": 84,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 4,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Emergency records"
+          },
+          {
+            "index": 2,
+            "text": "should be accessible,"
+          },
+          {
+            "index": 3,
+            "text": "narrow, temporary, and"
+          },
+          {
+            "index": 4,
+            "text": "provable."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Emergency records should be accessible, narrow, temporary, and provable.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Emergency records should be accessible, narrow, temporary, and provable.",
+              "fontSize": 84,
+              "color": "#F7FBFF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gn29gr2p",
+      "id": "6",
+      "name": "close-claim-0",
+      "bbox": [
+        160,
+        500,
+        940,
+        32
+      ],
+      "composeSource": {
+        "run": 6,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "iMessage gives the user interface a crisis-native starting point.",
+      "textPreview": "iMessage gives the user interface a crisis-native starting point.",
+      "resolvedFontSize": 31,
+      "resolvedTextStyle": {
+        "fontSize": 31,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "iMessage gives the user interface a crisis-native starting point."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "iMessage gives the user interface a crisis-native starting point.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "iMessage gives the user interface a crisis-native starting point.",
+              "fontSize": 31,
+              "color": "#F7FBFF"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/58z25kb6",
+      "id": "7",
+      "name": "close-mark-0",
+      "bbox": [
+        112,
+        512,
+        24,
+        24
+      ],
+      "composeSource": {
+        "run": 7,
+        "path": "0"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#1696FF",
+      "lineColor": "#1696FF",
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ytsvu9kn",
+      "id": "8",
+      "name": "close-claim-1",
+      "bbox": [
+        160,
+        580,
+        940,
+        32
+      ],
+      "composeSource": {
+        "run": 8,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Deterministic tiers keep access defensible.",
+      "textPreview": "Deterministic tiers keep access defensible.",
+      "resolvedFontSize": 31,
+      "resolvedTextStyle": {
+        "fontSize": 31,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Deterministic tiers keep access defensible."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Deterministic tiers keep access defensible.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Deterministic tiers keep access defensible.",
+              "fontSize": 31,
+              "color": "#F7FBFF"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/neloj2t8",
+      "id": "9",
+      "name": "close-mark-1",
+      "bbox": [
+        112,
+        592,
+        24,
+        24
+      ],
+      "composeSource": {
+        "run": 9,
+        "path": "0"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#53E0A5",
+      "lineColor": "#53E0A5",
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nap4r65w",
+      "id": "10",
+      "name": "close-claim-2",
+      "bbox": [
+        160,
+        660,
+        940,
+        62
+      ],
+      "composeSource": {
+        "run": 10,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "The agent workflow handles language, translation, pause/resume, and summaries.",
+      "textPreview": "The agent workflow handles language, translation, pause/resume, and summaries.",
+      "resolvedFontSize": 31,
+      "resolvedTextStyle": {
+        "fontSize": 31,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "The agent workflow handles language, translation, pause/resume,"
+          },
+          {
+            "index": 2,
+            "text": "and summaries."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "The agent workflow handles language, translation, pause/resume, and summaries.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "The agent workflow handles language, translation, pause/resume, and summaries.",
+              "fontSize": 31,
+              "color": "#F7FBFF"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/upwb2hwf",
+      "id": "11",
+      "name": "close-mark-2",
+      "bbox": [
+        112,
+        672,
+        24,
+        24
+      ],
+      "composeSource": {
+        "run": 11,
+        "path": "0"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#53E0A5",
+      "lineColor": "#53E0A5",
+      "lineWidth": 0
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5gbq1ory",
+      "id": "12",
+      "name": "close-claim-3",
+      "bbox": [
+        160,
+        740,
+        940,
+        32
+      ],
+      "composeSource": {
+        "run": 12,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Solana provides tamper-evident proof without storing PHI.",
+      "textPreview": "Solana provides tamper-evident proof without storing PHI.",
+      "resolvedFontSize": 31,
+      "resolvedTextStyle": {
+        "fontSize": 31,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Solana provides tamper-evident proof without storing PHI."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Solana provides tamper-evident proof without storing PHI.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Solana provides tamper-evident proof without storing PHI.",
+              "fontSize": 31,
+              "color": "#F7FBFF"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cvixczed",
+      "id": "13",
+      "name": "close-mark-3",
+      "bbox": [
+        112,
+        752,
+        24,
+        24
+      ],
+      "composeSource": {
+        "run": 13,
+        "path": "0"
+      },
+      "geometry": "roundRect",
+      "fillColor": "#53E0A5",
+      "lineColor": "#53E0A5",
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nyd0z610",
+      "id": "14",
+      "name": "close-brand",
+      "bbox": [
+        112,
+        928,
+        380,
+        58
+      ],
+      "composeSource": {
+        "run": 14,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "MedAgent",
+      "textPreview": "MedAgent",
+      "resolvedFontSize": 58,
+      "resolvedTextStyle": {
+        "fontSize": 58,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "MedAgent"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "MedAgent",
+          "runs": [
+            {
+              "index": 1,
+              "text": "MedAgent",
+              "fontSize": 58,
+              "color": "#53E0A5",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/udg7adsj",
+      "id": "15",
+      "name": "close-tagline",
+      "bbox": [
+        520,
+        944,
+        760,
+        24
+      ],
+      "composeSource": {
+        "run": 15,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Right summary. Right clinician. Right proof.",
+      "textPreview": "Right summary. Right clinician. Right proof.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Right summary. Right clinician. Right proof."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Right summary. Right clinician. Right proof.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Right summary. Right clinician. Right proof.",
+              "fontSize": 24,
+              "color": "#C9FFE5"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "composeRuns": [
+    {
+      "index": 1,
+      "frame": {
+        "left": 0,
+        "top": 0,
+        "width": 1920,
+        "height": 1080
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "shape",
+        "name": "background",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 0,
+          "top": 0,
+          "width": 1920,
+          "height": 1080
+        },
+        "snappedFrame": {
+          "left": 0,
+          "top": 0,
+          "width": 1920,
+          "height": 1080
+        },
+        "children": [],
+        "geometry": "rect",
+        "element": {
+          "aid": "sh/nuxc3ylc",
+          "id": "1",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 2,
+      "frame": {
+        "left": 1260,
+        "top": 150,
+        "width": 540,
+        "height": 304
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "image",
+        "name": "dashboard-proof",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 1260,
+          "top": 150,
+          "width": 540,
+          "height": 304
+        },
+        "snappedFrame": {
+          "left": 1260,
+          "top": 150,
+          "width": 540,
+          "height": 304
+        },
+        "children": [],
+        "source": {
+          "kind": "dataUrl"
+        },
+        "fit": "contain",
+        "alt": "dashboard-proof",
+        "element": {
+          "aid": "im/tcj6tova",
+          "id": "2",
+          "kind": "image"
+        }
+      }
+    },
+    {
+      "index": 3,
+      "frame": {
+        "left": 1260,
+        "top": 574,
+        "width": 540,
+        "height": 304
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "image",
+        "name": "solana-proof-strip",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 1260,
+          "top": 574,
+          "width": 540,
+          "height": 304
+        },
+        "snappedFrame": {
+          "left": 1260,
+          "top": 574,
+          "width": 540,
+          "height": 304
+        },
+        "children": [],
+        "source": {
+          "kind": "dataUrl"
+        },
+        "fit": "cover",
+        "alt": "solana-proof-strip",
+        "element": {
+          "aid": "im/0rqd4vmt",
+          "id": "3",
+          "kind": "image"
+        }
+      }
+    },
+    {
+      "index": 4,
+      "frame": {
+        "left": 112,
+        "top": 92,
+        "width": 400,
+        "height": 42
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "close-eyebrow",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 22
+        },
+        "frame": {
+          "left": 112,
+          "top": 92,
+          "width": 400,
+          "height": 22
+        },
+        "snappedFrame": {
+          "left": 112,
+          "top": 92,
+          "width": 400,
+          "height": 22
+        },
+        "children": [],
+        "text": "THE CLAIM",
+        "transform": "none",
+        "element": {
+          "aid": "sh/yhgn29gr",
+          "id": "4",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 5,
+      "frame": {
+        "left": 112,
+        "top": 156,
+        "width": 1040,
+        "height": 250
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "close-title",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 84
+        },
+        "frame": {
+          "left": 112,
+          "top": 156,
+          "width": 1040,
+          "height": 336
+        },
+        "snappedFrame": {
+          "left": 112,
+          "top": 156,
+          "width": 1040,
+          "height": 336
+        },
+        "children": [],
+        "text": "Emergency records should be accessible, narrow, temporary, and provable.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/n29gr2p8",
+          "id": "5",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 6,
+      "frame": {
+        "left": 160,
+        "top": 500,
+        "width": 940,
+        "height": 54
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "close-claim-0",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 31
+        },
+        "frame": {
+          "left": 160,
+          "top": 500,
+          "width": 940,
+          "height": 31
+        },
+        "snappedFrame": {
+          "left": 160,
+          "top": 500,
+          "width": 940,
+          "height": 32
+        },
+        "children": [],
+        "text": "iMessage gives the user interface a crisis-native starting point.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/gn29gr2p",
+          "id": "6",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 7,
+      "frame": {
+        "left": 112,
+        "top": 512,
+        "width": 24,
+        "height": 24
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "shape",
+        "name": "close-mark-0",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 112,
+          "top": 512,
+          "width": 24,
+          "height": 24
+        },
+        "snappedFrame": {
+          "left": 112,
+          "top": 512,
+          "width": 24,
+          "height": 24
+        },
+        "children": [],
+        "geometry": "rect",
+        "element": {
+          "aid": "sh/58z25kb6",
+          "id": "7",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 8,
+      "frame": {
+        "left": 160,
+        "top": 580,
+        "width": 940,
+        "height": 54
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "close-claim-1",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 31
+        },
+        "frame": {
+          "left": 160,
+          "top": 580,
+          "width": 940,
+          "height": 31
+        },
+        "snappedFrame": {
+          "left": 160,
+          "top": 580,
+          "width": 940,
+          "height": 32
+        },
+        "children": [],
+        "text": "Deterministic tiers keep access defensible.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/ytsvu9kn",
+          "id": "8",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 9,
+      "frame": {
+        "left": 112,
+        "top": 592,
+        "width": 24,
+        "height": 24
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "shape",
+        "name": "close-mark-1",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 112,
+          "top": 592,
+          "width": 24,
+          "height": 24
+        },
+        "snappedFrame": {
+          "left": 112,
+          "top": 592,
+          "width": 24,
+          "height": 24
+        },
+        "children": [],
+        "geometry": "rect",
+        "element": {
+          "aid": "sh/neloj2t8",
+          "id": "9",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 10,
+      "frame": {
+        "left": 160,
+        "top": 660,
+        "width": 940,
+        "height": 54
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "close-claim-2",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 31
+        },
+        "frame": {
+          "left": 160,
+          "top": 660,
+          "width": 940,
+          "height": 62
+        },
+        "snappedFrame": {
+          "left": 160,
+          "top": 660,
+          "width": 940,
+          "height": 62
+        },
+        "children": [],
+        "text": "The agent workflow handles language, translation, pause/resume, and summaries.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/nap4r65w",
+          "id": "10",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 11,
+      "frame": {
+        "left": 112,
+        "top": 672,
+        "width": 24,
+        "height": 24
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "shape",
+        "name": "close-mark-2",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 112,
+          "top": 672,
+          "width": 24,
+          "height": 24
+        },
+        "snappedFrame": {
+          "left": 112,
+          "top": 672,
+          "width": 24,
+          "height": 24
+        },
+        "children": [],
+        "geometry": "rect",
+        "element": {
+          "aid": "sh/upwb2hwf",
+          "id": "11",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 12,
+      "frame": {
+        "left": 160,
+        "top": 740,
+        "width": 940,
+        "height": 54
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "close-claim-3",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 31
+        },
+        "frame": {
+          "left": 160,
+          "top": 740,
+          "width": 940,
+          "height": 31
+        },
+        "snappedFrame": {
+          "left": 160,
+          "top": 740,
+          "width": 940,
+          "height": 32
+        },
+        "children": [],
+        "text": "Solana provides tamper-evident proof without storing PHI.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/5gbq1ory",
+          "id": "12",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 13,
+      "frame": {
+        "left": 112,
+        "top": 752,
+        "width": 24,
+        "height": 24
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "shape",
+        "name": "close-mark-3",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 112,
+          "top": 752,
+          "width": 24,
+          "height": 24
+        },
+        "snappedFrame": {
+          "left": 112,
+          "top": 752,
+          "width": 24,
+          "height": 24
+        },
+        "children": [],
+        "geometry": "rect",
+        "element": {
+          "aid": "sh/cvixczed",
+          "id": "13",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 14,
+      "frame": {
+        "left": 112,
+        "top": 928,
+        "width": 380,
+        "height": 62
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "close-brand",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 58
+        },
+        "frame": {
+          "left": 112,
+          "top": 928,
+          "width": 380,
+          "height": 58
+        },
+        "snappedFrame": {
+          "left": 112,
+          "top": 928,
+          "width": 380,
+          "height": 58
+        },
+        "children": [],
+        "text": "MedAgent",
+        "transform": "none",
+        "element": {
+          "aid": "sh/nyd0z610",
+          "id": "14",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 15,
+      "frame": {
+        "left": 520,
+        "top": 944,
+        "width": 760,
+        "height": 42
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "close-tagline",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 24
+        },
+        "frame": {
+          "left": 520,
+          "top": 944,
+          "width": 760,
+          "height": 24
+        },
+        "snappedFrame": {
+          "left": 520,
+          "top": 944,
+          "width": 760,
+          "height": 24
+        },
+        "children": [],
+        "text": "Right summary. Right clinician. Right proof.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/udg7adsj",
+          "id": "15",
+          "kind": "shape"
+        }
+      }
+    }
+  ]
+}

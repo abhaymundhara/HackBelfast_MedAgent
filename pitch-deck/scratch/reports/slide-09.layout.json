@@ -1,0 +1,1693 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/rkix90",
+    "id": "rkix90",
+    "slide": 9,
+    "layoutId": "0af95391-a13b-4a3c-b532-3552755e4c1a",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "3f5a9256-fc31-4a95-9ff9-d60207f8e03e",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1920,
+      "height": 1080
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "0af95391-a13b-4a3c-b532-3552755e4c1a",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "3f5a9256-fc31-4a95-9ff9-d60207f8e03e",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "3f5a9256-fc31-4a95-9ff9-d60207f8e03e",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/32lszqtc",
+      "id": "1",
+      "name": "background",
+      "bbox": [
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "fillColor": "#06121B",
+      "lineColor": "#06121B",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/sneloj2t",
+      "id": "2",
+      "name": "eyebrow",
+      "bbox": [
+        116,
+        86,
+        1080,
+        22
+      ],
+      "composeSource": {
+        "run": 2,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "WHY IT CAN START SMALL",
+      "textPreview": "WHY IT CAN START SMALL",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "fontSize": 22,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "WHY IT CAN START SMALL"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "WHY IT CAN START SMALL",
+          "runs": [
+            {
+              "index": 1,
+              "text": "WHY IT CAN START SMALL",
+              "fontSize": 22,
+              "color": "#53E0A5",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/l87ed8ba",
+      "id": "3",
+      "name": "slide-title",
+      "bbox": [
+        116,
+        136,
+        1280,
+        116
+      ],
+      "composeSource": {
+        "run": 3,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "The first wedge is emergency summaries for travelers.",
+      "textPreview": "The first wedge is emergency summaries for travelers.",
+      "resolvedFontSize": 58,
+      "resolvedTextStyle": {
+        "fontSize": 58,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "The first wedge is emergency summaries for"
+          },
+          {
+            "index": 2,
+            "text": "travelers."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "The first wedge is emergency summaries for travelers.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "The first wedge is emergency summaries for travelers.",
+              "fontSize": 58,
+              "color": "#F7FBFF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/at47y1kr",
+      "id": "4",
+      "name": "slide-subtitle",
+      "bbox": [
+        116,
+        290,
+        1060,
+        60
+      ],
+      "composeSource": {
+        "run": 4,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "That keeps the product credible: narrow scope, clear buyers, visible value, and auditable events.",
+      "textPreview": "That keeps the product credible: narrow scope, clear buyers, visible value, and auditable events.",
+      "resolvedFontSize": 30,
+      "resolvedTextStyle": {
+        "fontSize": 30,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "That keeps the product credible: narrow scope, clear buyers, visible value, and"
+          },
+          {
+            "index": 2,
+            "text": "auditable events."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "That keeps the product credible: narrow scope, clear buyers, visible value, and auditable events.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "That keeps the product credible: narrow scope, clear buyers, visible value, and auditable events.",
+              "fontSize": 30,
+              "color": "#A7B7C7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3ex0nuxc",
+      "id": "5",
+      "name": "footer-left",
+      "bbox": [
+        116,
+        1016,
+        600,
+        16
+      ],
+      "composeSource": {
+        "run": 5,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "MedAgent pitch / 09",
+      "textPreview": "MedAgent pitch / 09",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "MedAgent pitch / 09"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "MedAgent pitch / 09",
+          "runs": [
+            {
+              "index": 1,
+              "text": "MedAgent pitch / 09",
+              "fontSize": 16,
+              "color": "#607A8E"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/szqtcj6t",
+      "id": "6",
+      "name": "footer-rule",
+      "bbox": [
+        1640,
+        1030,
+        164,
+        2
+      ],
+      "composeSource": {
+        "run": 6,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "fillColor": "#1F4054",
+      "lineColor": "#1F4054",
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lkjm1cfa",
+      "id": "7",
+      "name": "market-head-0",
+      "bbox": [
+        124,
+        430,
+        280,
+        34
+      ],
+      "composeSource": {
+        "run": 7,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Customers",
+      "textPreview": "Customers",
+      "resolvedFontSize": 33,
+      "resolvedTextStyle": {
+        "fontSize": 33,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Customers"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Customers",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Customers",
+              "fontSize": 33,
+              "color": "#53E0A5",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ex0nuxc3",
+      "id": "8",
+      "name": "market-body-0",
+      "bbox": [
+        398,
+        430,
+        760,
+        52
+      ],
+      "composeSource": {
+        "run": 8,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Travelers with chronic conditions, allergies, implants, anticoagulants, or complex care plans.",
+      "textPreview": "Travelers with chronic conditions, allergies, implants, anticoagulants, or complex care plans.",
+      "resolvedFontSize": 26,
+      "resolvedTextStyle": {
+        "fontSize": 26,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Travelers with chronic conditions, allergies, implants,"
+          },
+          {
+            "index": 2,
+            "text": "anticoagulants, or complex care plans."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Travelers with chronic conditions, allergies, implants, anticoagulants, or complex care plans.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Travelers with chronic conditions, allergies, implants, anticoagulants, or complex care plans.",
+              "fontSize": 26,
+              "color": "#A7B7C7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3itgfmlk",
+      "id": "9",
+      "name": "market-head-1",
+      "bbox": [
+        124,
+        580,
+        280,
+        34
+      ],
+      "composeSource": {
+        "run": 9,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Channels",
+      "textPreview": "Channels",
+      "resolvedFontSize": 33,
+      "resolvedTextStyle": {
+        "fontSize": 33,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Channels"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Channels",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Channels",
+              "fontSize": 33,
+              "color": "#48C6FF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bm58z25k",
+      "id": "10",
+      "name": "market-body-1",
+      "bbox": [
+        398,
+        580,
+        760,
+        52
+      ],
+      "composeSource": {
+        "run": 10,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Hospital innovation teams, travel insurers, airport health networks, corporate travel programs.",
+      "textPreview": "Hospital innovation teams, travel insurers, airport health networks, corporate travel programs.",
+      "resolvedFontSize": 26,
+      "resolvedTextStyle": {
+        "fontSize": 26,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Hospital innovation teams, travel insurers, airport health"
+          },
+          {
+            "index": 2,
+            "text": "networks, corporate travel programs."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Hospital innovation teams, travel insurers, airport health networks, corporate travel programs.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Hospital innovation teams, travel insurers, airport health networks, corporate travel programs.",
+              "fontSize": 26,
+              "color": "#A7B7C7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/m1cfa9w3",
+      "id": "11",
+      "name": "market-head-2",
+      "bbox": [
+        124,
+        730,
+        280,
+        34
+      ],
+      "composeSource": {
+        "run": 11,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Metrics",
+      "textPreview": "Metrics",
+      "resolvedFontSize": 33,
+      "resolvedTextStyle": {
+        "fontSize": 33,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Metrics"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Metrics",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Metrics",
+              "fontSize": 33,
+              "color": "#53E0A5",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/tsvu9kni",
+      "id": "12",
+      "name": "market-body-2",
+      "bbox": [
+        398,
+        730,
+        760,
+        52
+      ],
+      "composeSource": {
+        "run": 12,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Time to authorized summary, tier distribution, emergency sessions opened, auditor review usage.",
+      "textPreview": "Time to authorized summary, tier distribution, emergency sessions opened, auditor review usage.",
+      "resolvedFontSize": 26,
+      "resolvedTextStyle": {
+        "fontSize": 26,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Time to authorized summary, tier distribution, emergency"
+          },
+          {
+            "index": 2,
+            "text": "sessions opened, auditor review usage."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Time to authorized summary, tier distribution, emergency sessions opened, auditor review usage.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Time to authorized summary, tier distribution, emergency sessions opened, auditor review usage.",
+              "fontSize": 26,
+              "color": "#A7B7C7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/47y1kre1",
+      "id": "13",
+      "name": "market-rule",
+      "bbox": [
+        1280,
+        408,
+        1,
+        440
+      ],
+      "composeSource": {
+        "run": 13,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "fillColor": "#1F4054",
+      "lineColor": "#1F4054",
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bat47y1k",
+      "id": "14",
+      "name": "metric-1,000",
+      "bbox": [
+        1336,
+        414,
+        420,
+        108
+      ],
+      "composeSource": {
+        "run": 14,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "1,000",
+      "textPreview": "1,000",
+      "resolvedFontSize": 108,
+      "resolvedTextStyle": {
+        "fontSize": 108,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "1,000"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "1,000",
+          "runs": [
+            {
+              "index": 1,
+              "text": "1,000",
+              "fontSize": 108,
+              "color": "#53E0A5",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mp0bi9s3",
+      "id": "15",
+      "name": "metric-label-1,000",
+      "bbox": [
+        1336,
+        534,
+        420,
+        82
+      ],
+      "composeSource": {
+        "run": 15,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "travelers can map to patient-scoped audit logs without moving medical records on-chain",
+      "textPreview": "travelers can map to patient-scoped audit logs without moving medical records on-chain",
+      "resolvedFontSize": 27,
+      "resolvedTextStyle": {
+        "fontSize": 27,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "travelers can map to"
+          },
+          {
+            "index": 2,
+            "text": "patient-scoped audit logs without"
+          },
+          {
+            "index": 3,
+            "text": "moving medical records on-chain"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "travelers can map to patient-scoped audit logs without moving medical records on-chain",
+          "runs": [
+            {
+              "index": 1,
+              "text": "travelers can map to patient-scoped audit logs without moving medical records on-chain",
+              "fontSize": 27,
+              "color": "#A7B7C7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/tgfmlkjm",
+      "id": "16",
+      "name": "metric-100",
+      "bbox": [
+        1336,
+        666,
+        420,
+        108
+      ],
+      "composeSource": {
+        "run": 16,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "100",
+      "textPreview": "100",
+      "resolvedFontSize": 108,
+      "resolvedTextStyle": {
+        "fontSize": 108,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "100"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "100",
+          "runs": [
+            {
+              "index": 1,
+              "text": "100",
+              "fontSize": 108,
+              "color": "#48C6FF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4vmtwra5",
+      "id": "17",
+      "name": "metric-label-100",
+      "bbox": [
+        1336,
+        786,
+        420,
+        54
+      ],
+      "composeSource": {
+        "run": 17,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "daily emergency lookups mean about 100 decision writes per day",
+      "textPreview": "daily emergency lookups mean about 100 decision writes per day",
+      "resolvedFontSize": 27,
+      "resolvedTextStyle": {
+        "fontSize": 27,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "daily emergency lookups mean"
+          },
+          {
+            "index": 2,
+            "text": "about 100 decision writes per day"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "daily emergency lookups mean about 100 decision writes per day",
+          "runs": [
+            {
+              "index": 1,
+              "text": "daily emergency lookups mean about 100 decision writes per day",
+              "fontSize": 27,
+              "color": "#A7B7C7"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "composeRuns": [
+    {
+      "index": 1,
+      "frame": {
+        "left": 0,
+        "top": 0,
+        "width": 1920,
+        "height": 1080
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "shape",
+        "name": "background",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 0,
+          "top": 0,
+          "width": 1920,
+          "height": 1080
+        },
+        "snappedFrame": {
+          "left": 0,
+          "top": 0,
+          "width": 1920,
+          "height": 1080
+        },
+        "children": [],
+        "geometry": "rect",
+        "element": {
+          "aid": "sh/32lszqtc",
+          "id": "1",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 2,
+      "frame": {
+        "left": 116,
+        "top": 86,
+        "width": 1080,
+        "height": 36
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "eyebrow",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 22
+        },
+        "frame": {
+          "left": 116,
+          "top": 86,
+          "width": 1080,
+          "height": 22
+        },
+        "snappedFrame": {
+          "left": 116,
+          "top": 86,
+          "width": 1080,
+          "height": 22
+        },
+        "children": [],
+        "text": "WHY IT CAN START SMALL",
+        "transform": "none",
+        "element": {
+          "aid": "sh/sneloj2t",
+          "id": "2",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 3,
+      "frame": {
+        "left": 116,
+        "top": 136,
+        "width": 1280,
+        "height": 150
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "slide-title",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 58
+        },
+        "frame": {
+          "left": 116,
+          "top": 136,
+          "width": 1280,
+          "height": 116
+        },
+        "snappedFrame": {
+          "left": 116,
+          "top": 136,
+          "width": 1280,
+          "height": 116
+        },
+        "children": [],
+        "text": "The first wedge is emergency summaries for travelers.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/l87ed8ba",
+          "id": "3",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 4,
+      "frame": {
+        "left": 116,
+        "top": 290,
+        "width": 1060,
+        "height": 90
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "slide-subtitle",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 30
+        },
+        "frame": {
+          "left": 116,
+          "top": 290,
+          "width": 1060,
+          "height": 60
+        },
+        "snappedFrame": {
+          "left": 116,
+          "top": 290,
+          "width": 1060,
+          "height": 60
+        },
+        "children": [],
+        "text": "That keeps the product credible: narrow scope, clear buyers, visible value, and auditable events.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/at47y1kr",
+          "id": "4",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 5,
+      "frame": {
+        "left": 116,
+        "top": 1016,
+        "width": 600,
+        "height": 32
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "footer-left",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 16
+        },
+        "frame": {
+          "left": 116,
+          "top": 1016,
+          "width": 600,
+          "height": 16
+        },
+        "snappedFrame": {
+          "left": 116,
+          "top": 1016,
+          "width": 600,
+          "height": 16
+        },
+        "children": [],
+        "text": "MedAgent pitch / 09",
+        "transform": "none",
+        "element": {
+          "aid": "sh/3ex0nuxc",
+          "id": "5",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 6,
+      "frame": {
+        "left": 1640,
+        "top": 1030,
+        "width": 164,
+        "height": 4
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "rule",
+        "name": "footer-rule",
+        "requestedSize": {
+          "width": {
+            "mode": "fixed",
+            "value": 164
+          },
+          "height": {
+            "mode": "fixed",
+            "value": 2
+          }
+        },
+        "intrinsicSize": {
+          "width": 164,
+          "height": 2
+        },
+        "frame": {
+          "left": 1640,
+          "top": 1030,
+          "width": 164,
+          "height": 2
+        },
+        "snappedFrame": {
+          "left": 1640,
+          "top": 1030,
+          "width": 164,
+          "height": 2
+        },
+        "children": [],
+        "weight": 2,
+        "element": {
+          "aid": "sh/szqtcj6t",
+          "id": "6",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 7,
+      "frame": {
+        "left": 124,
+        "top": 430,
+        "width": 280,
+        "height": 44
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "market-head-0",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 33
+        },
+        "frame": {
+          "left": 124,
+          "top": 430,
+          "width": 280,
+          "height": 33
+        },
+        "snappedFrame": {
+          "left": 124,
+          "top": 430,
+          "width": 280,
+          "height": 34
+        },
+        "children": [],
+        "text": "Customers",
+        "transform": "none",
+        "element": {
+          "aid": "sh/lkjm1cfa",
+          "id": "7",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 8,
+      "frame": {
+        "left": 398,
+        "top": 430,
+        "width": 760,
+        "height": 86
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "market-body-0",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 26
+        },
+        "frame": {
+          "left": 398,
+          "top": 430,
+          "width": 760,
+          "height": 52
+        },
+        "snappedFrame": {
+          "left": 398,
+          "top": 430,
+          "width": 760,
+          "height": 52
+        },
+        "children": [],
+        "text": "Travelers with chronic conditions, allergies, implants, anticoagulants, or complex care plans.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/ex0nuxc3",
+          "id": "8",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 9,
+      "frame": {
+        "left": 124,
+        "top": 580,
+        "width": 280,
+        "height": 44
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "market-head-1",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 33
+        },
+        "frame": {
+          "left": 124,
+          "top": 580,
+          "width": 280,
+          "height": 33
+        },
+        "snappedFrame": {
+          "left": 124,
+          "top": 580,
+          "width": 280,
+          "height": 34
+        },
+        "children": [],
+        "text": "Channels",
+        "transform": "none",
+        "element": {
+          "aid": "sh/3itgfmlk",
+          "id": "9",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 10,
+      "frame": {
+        "left": 398,
+        "top": 580,
+        "width": 760,
+        "height": 86
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "market-body-1",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 26
+        },
+        "frame": {
+          "left": 398,
+          "top": 580,
+          "width": 760,
+          "height": 52
+        },
+        "snappedFrame": {
+          "left": 398,
+          "top": 580,
+          "width": 760,
+          "height": 52
+        },
+        "children": [],
+        "text": "Hospital innovation teams, travel insurers, airport health networks, corporate travel programs.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/bm58z25k",
+          "id": "10",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 11,
+      "frame": {
+        "left": 124,
+        "top": 730,
+        "width": 280,
+        "height": 44
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "market-head-2",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 33
+        },
+        "frame": {
+          "left": 124,
+          "top": 730,
+          "width": 280,
+          "height": 33
+        },
+        "snappedFrame": {
+          "left": 124,
+          "top": 730,
+          "width": 280,
+          "height": 34
+        },
+        "children": [],
+        "text": "Metrics",
+        "transform": "none",
+        "element": {
+          "aid": "sh/m1cfa9w3",
+          "id": "11",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 12,
+      "frame": {
+        "left": 398,
+        "top": 730,
+        "width": 760,
+        "height": 86
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "market-body-2",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 26
+        },
+        "frame": {
+          "left": 398,
+          "top": 730,
+          "width": 760,
+          "height": 52
+        },
+        "snappedFrame": {
+          "left": 398,
+          "top": 730,
+          "width": 760,
+          "height": 52
+        },
+        "children": [],
+        "text": "Time to authorized summary, tier distribution, emergency sessions opened, auditor review usage.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/tsvu9kni",
+          "id": "12",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 13,
+      "frame": {
+        "left": 1280,
+        "top": 408,
+        "width": 2,
+        "height": 440
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "shape",
+        "name": "market-rule",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 1280,
+          "top": 408,
+          "width": 2,
+          "height": 440
+        },
+        "snappedFrame": {
+          "left": 1280,
+          "top": 408,
+          "width": 1,
+          "height": 440
+        },
+        "children": [],
+        "geometry": "rect",
+        "element": {
+          "aid": "sh/47y1kre1",
+          "id": "13",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 14,
+      "frame": {
+        "left": 1336,
+        "top": 414,
+        "width": 420,
+        "height": 120
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "metric-1,000",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 108
+        },
+        "frame": {
+          "left": 1336,
+          "top": 414,
+          "width": 420,
+          "height": 108
+        },
+        "snappedFrame": {
+          "left": 1336,
+          "top": 414,
+          "width": 420,
+          "height": 108
+        },
+        "children": [],
+        "text": "1,000",
+        "transform": "none",
+        "element": {
+          "aid": "sh/bat47y1k",
+          "id": "14",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 15,
+      "frame": {
+        "left": 1336,
+        "top": 534,
+        "width": 420,
+        "height": 92
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "metric-label-1,000",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 27
+        },
+        "frame": {
+          "left": 1336,
+          "top": 534,
+          "width": 420,
+          "height": 81
+        },
+        "snappedFrame": {
+          "left": 1336,
+          "top": 534,
+          "width": 420,
+          "height": 82
+        },
+        "children": [],
+        "text": "travelers can map to patient-scoped audit logs without moving medical records on-chain",
+        "transform": "none",
+        "element": {
+          "aid": "sh/mp0bi9s3",
+          "id": "15",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 16,
+      "frame": {
+        "left": 1336,
+        "top": 666,
+        "width": 420,
+        "height": 120
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "metric-100",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 108
+        },
+        "frame": {
+          "left": 1336,
+          "top": 666,
+          "width": 420,
+          "height": 108
+        },
+        "snappedFrame": {
+          "left": 1336,
+          "top": 666,
+          "width": 420,
+          "height": 108
+        },
+        "children": [],
+        "text": "100",
+        "transform": "none",
+        "element": {
+          "aid": "sh/tgfmlkjm",
+          "id": "16",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 17,
+      "frame": {
+        "left": 1336,
+        "top": 786,
+        "width": 420,
+        "height": 92
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "metric-label-100",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 27
+        },
+        "frame": {
+          "left": 1336,
+          "top": 786,
+          "width": 420,
+          "height": 54
+        },
+        "snappedFrame": {
+          "left": 1336,
+          "top": 786,
+          "width": 420,
+          "height": 54
+        },
+        "children": [],
+        "text": "daily emergency lookups mean about 100 decision writes per day",
+        "transform": "none",
+        "element": {
+          "aid": "sh/4vmtwra5",
+          "id": "17",
+          "kind": "shape"
+        }
+      }
+    }
+  ]
+}

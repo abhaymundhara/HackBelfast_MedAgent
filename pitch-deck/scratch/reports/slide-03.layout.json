@@ -1,0 +1,1367 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/bn4rb9",
+    "id": "bn4rb9",
+    "slide": 3,
+    "layoutId": "0af95391-a13b-4a3c-b532-3552755e4c1a",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "3f5a9256-fc31-4a95-9ff9-d60207f8e03e",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1920,
+      "height": 1080
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "0af95391-a13b-4a3c-b532-3552755e4c1a",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "3f5a9256-fc31-4a95-9ff9-d60207f8e03e",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "3f5a9256-fc31-4a95-9ff9-d60207f8e03e",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nap4r65w",
+      "id": "1",
+      "name": "background",
+      "bbox": [
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "composeSource": {
+        "run": 14,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "fillColor": "#06121B",
+      "lineColor": "#06121B",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cvixczed",
+      "id": "2",
+      "name": "eyebrow",
+      "bbox": [
+        116,
+        86,
+        1080,
+        22
+      ],
+      "composeSource": {
+        "run": 2,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "WHY iMESSAGE",
+      "textPreview": "WHY iMESSAGE",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "fontSize": 22,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "WHY iMESSAGE"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "WHY iMESSAGE",
+          "runs": [
+            {
+              "index": 1,
+              "text": "WHY iMESSAGE",
+              "fontSize": 22,
+              "color": "#53E0A5",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5gbq1ory",
+      "id": "3",
+      "name": "slide-title",
+      "bbox": [
+        116,
+        136,
+        720,
+        116
+      ],
+      "composeSource": {
+        "run": 3,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "The crisis interface is already in hand.",
+      "textPreview": "The crisis interface is already in hand.",
+      "resolvedFontSize": 58,
+      "resolvedTextStyle": {
+        "fontSize": 58,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "The crisis interface is"
+          },
+          {
+            "index": 2,
+            "text": "already in hand."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "The crisis interface is already in hand.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "The crisis interface is already in hand.",
+              "fontSize": 58,
+              "color": "#F7FBFF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/udg7adsj",
+      "id": "4",
+      "name": "slide-subtitle",
+      "bbox": [
+        116,
+        290,
+        650,
+        90
+      ],
+      "composeSource": {
+        "run": 11,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "A demo that starts in chat feels closer to how emergency coordination actually begins: messy, immediate, and mobile.",
+      "textPreview": "A demo that starts in chat feels closer to how emergency coordination actually begins: messy, immediate, and mobile.",
+      "resolvedFontSize": 30,
+      "resolvedTextStyle": {
+        "fontSize": 30,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "A demo that starts in chat feels closer to how"
+          },
+          {
+            "index": 2,
+            "text": "emergency coordination actually begins: messy,"
+          },
+          {
+            "index": 3,
+            "text": "immediate, and mobile."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "A demo that starts in chat feels closer to how emergency coordination actually begins: messy, immediate, and mobile.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "A demo that starts in chat feels closer to how emergency coordination actually begins: messy, immediate, and mobile.",
+              "fontSize": 30,
+              "color": "#A7B7C7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nyd0z610",
+      "id": "5",
+      "name": "footer-left",
+      "bbox": [
+        116,
+        1016,
+        600,
+        16
+      ],
+      "composeSource": {
+        "run": 10,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "MedAgent pitch / 03",
+      "textPreview": "MedAgent pitch / 03",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "MedAgent pitch / 03"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "MedAgent pitch / 03",
+          "runs": [
+            {
+              "index": 1,
+              "text": "MedAgent pitch / 03",
+              "fontSize": 16,
+              "color": "#607A8E"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cj6tovah",
+      "id": "6",
+      "name": "footer-rule",
+      "bbox": [
+        1640,
+        1030,
+        164,
+        2
+      ],
+      "composeSource": {
+        "run": 13,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "fillColor": "#1F4054",
+      "lineColor": "#1F4054",
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/w3m94fu1",
+      "id": "7",
+      "name": "chat-surface",
+      "bbox": [
+        856,
+        124,
+        940,
+        838
+      ],
+      "composeSource": {
+        "run": 7,
+        "path": "0"
+      },
+      "geometry": "roundRect",
+      "alt": "chat-surface",
+      "contentType": "image/png",
+      "asset": {
+        "assetId": "a423d903-3000-4e63-8a71-bc7f65b1a1a9",
+        "contentType": "image/png",
+        "byteLength": 433855
+      }
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/u9knih4b",
+      "id": "8",
+      "name": "imessage-head-0",
+      "bbox": [
+        124,
+        438,
+        510,
+        34
+      ],
+      "composeSource": {
+        "run": 8,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "No app install",
+      "textPreview": "No app install",
+      "resolvedFontSize": 34,
+      "resolvedTextStyle": {
+        "fontSize": 34,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "No app install"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "No app install",
+          "runs": [
+            {
+              "index": 1,
+              "text": "No app install",
+              "fontSize": 34,
+              "color": "#F7FBFF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/judg7ads",
+      "id": "9",
+      "name": "imessage-body-0",
+      "bbox": [
+        124,
+        490,
+        610,
+        50
+      ],
+      "composeSource": {
+        "run": 9,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Patient onboarding, PDF upload, booking, consent, and revocation can happen from one familiar thread.",
+      "textPreview": "Patient onboarding, PDF upload, booking, consent, and revocation can happen from one familiar thread.",
+      "resolvedFontSize": 25,
+      "resolvedTextStyle": {
+        "fontSize": 25,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Patient onboarding, PDF upload, booking, consent,"
+          },
+          {
+            "index": 2,
+            "text": "and revocation can happen from one familiar thread."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Patient onboarding, PDF upload, booking, consent, and revocation can happen from one familiar thread.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Patient onboarding, PDF upload, booking, consent, and revocation can happen from one familiar thread.",
+              "fontSize": 25,
+              "color": "#A7B7C7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nyd0z610",
+      "id": "10",
+      "name": "imessage-head-1",
+      "bbox": [
+        124,
+        586,
+        510,
+        34
+      ],
+      "composeSource": {
+        "run": 10,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Consent is conversational",
+      "textPreview": "Consent is conversational",
+      "resolvedFontSize": 34,
+      "resolvedTextStyle": {
+        "fontSize": 34,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Consent is conversational"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Consent is conversational",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Consent is conversational",
+              "fontSize": 34,
+              "color": "#F7FBFF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/udg7adsj",
+      "id": "11",
+      "name": "imessage-body-1",
+      "bbox": [
+        124,
+        638,
+        610,
+        50
+      ],
+      "composeSource": {
+        "run": 11,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Tier 2 approval is a plain YES/NO loop, not a hidden portal state.",
+      "textPreview": "Tier 2 approval is a plain YES/NO loop, not a hidden portal state.",
+      "resolvedFontSize": 25,
+      "resolvedTextStyle": {
+        "fontSize": 25,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Tier 2 approval is a plain YES/NO loop, not a hidden"
+          },
+          {
+            "index": 2,
+            "text": "portal state."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Tier 2 approval is a plain YES/NO loop, not a hidden portal state.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Tier 2 approval is a plain YES/NO loop, not a hidden portal state.",
+              "fontSize": 25,
+              "color": "#A7B7C7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/54zidony",
+      "id": "12",
+      "name": "imessage-head-2",
+      "bbox": [
+        124,
+        734,
+        510,
+        34
+      ],
+      "composeSource": {
+        "run": 12,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Demo is visceral",
+      "textPreview": "Demo is visceral",
+      "resolvedFontSize": 34,
+      "resolvedTextStyle": {
+        "fontSize": 34,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Demo is visceral"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Demo is visceral",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Demo is visceral",
+              "fontSize": 34,
+              "color": "#F7FBFF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cj6tovah",
+      "id": "13",
+      "name": "imessage-body-2",
+      "bbox": [
+        124,
+        786,
+        610,
+        50
+      ],
+      "composeSource": {
+        "run": 13,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Judges can see the message arrive, the workflow run, and the receipt return.",
+      "textPreview": "Judges can see the message arrive, the workflow run, and the receipt return.",
+      "resolvedFontSize": 25,
+      "resolvedTextStyle": {
+        "fontSize": 25,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Judges can see the message arrive, the workflow run,"
+          },
+          {
+            "index": 2,
+            "text": "and the receipt return."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Judges can see the message arrive, the workflow run, and the receipt return.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Judges can see the message arrive, the workflow run, and the receipt return.",
+              "fontSize": 25,
+              "color": "#A7B7C7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nap4r65w",
+      "id": "14",
+      "name": "imessage-rule",
+      "bbox": [
+        120,
+        864,
+        600,
+        1
+      ],
+      "composeSource": {
+        "run": 14,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "fillColor": "#53E0A5",
+      "lineColor": "#53E0A5",
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": [
+    {
+      "index": 1,
+      "frame": {
+        "left": 0,
+        "top": 0,
+        "width": 1920,
+        "height": 1080
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "shape",
+        "name": "background",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 0,
+          "top": 0,
+          "width": 1920,
+          "height": 1080
+        },
+        "snappedFrame": {
+          "left": 0,
+          "top": 0,
+          "width": 1920,
+          "height": 1080
+        },
+        "children": [],
+        "geometry": "rect",
+        "element": {
+          "aid": "sh/nap4r65w",
+          "id": "1",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 2,
+      "frame": {
+        "left": 116,
+        "top": 86,
+        "width": 1080,
+        "height": 36
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "eyebrow",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 22
+        },
+        "frame": {
+          "left": 116,
+          "top": 86,
+          "width": 1080,
+          "height": 22
+        },
+        "snappedFrame": {
+          "left": 116,
+          "top": 86,
+          "width": 1080,
+          "height": 22
+        },
+        "children": [],
+        "text": "WHY iMESSAGE",
+        "transform": "none",
+        "element": {
+          "aid": "sh/cvixczed",
+          "id": "2",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 3,
+      "frame": {
+        "left": 116,
+        "top": 136,
+        "width": 720,
+        "height": 150
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "slide-title",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 58
+        },
+        "frame": {
+          "left": 116,
+          "top": 136,
+          "width": 720,
+          "height": 116
+        },
+        "snappedFrame": {
+          "left": 116,
+          "top": 136,
+          "width": 720,
+          "height": 116
+        },
+        "children": [],
+        "text": "The crisis interface is already in hand.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/5gbq1ory",
+          "id": "3",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 4,
+      "frame": {
+        "left": 116,
+        "top": 290,
+        "width": 650,
+        "height": 90
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "slide-subtitle",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 30
+        },
+        "frame": {
+          "left": 116,
+          "top": 290,
+          "width": 650,
+          "height": 90
+        },
+        "snappedFrame": {
+          "left": 116,
+          "top": 290,
+          "width": 650,
+          "height": 90
+        },
+        "children": [],
+        "text": "A demo that starts in chat feels closer to how emergency coordination actually begins: messy, immediate, and mobile.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/udg7adsj",
+          "id": "4",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 5,
+      "frame": {
+        "left": 116,
+        "top": 1016,
+        "width": 600,
+        "height": 32
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "footer-left",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 16
+        },
+        "frame": {
+          "left": 116,
+          "top": 1016,
+          "width": 600,
+          "height": 16
+        },
+        "snappedFrame": {
+          "left": 116,
+          "top": 1016,
+          "width": 600,
+          "height": 16
+        },
+        "children": [],
+        "text": "MedAgent pitch / 03",
+        "transform": "none",
+        "element": {
+          "aid": "sh/nyd0z610",
+          "id": "5",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 6,
+      "frame": {
+        "left": 1640,
+        "top": 1030,
+        "width": 164,
+        "height": 4
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "rule",
+        "name": "footer-rule",
+        "requestedSize": {
+          "width": {
+            "mode": "fixed",
+            "value": 164
+          },
+          "height": {
+            "mode": "fixed",
+            "value": 2
+          }
+        },
+        "intrinsicSize": {
+          "width": 164,
+          "height": 2
+        },
+        "frame": {
+          "left": 1640,
+          "top": 1030,
+          "width": 164,
+          "height": 2
+        },
+        "snappedFrame": {
+          "left": 1640,
+          "top": 1030,
+          "width": 164,
+          "height": 2
+        },
+        "children": [],
+        "weight": 2,
+        "element": {
+          "aid": "sh/cj6tovah",
+          "id": "6",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 7,
+      "frame": {
+        "left": 856,
+        "top": 124,
+        "width": 940,
+        "height": 838
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "image",
+        "name": "chat-surface",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 856,
+          "top": 124,
+          "width": 940,
+          "height": 838
+        },
+        "snappedFrame": {
+          "left": 856,
+          "top": 124,
+          "width": 940,
+          "height": 838
+        },
+        "children": [],
+        "source": {
+          "kind": "dataUrl"
+        },
+        "fit": "cover",
+        "alt": "chat-surface",
+        "element": {
+          "aid": "im/w3m94fu1",
+          "id": "7",
+          "kind": "image"
+        }
+      }
+    },
+    {
+      "index": 8,
+      "frame": {
+        "left": 124,
+        "top": 438,
+        "width": 510,
+        "height": 44
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "imessage-head-0",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 34
+        },
+        "frame": {
+          "left": 124,
+          "top": 438,
+          "width": 510,
+          "height": 34
+        },
+        "snappedFrame": {
+          "left": 124,
+          "top": 438,
+          "width": 510,
+          "height": 34
+        },
+        "children": [],
+        "text": "No app install",
+        "transform": "none",
+        "element": {
+          "aid": "sh/u9knih4b",
+          "id": "8",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 9,
+      "frame": {
+        "left": 124,
+        "top": 490,
+        "width": 610,
+        "height": 78
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "imessage-body-0",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 25
+        },
+        "frame": {
+          "left": 124,
+          "top": 490,
+          "width": 610,
+          "height": 50
+        },
+        "snappedFrame": {
+          "left": 124,
+          "top": 490,
+          "width": 610,
+          "height": 50
+        },
+        "children": [],
+        "text": "Patient onboarding, PDF upload, booking, consent, and revocation can happen from one familiar thread.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/judg7ads",
+          "id": "9",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 10,
+      "frame": {
+        "left": 124,
+        "top": 586,
+        "width": 510,
+        "height": 44
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "imessage-head-1",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 34
+        },
+        "frame": {
+          "left": 124,
+          "top": 586,
+          "width": 510,
+          "height": 34
+        },
+        "snappedFrame": {
+          "left": 124,
+          "top": 586,
+          "width": 510,
+          "height": 34
+        },
+        "children": [],
+        "text": "Consent is conversational",
+        "transform": "none",
+        "element": {
+          "aid": "sh/nyd0z610",
+          "id": "10",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 11,
+      "frame": {
+        "left": 124,
+        "top": 638,
+        "width": 610,
+        "height": 78
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "imessage-body-1",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 25
+        },
+        "frame": {
+          "left": 124,
+          "top": 638,
+          "width": 610,
+          "height": 50
+        },
+        "snappedFrame": {
+          "left": 124,
+          "top": 638,
+          "width": 610,
+          "height": 50
+        },
+        "children": [],
+        "text": "Tier 2 approval is a plain YES/NO loop, not a hidden portal state.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/udg7adsj",
+          "id": "11",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 12,
+      "frame": {
+        "left": 124,
+        "top": 734,
+        "width": 510,
+        "height": 44
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "imessage-head-2",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 34
+        },
+        "frame": {
+          "left": 124,
+          "top": 734,
+          "width": 510,
+          "height": 34
+        },
+        "snappedFrame": {
+          "left": 124,
+          "top": 734,
+          "width": 510,
+          "height": 34
+        },
+        "children": [],
+        "text": "Demo is visceral",
+        "transform": "none",
+        "element": {
+          "aid": "sh/54zidony",
+          "id": "12",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 13,
+      "frame": {
+        "left": 124,
+        "top": 786,
+        "width": 610,
+        "height": 78
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "imessage-body-2",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 25
+        },
+        "frame": {
+          "left": 124,
+          "top": 786,
+          "width": 610,
+          "height": 50
+        },
+        "snappedFrame": {
+          "left": 124,
+          "top": 786,
+          "width": 610,
+          "height": 50
+        },
+        "children": [],
+        "text": "Judges can see the message arrive, the workflow run, and the receipt return.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/cj6tovah",
+          "id": "13",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 14,
+      "frame": {
+        "left": 116,
+        "top": 866,
+        "width": 600,
+        "height": 3
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "shape",
+        "name": "imessage-rule",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 116,
+          "top": 866,
+          "width": 600,
+          "height": 3
+        },
+        "snappedFrame": {
+          "left": 120,
+          "top": 864,
+          "width": 600,
+          "height": 1
+        },
+        "children": [],
+        "geometry": "rect",
+        "element": {
+          "aid": "sh/nap4r65w",
+          "id": "14",
+          "kind": "shape"
+        }
+      }
+    }
+  ]
+}

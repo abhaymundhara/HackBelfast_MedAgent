@@ -1,0 +1,9 @@
+{
+  "type": "module",
+  "scripts": {
+    "build": "node src/build-medagent-pitch.mjs"
+  },
+  "dependencies": {
+    "@oai/artifact-tool": "file:node_modules/@oai/artifact-tool"
+  }
+}

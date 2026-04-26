@@ -1,0 +1,1899 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/i4ucjt",
+    "id": "i4ucjt",
+    "slide": 4,
+    "layoutId": "0af95391-a13b-4a3c-b532-3552755e4c1a",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "3f5a9256-fc31-4a95-9ff9-d60207f8e03e",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1920,
+      "height": 1080
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "0af95391-a13b-4a3c-b532-3552755e4c1a",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "3f5a9256-fc31-4a95-9ff9-d60207f8e03e",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "3f5a9256-fc31-4a95-9ff9-d60207f8e03e",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/32lszqtc",
+      "id": "1",
+      "name": "background",
+      "bbox": [
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "composeSource": {
+        "run": 1,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "fillColor": "#06121B",
+      "lineColor": "#06121B",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/sneloj2t",
+      "id": "2",
+      "name": "eyebrow",
+      "bbox": [
+        116,
+        86,
+        1080,
+        22
+      ],
+      "composeSource": {
+        "run": 2,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "THE CONCEPT",
+      "textPreview": "THE CONCEPT",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "fontSize": 22,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "THE CONCEPT"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "THE CONCEPT",
+          "runs": [
+            {
+              "index": 1,
+              "text": "THE CONCEPT",
+              "fontSize": 22,
+              "color": "#53E0A5",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/l87ed8ba",
+      "id": "3",
+      "name": "slide-title",
+      "bbox": [
+        116,
+        136,
+        560,
+        116
+      ],
+      "composeSource": {
+        "run": 3,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Text in. Verified access out.",
+      "textPreview": "Text in. Verified access out.",
+      "resolvedFontSize": 58,
+      "resolvedTextStyle": {
+        "fontSize": 58,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Text in. Verified"
+          },
+          {
+            "index": 2,
+            "text": "access out."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Text in. Verified access out.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Text in. Verified access out.",
+              "fontSize": 58,
+              "color": "#F7FBFF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/at47y1kr",
+      "id": "4",
+      "name": "slide-subtitle",
+      "bbox": [
+        116,
+        290,
+        560,
+        90
+      ],
+      "composeSource": {
+        "run": 4,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "MedAgent turns a natural-language emergency request into a policy-bound release and a visible receipt.",
+      "textPreview": "MedAgent turns a natural-language emergency request into a policy-bound release and a visible receipt.",
+      "resolvedFontSize": 30,
+      "resolvedTextStyle": {
+        "fontSize": 30,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "MedAgent turns a natural-language"
+          },
+          {
+            "index": 2,
+            "text": "emergency request into a policy-bound"
+          },
+          {
+            "index": 3,
+            "text": "release and a visible receipt."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "MedAgent turns a natural-language emergency request into a policy-bound release and a visible receipt.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "MedAgent turns a natural-language emergency request into a policy-bound release and a visible receipt.",
+              "fontSize": 30,
+              "color": "#A7B7C7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3ex0nuxc",
+      "id": "5",
+      "name": "footer-left",
+      "bbox": [
+        116,
+        1016,
+        600,
+        16
+      ],
+      "composeSource": {
+        "run": 5,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "MedAgent pitch / 04",
+      "textPreview": "MedAgent pitch / 04",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "MedAgent pitch / 04"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "MedAgent pitch / 04",
+          "runs": [
+            {
+              "index": 1,
+              "text": "MedAgent pitch / 04",
+              "fontSize": 16,
+              "color": "#607A8E"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/szqtcj6t",
+      "id": "6",
+      "name": "footer-rule",
+      "bbox": [
+        1640,
+        1030,
+        164,
+        2
+      ],
+      "composeSource": {
+        "run": 6,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "fillColor": "#1F4054",
+      "lineColor": "#1F4054",
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/8z25kb6x",
+      "id": "7",
+      "name": "workflow-shot",
+      "bbox": [
+        710,
+        118,
+        1092,
+        820
+      ],
+      "composeSource": {
+        "run": 7,
+        "path": "0"
+      },
+      "geometry": "roundRect",
+      "alt": "workflow-shot",
+      "contentType": "image/png",
+      "asset": {
+        "assetId": "3694302c-6e23-4ac4-8b02-191f4f1a289d",
+        "contentType": "image/png",
+        "byteLength": 1116073
+      }
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ex0nuxc3",
+      "id": "8",
+      "name": "workflow-step-01",
+      "bbox": [
+        124,
+        426,
+        76,
+        28
+      ],
+      "composeSource": {
+        "run": 8,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "01",
+      "textPreview": "01",
+      "resolvedFontSize": 28,
+      "resolvedTextStyle": {
+        "fontSize": 28,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "01"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "01",
+          "runs": [
+            {
+              "index": 1,
+              "text": "01",
+              "fontSize": 28,
+              "color": "#6E7F91",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3itgfmlk",
+      "id": "9",
+      "name": "workflow-head-01",
+      "bbox": [
+        220,
+        422,
+        330,
+        32
+      ],
+      "composeSource": {
+        "run": 9,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Onboard",
+      "textPreview": "Onboard",
+      "resolvedFontSize": 32,
+      "resolvedTextStyle": {
+        "fontSize": 32,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Onboard"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Onboard",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Onboard",
+              "fontSize": 32,
+              "color": "#F7FBFF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bm58z25k",
+      "id": "10",
+      "name": "workflow-body-01",
+      "bbox": [
+        220,
+        468,
+        410,
+        46
+      ],
+      "composeSource": {
+        "run": 10,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Traveler sends a report and gets an emergency profile.",
+      "textPreview": "Traveler sends a report and gets an emergency profile.",
+      "resolvedFontSize": 23,
+      "resolvedTextStyle": {
+        "fontSize": 23,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Traveler sends a report and gets an"
+          },
+          {
+            "index": 2,
+            "text": "emergency profile."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Traveler sends a report and gets an emergency profile.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Traveler sends a report and gets an emergency profile.",
+              "fontSize": 23,
+              "color": "#A7B7C7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/m1cfa9w3",
+      "id": "11",
+      "name": "workflow-step-02",
+      "bbox": [
+        124,
+        538,
+        76,
+        28
+      ],
+      "composeSource": {
+        "run": 11,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "02",
+      "textPreview": "02",
+      "resolvedFontSize": 28,
+      "resolvedTextStyle": {
+        "fontSize": 28,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "02"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "02",
+          "runs": [
+            {
+              "index": 1,
+              "text": "02",
+              "fontSize": 28,
+              "color": "#6E7F91",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/tsvu9kni",
+      "id": "12",
+      "name": "workflow-head-02",
+      "bbox": [
+        220,
+        534,
+        330,
+        32
+      ],
+      "composeSource": {
+        "run": 12,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Coordinate",
+      "textPreview": "Coordinate",
+      "resolvedFontSize": 32,
+      "resolvedTextStyle": {
+        "fontSize": 32,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Coordinate"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Coordinate",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Coordinate",
+              "fontSize": 32,
+              "color": "#F7FBFF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/47y1kre1",
+      "id": "13",
+      "name": "workflow-body-02",
+      "bbox": [
+        220,
+        580,
+        410,
+        46
+      ],
+      "composeSource": {
+        "run": 13,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Belfast appointments and clinician context stay in the same thread.",
+      "textPreview": "Belfast appointments and clinician context stay in the same thread.",
+      "resolvedFontSize": 23,
+      "resolvedTextStyle": {
+        "fontSize": 23,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Belfast appointments and clinician"
+          },
+          {
+            "index": 2,
+            "text": "context stay in the same thread."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Belfast appointments and clinician context stay in the same thread.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Belfast appointments and clinician context stay in the same thread.",
+              "fontSize": 23,
+              "color": "#A7B7C7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bat47y1k",
+      "id": "14",
+      "name": "workflow-step-03",
+      "bbox": [
+        124,
+        650,
+        76,
+        28
+      ],
+      "composeSource": {
+        "run": 14,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "03",
+      "textPreview": "03",
+      "resolvedFontSize": 28,
+      "resolvedTextStyle": {
+        "fontSize": 28,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "03"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "03",
+          "runs": [
+            {
+              "index": 1,
+              "text": "03",
+              "fontSize": 28,
+              "color": "#53E0A5",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mp0bi9s3",
+      "id": "15",
+      "name": "workflow-head-03",
+      "bbox": [
+        220,
+        646,
+        330,
+        32
+      ],
+      "composeSource": {
+        "run": 15,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Consent",
+      "textPreview": "Consent",
+      "resolvedFontSize": 32,
+      "resolvedTextStyle": {
+        "fontSize": 32,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Consent"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Consent",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Consent",
+              "fontSize": 32,
+              "color": "#F7FBFF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/tgfmlkjm",
+      "id": "16",
+      "name": "workflow-body-03",
+      "bbox": [
+        220,
+        692,
+        410,
+        46
+      ],
+      "composeSource": {
+        "run": 16,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "The patient approves a named doctor before wider sharing.",
+      "textPreview": "The patient approves a named doctor before wider sharing.",
+      "resolvedFontSize": 23,
+      "resolvedTextStyle": {
+        "fontSize": 23,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "The patient approves a named doctor"
+          },
+          {
+            "index": 2,
+            "text": "before wider sharing."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "The patient approves a named doctor before wider sharing.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "The patient approves a named doctor before wider sharing.",
+              "fontSize": 23,
+              "color": "#A7B7C7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4vmtwra5",
+      "id": "17",
+      "name": "workflow-step-04",
+      "bbox": [
+        124,
+        762,
+        76,
+        28
+      ],
+      "composeSource": {
+        "run": 17,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "04",
+      "textPreview": "04",
+      "resolvedFontSize": 28,
+      "resolvedTextStyle": {
+        "fontSize": 28,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "04"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "04",
+          "runs": [
+            {
+              "index": 1,
+              "text": "04",
+              "fontSize": 28,
+              "color": "#6E7F91",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/b2hwfyxo",
+      "id": "18",
+      "name": "workflow-head-04",
+      "bbox": [
+        220,
+        758,
+        330,
+        32
+      ],
+      "composeSource": {
+        "run": 18,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "Prove",
+      "textPreview": "Prove",
+      "resolvedFontSize": 32,
+      "resolvedTextStyle": {
+        "fontSize": 32,
+        "typeface": "+mn-lt",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Prove"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Prove",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Prove",
+              "fontSize": 32,
+              "color": "#F7FBFF",
+              "bold": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mhk3q5o7",
+      "id": "19",
+      "name": "workflow-body-04",
+      "bbox": [
+        220,
+        804,
+        410,
+        46
+      ],
+      "composeSource": {
+        "run": 19,
+        "path": "0"
+      },
+      "geometry": "rect",
+      "text": "The release returns a doctor link plus a Solana receipt.",
+      "textPreview": "The release returns a doctor link plus a Solana receipt.",
+      "resolvedFontSize": 23,
+      "resolvedTextStyle": {
+        "fontSize": 23,
+        "typeface": "+mn-lt",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "The release returns a doctor link plus a"
+          },
+          {
+            "index": 2,
+            "text": "Solana receipt."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "The release returns a doctor link plus a Solana receipt.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "The release returns a doctor link plus a Solana receipt.",
+              "fontSize": 23,
+              "color": "#A7B7C7"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "composeRuns": [
+    {
+      "index": 1,
+      "frame": {
+        "left": 0,
+        "top": 0,
+        "width": 1920,
+        "height": 1080
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "shape",
+        "name": "background",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 0,
+          "top": 0,
+          "width": 1920,
+          "height": 1080
+        },
+        "snappedFrame": {
+          "left": 0,
+          "top": 0,
+          "width": 1920,
+          "height": 1080
+        },
+        "children": [],
+        "geometry": "rect",
+        "element": {
+          "aid": "sh/32lszqtc",
+          "id": "1",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 2,
+      "frame": {
+        "left": 116,
+        "top": 86,
+        "width": 1080,
+        "height": 36
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "eyebrow",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 22
+        },
+        "frame": {
+          "left": 116,
+          "top": 86,
+          "width": 1080,
+          "height": 22
+        },
+        "snappedFrame": {
+          "left": 116,
+          "top": 86,
+          "width": 1080,
+          "height": 22
+        },
+        "children": [],
+        "text": "THE CONCEPT",
+        "transform": "none",
+        "element": {
+          "aid": "sh/sneloj2t",
+          "id": "2",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 3,
+      "frame": {
+        "left": 116,
+        "top": 136,
+        "width": 560,
+        "height": 150
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "slide-title",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 58
+        },
+        "frame": {
+          "left": 116,
+          "top": 136,
+          "width": 560,
+          "height": 116
+        },
+        "snappedFrame": {
+          "left": 116,
+          "top": 136,
+          "width": 560,
+          "height": 116
+        },
+        "children": [],
+        "text": "Text in. Verified access out.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/l87ed8ba",
+          "id": "3",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 4,
+      "frame": {
+        "left": 116,
+        "top": 290,
+        "width": 560,
+        "height": 90
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "slide-subtitle",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 30
+        },
+        "frame": {
+          "left": 116,
+          "top": 290,
+          "width": 560,
+          "height": 90
+        },
+        "snappedFrame": {
+          "left": 116,
+          "top": 290,
+          "width": 560,
+          "height": 90
+        },
+        "children": [],
+        "text": "MedAgent turns a natural-language emergency request into a policy-bound release and a visible receipt.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/at47y1kr",
+          "id": "4",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 5,
+      "frame": {
+        "left": 116,
+        "top": 1016,
+        "width": 600,
+        "height": 32
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "footer-left",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 16
+        },
+        "frame": {
+          "left": 116,
+          "top": 1016,
+          "width": 600,
+          "height": 16
+        },
+        "snappedFrame": {
+          "left": 116,
+          "top": 1016,
+          "width": 600,
+          "height": 16
+        },
+        "children": [],
+        "text": "MedAgent pitch / 04",
+        "transform": "none",
+        "element": {
+          "aid": "sh/3ex0nuxc",
+          "id": "5",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 6,
+      "frame": {
+        "left": 1640,
+        "top": 1030,
+        "width": 164,
+        "height": 4
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "rule",
+        "name": "footer-rule",
+        "requestedSize": {
+          "width": {
+            "mode": "fixed",
+            "value": 164
+          },
+          "height": {
+            "mode": "fixed",
+            "value": 2
+          }
+        },
+        "intrinsicSize": {
+          "width": 164,
+          "height": 2
+        },
+        "frame": {
+          "left": 1640,
+          "top": 1030,
+          "width": 164,
+          "height": 2
+        },
+        "snappedFrame": {
+          "left": 1640,
+          "top": 1030,
+          "width": 164,
+          "height": 2
+        },
+        "children": [],
+        "weight": 2,
+        "element": {
+          "aid": "sh/szqtcj6t",
+          "id": "6",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 7,
+      "frame": {
+        "left": 710,
+        "top": 118,
+        "width": 1092,
+        "height": 820
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "image",
+        "name": "workflow-shot",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "fill",
+            "value": 1
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 0
+        },
+        "frame": {
+          "left": 710,
+          "top": 118,
+          "width": 1092,
+          "height": 820
+        },
+        "snappedFrame": {
+          "left": 710,
+          "top": 118,
+          "width": 1092,
+          "height": 820
+        },
+        "children": [],
+        "source": {
+          "kind": "dataUrl"
+        },
+        "fit": "cover",
+        "alt": "workflow-shot",
+        "element": {
+          "aid": "im/8z25kb6x",
+          "id": "7",
+          "kind": "image"
+        }
+      }
+    },
+    {
+      "index": 8,
+      "frame": {
+        "left": 124,
+        "top": 426,
+        "width": 76,
+        "height": 42
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "workflow-step-01",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 28
+        },
+        "frame": {
+          "left": 124,
+          "top": 426,
+          "width": 76,
+          "height": 28
+        },
+        "snappedFrame": {
+          "left": 124,
+          "top": 426,
+          "width": 76,
+          "height": 28
+        },
+        "children": [],
+        "text": "01",
+        "transform": "none",
+        "element": {
+          "aid": "sh/ex0nuxc3",
+          "id": "8",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 9,
+      "frame": {
+        "left": 220,
+        "top": 422,
+        "width": 330,
+        "height": 42
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "workflow-head-01",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 32
+        },
+        "frame": {
+          "left": 220,
+          "top": 422,
+          "width": 330,
+          "height": 32
+        },
+        "snappedFrame": {
+          "left": 220,
+          "top": 422,
+          "width": 330,
+          "height": 32
+        },
+        "children": [],
+        "text": "Onboard",
+        "transform": "none",
+        "element": {
+          "aid": "sh/3itgfmlk",
+          "id": "9",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 10,
+      "frame": {
+        "left": 220,
+        "top": 468,
+        "width": 410,
+        "height": 56
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "workflow-body-01",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 23
+        },
+        "frame": {
+          "left": 220,
+          "top": 468,
+          "width": 410,
+          "height": 46
+        },
+        "snappedFrame": {
+          "left": 220,
+          "top": 468,
+          "width": 410,
+          "height": 46
+        },
+        "children": [],
+        "text": "Traveler sends a report and gets an emergency profile.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/bm58z25k",
+          "id": "10",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 11,
+      "frame": {
+        "left": 124,
+        "top": 538,
+        "width": 76,
+        "height": 42
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "workflow-step-02",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 28
+        },
+        "frame": {
+          "left": 124,
+          "top": 538,
+          "width": 76,
+          "height": 28
+        },
+        "snappedFrame": {
+          "left": 124,
+          "top": 538,
+          "width": 76,
+          "height": 28
+        },
+        "children": [],
+        "text": "02",
+        "transform": "none",
+        "element": {
+          "aid": "sh/m1cfa9w3",
+          "id": "11",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 12,
+      "frame": {
+        "left": 220,
+        "top": 534,
+        "width": 330,
+        "height": 42
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "workflow-head-02",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 32
+        },
+        "frame": {
+          "left": 220,
+          "top": 534,
+          "width": 330,
+          "height": 32
+        },
+        "snappedFrame": {
+          "left": 220,
+          "top": 534,
+          "width": 330,
+          "height": 32
+        },
+        "children": [],
+        "text": "Coordinate",
+        "transform": "none",
+        "element": {
+          "aid": "sh/tsvu9kni",
+          "id": "12",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 13,
+      "frame": {
+        "left": 220,
+        "top": 580,
+        "width": 410,
+        "height": 56
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "workflow-body-02",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 23
+        },
+        "frame": {
+          "left": 220,
+          "top": 580,
+          "width": 410,
+          "height": 46
+        },
+        "snappedFrame": {
+          "left": 220,
+          "top": 580,
+          "width": 410,
+          "height": 46
+        },
+        "children": [],
+        "text": "Belfast appointments and clinician context stay in the same thread.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/47y1kre1",
+          "id": "13",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 14,
+      "frame": {
+        "left": 124,
+        "top": 650,
+        "width": 76,
+        "height": 42
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "workflow-step-03",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 28
+        },
+        "frame": {
+          "left": 124,
+          "top": 650,
+          "width": 76,
+          "height": 28
+        },
+        "snappedFrame": {
+          "left": 124,
+          "top": 650,
+          "width": 76,
+          "height": 28
+        },
+        "children": [],
+        "text": "03",
+        "transform": "none",
+        "element": {
+          "aid": "sh/bat47y1k",
+          "id": "14",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 15,
+      "frame": {
+        "left": 220,
+        "top": 646,
+        "width": 330,
+        "height": 42
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "workflow-head-03",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 32
+        },
+        "frame": {
+          "left": 220,
+          "top": 646,
+          "width": 330,
+          "height": 32
+        },
+        "snappedFrame": {
+          "left": 220,
+          "top": 646,
+          "width": 330,
+          "height": 32
+        },
+        "children": [],
+        "text": "Consent",
+        "transform": "none",
+        "element": {
+          "aid": "sh/mp0bi9s3",
+          "id": "15",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 16,
+      "frame": {
+        "left": 220,
+        "top": 692,
+        "width": 410,
+        "height": 56
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "workflow-body-03",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 23
+        },
+        "frame": {
+          "left": 220,
+          "top": 692,
+          "width": 410,
+          "height": 46
+        },
+        "snappedFrame": {
+          "left": 220,
+          "top": 692,
+          "width": 410,
+          "height": 46
+        },
+        "children": [],
+        "text": "The patient approves a named doctor before wider sharing.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/tgfmlkjm",
+          "id": "16",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 17,
+      "frame": {
+        "left": 124,
+        "top": 762,
+        "width": 76,
+        "height": 42
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "workflow-step-04",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 28
+        },
+        "frame": {
+          "left": 124,
+          "top": 762,
+          "width": 76,
+          "height": 28
+        },
+        "snappedFrame": {
+          "left": 124,
+          "top": 762,
+          "width": 76,
+          "height": 28
+        },
+        "children": [],
+        "text": "04",
+        "transform": "none",
+        "element": {
+          "aid": "sh/4vmtwra5",
+          "id": "17",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 18,
+      "frame": {
+        "left": 220,
+        "top": 758,
+        "width": 330,
+        "height": 42
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "workflow-head-04",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 32
+        },
+        "frame": {
+          "left": 220,
+          "top": 758,
+          "width": 330,
+          "height": 32
+        },
+        "snappedFrame": {
+          "left": 220,
+          "top": 758,
+          "width": 330,
+          "height": 32
+        },
+        "children": [],
+        "text": "Prove",
+        "transform": "none",
+        "element": {
+          "aid": "sh/b2hwfyxo",
+          "id": "18",
+          "kind": "shape"
+        }
+      }
+    },
+    {
+      "index": 19,
+      "frame": {
+        "left": 220,
+        "top": 804,
+        "width": 410,
+        "height": 56
+      },
+      "baseUnit": 8,
+      "root": {
+        "path": "0",
+        "kind": "text",
+        "name": "workflow-body-04",
+        "requestedSize": {
+          "width": {
+            "mode": "fill",
+            "value": 1
+          },
+          "height": {
+            "mode": "hug"
+          }
+        },
+        "intrinsicSize": {
+          "width": 0,
+          "height": 23
+        },
+        "frame": {
+          "left": 220,
+          "top": 804,
+          "width": 410,
+          "height": 46
+        },
+        "snappedFrame": {
+          "left": 220,
+          "top": 804,
+          "width": 410,
+          "height": 46
+        },
+        "children": [],
+        "text": "The release returns a doctor link plus a Solana receipt.",
+        "transform": "none",
+        "element": {
+          "aid": "sh/mhk3q5o7",
+          "id": "19",
+          "kind": "shape"
+        }
+      }
+    }
+  ]
+}
