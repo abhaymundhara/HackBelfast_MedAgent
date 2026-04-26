@@ -112,6 +112,8 @@ export const AuditEventTypeSchema = z.enum([
   "record_shared",
   "record_accessed",
   "share_revoked",
+  "profile_created",
+  "appointment_booked",
 ]);
 
 export const AuditEventSchema = z.object({

@@ -206,13 +206,31 @@ export function formatAppointmentShareCreated(input: {
   doctorName: string;
   shareUrl: string;
   dashboardUrl: string;
+  chainRef?: string | null;
 }) {
-  return [
+  const lines = [
     `Shared your full uploaded medical record with ${input.doctorName}.`,
     `Doctor access link: ${input.shareUrl}`,
-    "",
-    "You can revoke future live access from your dashboard.",
-    input.dashboardUrl,
+  ];
+  const proof = formatSolanaProof({ action: "record share", chainRef: input.chainRef ?? null });
+  if (proof) {
+    lines.push("", proof);
+  }
+  lines.push("", "You can revoke future live access from your dashboard.", input.dashboardUrl);
+  return lines.join("\n");
+}
+
+export function formatSolanaProof(input: {
+  action: string;
+  chainRef: string | null;
+}): string {
+  if (!input.chainRef) return "";
+  if (input.chainRef.startsWith("local-solana:")) {
+    return "your record has been logged securely. blockchain confirmation is pending.";
+  }
+  return [
+    `your ${input.action} has been securely logged on a permanent ledger — no one can tamper with it.`,
+    `proof: https://solscan.io/tx/${input.chainRef}?cluster=devnet`,
   ].join("\n");
 }
 

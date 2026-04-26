@@ -41,6 +41,7 @@ import { createShareRecord } from "@/lib/sharing/createShare";
 import {
   listPatientsSafe,
   getPatientSummary,
+  getPatientRow,
   getAppointment,
   touchImessageUser,
   updateImessageUser,
@@ -48,6 +49,9 @@ import {
   getClinicianHandleForRequest,
   type ImessageOnboardingStage,
 } from "@/lib/db";
+import { sha256Hash } from "@/lib/crypto";
+import { solanaAuditStore } from "@/lib/solana/auditStore";
+import { formatSolanaProof } from "@/lib/imessage/outbound";
 import { parseNameDobInput } from "@/lib/imessage/onboardingNlp";
 import {
   isPdfAttachment,
@@ -639,6 +643,32 @@ async function handleOnboardingMedicalReportUpload(
       onboardingRecordDraft: `pdf:${profile.documentId}`,
     });
 
+    let onboardChainRef: string | null = null;
+    try {
+      const patient = getPatientRow(profile.patientId);
+      const patientHash = patient?.patient_hash ?? sha256Hash(profile.patientId);
+      const auditResult = await solanaAuditStore.writeAuditEvent({
+        requestId: profile.patientId,
+        patientId: profile.patientId,
+        event: {
+          event_type: "profile_created",
+          request_id: profile.patientId,
+          doctor_hash: "",
+          patient_hash: patientHash,
+          jurisdiction: "GB-NIR",
+          decision: "allow",
+          token_expiry: null,
+          timestamp: new Date().toISOString(),
+          interaction_type: "onboarding",
+          summary_hash: sha256Hash(`${profile.patientId}:${profile.summary.demographics.name}`),
+        },
+      });
+      onboardChainRef = auditResult.chainRef;
+    } catch (err) {
+      // Non-blocking — Solana failure doesn't break onboarding
+    }
+
+    const proofLine = formatSolanaProof({ action: "medical record", chainRef: onboardChainRef });
     await bridge.sendText({
       chatGuid,
       text: [
@@ -650,6 +680,7 @@ async function handleOnboardingMedicalReportUpload(
         `• conditions: ${profile.summary.conditions.length}`,
         "",
         "you're all set! you can now ask me about your record (\"what are my allergies?\") or book a GP appointment in belfast. just text me anytime.",
+        ...(proofLine ? ["", proofLine] : []),
       ].join("\n"),
     });
   } catch (error) {
@@ -940,7 +971,7 @@ async function handlePatientAppointmentIntent(
       return;
     }
     try {
-      const appointment = bookAppointmentSlot({
+      const appointment = await bookAppointmentSlot({
         patientId,
         slotId,
         symptomSummary: String(conv.metadata.appointmentReason ?? rawText),
@@ -1011,6 +1042,7 @@ async function handlePatientAppointmentIntent(
       doctorName: appointment.doctorName,
       shareUrl: `${appBaseUrl}${result.shareUrl}`,
       dashboardUrl: `${appBaseUrl}/patient/dashboard`,
+      chainRef: result.chainRef,
     }),
   });
 }

@@ -28,14 +28,28 @@ export function formatAppointmentOptions(slots: Array<AppointmentSlot | Appointm
   ].join("\n");
 }
 
-export function formatAppointmentConfirmation(appointment: Appointment) {
-  return [
+export function formatAppointmentConfirmation(appointment: Appointment & { chainRef?: string | null }) {
+  const lines = [
     "Appointment confirmed.",
     `Doctor: ${appointment.doctorName}`,
     `When: ${formatDateTime(appointment.startsAt)}`,
     `Where: ${appointment.clinic}`,
+  ];
+  if (appointment.chainRef) {
+    if (appointment.chainRef.startsWith("local-solana:")) {
+      lines.push("", "your appointment has been logged securely. blockchain confirmation is pending.");
+    } else {
+      lines.push(
+        "",
+        "your appointment has been securely logged on a permanent ledger — no one can tamper with it.",
+        `proof: https://solscan.io/tx/${appointment.chainRef}?cluster=devnet`,
+      );
+    }
+  }
+  lines.push(
     "",
     "Booking does not share your medical data.",
     `Do you want to share your full uploaded medical record with ${appointment.doctorName} for this appointment? Reply YES or NO.`,
-  ].join("\n");
+  );
+  return lines.join("\n");
 }
