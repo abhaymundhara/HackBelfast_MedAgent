@@ -28,6 +28,7 @@ import {
   resumeApprovedRequest,
   denyApprovedRequest,
   answerFollowUpQuestion,
+  answerPatientRecordQuery,
 } from "@/lib/agent/medagent";
 import { getDemoClinician } from "@/lib/ips/seed";
 import { searchAppointmentSlots } from "@/lib/appointments/availability";
@@ -218,6 +219,16 @@ export async function POST(request: Request) {
       await handleApproval(intent.decision, conv, chatGuid, bridge, messageId);
     } else if (
       identityKind === "patient" &&
+      intent.kind === "patient_query"
+    ) {
+      await handlePatientRecordQuery(
+        intent.query,
+        conv,
+        chatGuid,
+        bridge,
+      );
+    } else if (
+      identityKind === "patient" &&
       (intent.kind === "appointment_search" ||
         intent.kind === "appointment_slot_selection" ||
         intent.kind === "appointment_share")
@@ -250,7 +261,7 @@ export async function POST(request: Request) {
       if (!activation.activated && !canSkipActivation) {
         await bridge.sendText({
           chatGuid,
-          text: `Start your message with "${activation.keyword}" to trigger MedAgent. Example: "${activation.keyword} access patient SARAHB".`,
+          text: `Just start your message with "${activation.keyword}" and I'll jump in! For example: "${activation.keyword} I need Sarah Bennett's allergy info."`,
         });
       } else {
         const routedText = activation.activated ? activation.cleanedText : text;
@@ -258,7 +269,7 @@ export async function POST(request: Request) {
         if (routedIntent.kind !== "freeform_clinician") {
           await bridge.sendText({
             chatGuid,
-            text: `Reply /help for commands or start with "${activation.keyword}".`,
+            text: `Hmm, I didn't quite catch that. Try starting with "${activation.keyword}" and tell me what you need — or send /help to see what I can do.`,
           });
         } else {
           await handleClinicianRequest(
@@ -283,14 +294,15 @@ export async function POST(request: Request) {
         messageId,
       );
     } else {
-      await bridge.sendText({ chatGuid, text: formatAskApproval() });
+      // Friendly out-of-scope catch-all — redirect naturally
+      await handleOutOfScope(text, conv, chatGuid, bridge);
     }
   } catch (err) {
     console.error("[webhook] dispatch error:", err);
     await bridge
       .sendText({
         chatGuid,
-        text: "MedAgent encountered an error. Please try again.",
+        text: "Oops, something went wrong on my end. Give it another go in a moment — I'll be ready!",
       })
       .catch(() => {});
   }
@@ -401,13 +413,13 @@ async function startBaymaxOnboarding(
   bridge: ReturnType<typeof getBridge>,
 ) {
   debugLog("start onboarding", { handle });
-  conv.awaiting = "onboarding_name_dob";
-  conv.metadata.onboardingMode = "unknown";
+  conv.awaiting = "onboarding_new_user_record";
+  conv.metadata.onboardingMode = "new_user";
   conv.metadata.onboardingPatientId = null;
   conv.metadata.onboardingName = null;
   conv.metadata.onboardingDob = null;
   updateImessageUser(handle, {
-    stage: "awaiting_name_dob",
+    stage: "awaiting_new_user_record",
     fullName: null,
     dob: null,
     patientId: null,
@@ -415,11 +427,7 @@ async function startBaymaxOnboarding(
   });
   await bridge.sendText({
     chatGuid,
-    text: "Hi, I'm BayMax — your secure emergency medical summary helper for cross-border care on the island of Ireland. This is private and auditable.",
-  });
-  await bridge.sendText({
-    chatGuid,
-    text: "To get started, reply with your full name and DOB in YYYY-MM-DD format. Example: Sarah Bennett 1991-08-14",
+    text: "hey! i'm baymax — your secure medical assistant for cross-border care on the island of ireland. everything's private and auditable on solana. why don't you send me your medical history report as a PDF and i'll get you onboarded!",
   });
 }
 
@@ -573,7 +581,7 @@ async function handleOnboardingReadyReply(
   }
   await bridge.sendText({
     chatGuid,
-    text: "Please reply YES to continue setup or NO to cancel.",
+    text: "Just say yes to keep going, or no if you'd rather not right now.",
   });
 }
 
@@ -593,30 +601,23 @@ async function handleOnboardingMedicalReportUpload(
   if (!pdfAttachment) {
     await bridge.sendText({
       chatGuid,
-      text: "Please upload your medical report as a PDF attachment so I can finish your emergency profile.",
-    });
-    return;
-  }
-
-  const name =
-    typeof conv.metadata.onboardingName === "string"
-      ? conv.metadata.onboardingName
-      : "";
-  const dob =
-    typeof conv.metadata.onboardingDob === "string"
-      ? conv.metadata.onboardingDob
-      : "";
-  if (!name || !dob) {
-    conv.awaiting = "onboarding_name_dob";
-    updateImessageUser(handle, { stage: "awaiting_name_dob" });
-    await bridge.sendText({
-      chatGuid,
-      text: "I need your name and DOB before I can attach this PDF to a profile. Reply with your full name and DOB in YYYY-MM-DD format.",
+      text: "just send me your medical report as a PDF and i'll take care of the rest!",
     });
     return;
   }
 
   await pulseTypingIndicator(bridge, chatGuid);
+
+  // Name/DOB from conversation metadata if available, otherwise extracted from PDF automatically
+  const name =
+    typeof conv.metadata.onboardingName === "string"
+      ? conv.metadata.onboardingName
+      : undefined;
+  const dob =
+    typeof conv.metadata.onboardingDob === "string"
+      ? conv.metadata.onboardingDob
+      : undefined;
+
   try {
     const profile = await processMedicalReportPdfOnboarding({
       attachment: pdfAttachment,
@@ -641,12 +642,14 @@ async function handleOnboardingMedicalReportUpload(
     await bridge.sendText({
       chatGuid,
       text: [
-        `Thanks ${profile.summary.demographics.name}. I read your medical report PDF and created your emergency profile.`,
-        `• Patient ID: ${profile.patientId}`,
-        `• Allergies: ${profile.summary.allergies.length}`,
-        `• Medications: ${profile.summary.medications.length}`,
-        `• Major conditions: ${profile.summary.conditions.length}`,
-        "Your profile is ready for audited emergency sharing.",
+        `nice to meet you, ${profile.summary.demographics.name}! i've read your medical report and set up your emergency profile.`,
+        "",
+        `here's what i found:`,
+        `• allergies: ${profile.summary.allergies.length}`,
+        `• medications: ${profile.summary.medications.length}`,
+        `• conditions: ${profile.summary.conditions.length}`,
+        "",
+        "you're all set! you can now ask me about your record (\"what are my allergies?\") or book a GP appointment in belfast. just text me anytime.",
       ].join("\n"),
     });
   } catch (error) {
@@ -654,10 +657,10 @@ async function handleOnboardingMedicalReportUpload(
       handle,
       reason: error instanceof Error ? error.message : "unknown",
     });
-    await bridge.sendText({
-      chatGuid,
-      text: "I couldn't read enough emergency information from that PDF. Please upload a medical report PDF that includes allergies, medications, conditions, and an emergency contact.",
-    });
+    const hint = error instanceof Error && error.message.includes("name and date of birth")
+      ? "hmm, i couldn't find your name or date of birth in that PDF. make sure it has a line like \"Name: Ciara Byrne\" and \"Date of Birth: 1994-02-17\" and try sending it again."
+      : "hmm, i couldn't pull enough medical info from that PDF. could you try a different one? a GP summary with your allergies, medications, and conditions works great.";
+    await bridge.sendText({ chatGuid, text: hint });
   }
 }
 
@@ -669,21 +672,21 @@ async function promptOnboardingStage(
   if (stage === "awaiting_name_dob") {
     await bridge.sendText({
       chatGuid,
-      text: "Let's continue setup. Reply with your full name and DOB in YYYY-MM-DD format.",
+      text: "i just need your name and date of birth to continue — type something like: Ciara Byrne 1994-02-17",
     });
     return;
   }
   if (stage === "awaiting_ready_yes_no") {
     await bridge.sendText({
       chatGuid,
-      text: "Ready to continue setup? Reply YES or NO.",
+      text: "ready to keep going? just say yes or no.",
     });
     return;
   }
   if (stage === "awaiting_new_user_record") {
     await bridge.sendText({
       chatGuid,
-      text: "Let's continue setup. Please upload your medical report PDF here in iMessage.",
+      text: "just send me your medical report PDF and i'll get you set up!",
     });
     return;
   }
@@ -772,7 +775,7 @@ async function handleSlashCommand(
     default:
       await bridge.sendText({
         chatGuid,
-        text: `Unknown command: /${command}. Reply /help for available commands.`,
+        text: `I don't know that one! Send /help to see what I can do, or just tell me what you need in plain English.`,
       });
   }
 }
@@ -907,7 +910,7 @@ async function handlePatientAppointmentIntent(
   if (!patientId || conv.identityKind !== "patient") {
     await bridge.sendText({
       chatGuid,
-      text: "Please finish onboarding before booking an appointment.",
+      text: "I'd love to help with that! Let's get your profile set up first though — say \"hey baymax!\" to start.",
     });
     return;
   }
@@ -1010,6 +1013,84 @@ async function handlePatientAppointmentIntent(
       dashboardUrl: `${appBaseUrl}/patient/dashboard`,
     }),
   });
+}
+
+const OUT_OF_SCOPE_RESPONSES_PATIENT = [
+  "hey! that's a bit outside my wheelhouse — i'm really just set up for medical stuff. i can check your allergies, meds, conditions, or help you book a GP appointment in belfast. what do you need?",
+  "haha i wish i could help with that one! i'm only really useful for medical things though — your health record, booking appointments, sharing info with a doctor. anything like that?",
+  "not sure i can help there! but if you need anything medical — like \"what are my allergies?\" or \"i need an appointment for my knee\" — i'm all yours.",
+  "i'm more of a medical assistant than a general one, but i'm really good at the medical stuff! ask me about your record, book an appointment, or check your meds — whatever you need.",
+];
+
+const OUT_OF_SCOPE_RESPONSES_CLINICIAN = [
+  "hey — i'm set up for emergency record access and patient lookups. if you need a patient's summary, just tell me who and i'll get on it. try something like \"access patient SARAHB.\"",
+  "that's a bit outside what i do! i'm here for clinical record access — patient lookups, emergency summaries, audit-trailed access. just let me know who you need.",
+];
+
+const OUT_OF_SCOPE_RESPONSES_NEW = [
+  "hey! i'm medagent — i help with cross-border medical care on the island of ireland. i can store your emergency profile and help you find a GP when you're travelling. say \"hey baymax!\" to get started!",
+  "hi there! i'm a secure medical assistant for travellers between ireland and northern ireland. i keep your medical info safe and help you book appointments when you need one. say \"hey baymax!\" to set things up.",
+];
+
+function pickResponse(responses: string[]): string {
+  return responses[Math.floor(Math.random() * responses.length)];
+}
+
+async function handleOutOfScope(
+  _text: string,
+  conv: ConversationState,
+  chatGuid: string,
+  bridge: ReturnType<typeof getBridge>,
+) {
+  let response: string;
+
+  if (conv.identityKind === "patient") {
+    const imessageUser = touchImessageUser(conv.handle);
+    if (imessageUser.stage === "onboarded") {
+      response = pickResponse(OUT_OF_SCOPE_RESPONSES_PATIENT);
+    } else {
+      response = pickResponse(OUT_OF_SCOPE_RESPONSES_NEW);
+    }
+  } else if (conv.identityKind === "clinician") {
+    response = pickResponse(OUT_OF_SCOPE_RESPONSES_CLINICIAN);
+  } else {
+    response = pickResponse(OUT_OF_SCOPE_RESPONSES_NEW);
+  }
+
+  await bridge.sendText({ chatGuid, text: response });
+}
+
+async function handlePatientRecordQuery(
+  query: string,
+  conv: ConversationState,
+  chatGuid: string,
+  bridge: ReturnType<typeof getBridge>,
+) {
+  const patientId = conv.identityId;
+  if (!patientId || conv.identityKind !== "patient") {
+    await bridge.sendText({
+      chatGuid,
+      text: "I'd love to look that up for you! Let's get your profile set up first — say \"hey baymax!\" to start.",
+    });
+    return;
+  }
+
+  await pulseTypingIndicator(bridge, chatGuid);
+
+  try {
+    const result = await answerPatientRecordQuery(patientId, query);
+    const lines = [result.answer];
+    if (result.sources.length > 0) {
+      lines.push("", `Sources: ${[...new Set(result.sources)].join(", ")}`);
+    }
+    await bridge.sendText({ chatGuid, text: lines.join("\n") });
+  } catch (err) {
+    debugLog("patient query error", err instanceof Error ? err.message : err);
+    await bridge.sendText({
+      chatGuid,
+      text: "I couldn't retrieve that information right now. Please try again.",
+    });
+  }
 }
 
 const PATIENT_SHORTCODES: Record<string, string> = {

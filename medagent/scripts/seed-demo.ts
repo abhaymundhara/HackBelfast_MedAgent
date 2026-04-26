@@ -118,38 +118,65 @@ export async function seedDemo() {
     ).run(doctor);
   }
 
+  // Musgrave Park Hospital — Regional Orthopaedic Centre (MSK/knee specialist)
   seedAppointmentSlot({
-    id: "belfast-msk-today-1",
-    doctorRegNumber: "GMC6021841",
-    doctorName: "Dr. Niamh O'Neill",
-    doctorEmail: "niamh.oneill@belfasttrust.hscni.net",
-    specialty: "MSK / Sports Medicine",
-    clinic: "Belfast Musculoskeletal Clinic",
+    id: "musgrave-msk-today-1",
+    doctorRegNumber: "GMC5318264",
+    doctorName: "Mr. Conor Wilson",
+    doctorEmail: "conor.wilson@belfasttrust.hscni.net",
+    specialty: "Orthopaedics / MSK",
+    clinic: "Musgrave Park Hospital, 20 Stockmans Lane, Belfast",
     dayOffset: 0,
     hour: 15,
-    reasonTags: ["knee", "injury", "msk", "pain"],
+    reasonTags: ["knee", "injury", "msk", "pain", "orthopaedic", "joint"],
   });
+  // Ormeau Health Centre — GP Practice (general + knee/injury)
   seedAppointmentSlot({
-    id: "belfast-gp-tomorrow-1",
-    doctorRegNumber: "GMC7112043",
-    doctorName: "Dr. Patrick Hughes",
-    doctorEmail: "patrick.hughes@belfasttrust.hscni.net",
+    id: "ormeau-gp-tomorrow-1",
+    doctorRegNumber: "GMC4756091",
+    doctorName: "Dr. Aisling Donaghy",
+    doctorEmail: "aisling.donaghy@ormeauhc.hscni.net",
     specialty: "General Practice",
-    clinic: "Cityside Health Centre, Belfast",
+    clinic: "Ormeau Health Centre, 120 Ormeau Road, Belfast",
     dayOffset: 1,
     hour: 10,
-    reasonTags: ["knee", "injury", "pain", "general"],
+    reasonTags: ["knee", "injury", "pain", "general", "gp"],
   });
+  // Royal Victoria Hospital — A&E / Trauma
   seedAppointmentSlot({
-    id: "belfast-msk-future-1",
-    doctorRegNumber: "GMC6021841",
-    doctorName: "Dr. Niamh O'Neill",
-    doctorEmail: "niamh.oneill@belfasttrust.hscni.net",
-    specialty: "MSK / Sports Medicine",
-    clinic: "Belfast Musculoskeletal Clinic",
+    id: "rvh-ae-tomorrow-1",
+    doctorRegNumber: "GMC4921847",
+    doctorName: "Dr. Chidi Okonkwo",
+    doctorEmail: "chidi.okonkwo@belfasttrust.hscni.net",
+    specialty: "Emergency Medicine / A&E",
+    clinic: "Royal Victoria Hospital, 274 Grosvenor Road, Belfast",
+    dayOffset: 1,
+    hour: 14,
+    reasonTags: ["emergency", "trauma", "injury", "pain", "urgent"],
+  });
+  // Musgrave Park Hospital — future orthopaedic follow-up
+  seedAppointmentSlot({
+    id: "musgrave-msk-future-1",
+    doctorRegNumber: "GMC5318264",
+    doctorName: "Mr. Conor Wilson",
+    doctorEmail: "conor.wilson@belfasttrust.hscni.net",
+    specialty: "Orthopaedics / MSK",
+    clinic: "Musgrave Park Hospital, 20 Stockmans Lane, Belfast",
     dayOffset: 3,
     hour: 14,
-    reasonTags: ["knee", "injury", "msk", "pain"],
+    reasonTags: ["knee", "injury", "msk", "pain", "orthopaedic", "joint", "follow-up"],
+  });
+  // Mater Hospital — general medicine slot
+  seedAppointmentSlot({
+    id: "mater-gen-future-1",
+    doctorRegNumber: "GMC6187432",
+    doctorName: "Dr. Roisin McAlister",
+    doctorEmail: "roisin.mcalister@belfasttrust.hscni.net",
+    specialty: "General Medicine / Respiratory",
+    clinic: "Mater Infirmorum Hospital, 45-51 Crumlin Road, Belfast",
+    dayOffset: 2,
+    hour: 11,
+    reasonTags: ["general", "respiratory", "breathing", "chest", "cough"],
   });
 
   setAppConfig("demo.seededAt", new Date().toISOString());
@@ -157,7 +184,7 @@ export async function seedDemo() {
   return {
     patients: DEMO_PATIENTS.length,
     clinicians: DEMO_CLINICIANS.length,
-    appointmentSlots: 3,
+    appointmentSlots: 5,
     audit: "solana",
   };
 }

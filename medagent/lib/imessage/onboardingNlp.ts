@@ -231,7 +231,9 @@ async function parseWithOllama(input: string): Promise<ParsedNameDob | null> {
     `User text: "${input}"`,
   ].join("\n");
 
-  const parsedTimeoutMs = Number(process.env.IMESSAGE_OLLAMA_TIMEOUT_MS ?? 10_000);
+  const parsedTimeoutMs = Number(
+    process.env.IMESSAGE_OLLAMA_TIMEOUT_MS ?? 10_000,
+  );
   const timeoutMs =
     Number.isFinite(parsedTimeoutMs) && parsedTimeoutMs > 0
       ? parsedTimeoutMs

@@ -173,26 +173,29 @@ export function formatPatientConfirmation(input: {
 export function formatHelp(): string {
   const activationKeyword = getActivationKeyword();
   return [
-    "MedAgent commands:",
-    `Wake word: ${activationKeyword}`,
+    `Hey! Here's what I can help you with.`,
     "",
-    "• /access <patient> — request record access",
-    "• /approve — approve a pending request",
-    "• /deny — deny a pending request",
-    "• /status — check active request",
-    "• /audit <patient> — view audit log",
-    "• /persona <id> — set clinician persona",
-    "• /end — end session",
-    "• /help — show this message",
+    "Just talk to me naturally — or use these shortcuts:",
+    "",
+    `• Say "${activationKeyword}" + what you need — e.g. "${activationKeyword} access patient SARAHB"`,
+    "• Ask about appointments — \"I need a GP in Belfast for my knee\"",
+    "• Ask about your record — \"what are my allergies?\"",
+    "",
+    "Quick commands:",
+    "• /access <patient> — look up a patient's record",
+    "• /approve or /deny — respond to a pending request",
+    "• /status — check what's active",
+    "• /audit <patient> — see the audit trail",
+    "• /end — close your session",
   ].join("\n");
 }
 
 export function formatAskPatientId(): string {
-  return "Got it — which patient do you need? Reply with the patient ID (for example: SARAHB).";
+  return "Sure thing — which patient do you need to look up? Just send me their ID (like SARAHB) or their name.";
 }
 
 export function formatAskApproval(): string {
-  return "Please reply YES to approve, or NO to deny.";
+  return "Just need a quick yes or no from you on this one — should I approve or deny the request?";
 }
 
 export function formatAck(): string {
