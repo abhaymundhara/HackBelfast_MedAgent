@@ -1,10 +1,9 @@
 import { execFile } from "child_process";
 import fs from "fs";
+import { createRequire } from "module";
 import os from "os";
 import path from "path";
 import { promisify } from "util";
-
-import { PDFParse } from "pdf-parse";
 
 import { encryptBuffer, encryptJson, sha256Hash } from "@/lib/crypto";
 import {
@@ -18,14 +17,38 @@ import { indexPatientDocument } from "@/lib/rag/ragClient";
 import { EMERGENCY_ALERTS, EmergencySummary, PatientPolicy } from "@/lib/types";
 
 const execFileAsync = promisify(execFile);
+const nodeRequire = createRequire(import.meta.url);
 const OCR_MIN_TEXT_LENGTH = 40;
 const SECTION_BOUNDARY_PATTERN =
   "allergies?|known allergies?|adverse reactions?|current medications?|medications?|medicines|active conditions?|major conditions?|conditions?|diagnoses|problems|emergency contact|next of kin|blood type|recent discharge|emergency alerts?|alerts?";
 
 type ExtractionResult = { text: string; method: string };
 type PdfTextExtractor = (filePath: string) => Promise<ExtractionResult>;
+type PdfParseConstructor = new (input: { data: Uint8Array }) => {
+  getText: () => Promise<{ text: string }>;
+  destroy: () => Promise<void> | void;
+};
+
+let pdfParseConstructor: PdfParseConstructor | null = null;
 
 let pdfTextExtractor: PdfTextExtractor = extractTextWithNativeMacToolsTracked;
+
+function getPdfParseConstructor(): PdfParseConstructor {
+  if (pdfParseConstructor) {
+    return pdfParseConstructor;
+  }
+
+  const moduleExports = nodeRequire("pdf-parse") as {
+    PDFParse?: PdfParseConstructor;
+  };
+
+  if (!moduleExports.PDFParse) {
+    throw new Error("pdf-parse did not expose PDFParse constructor");
+  }
+
+  pdfParseConstructor = moduleExports.PDFParse;
+  return pdfParseConstructor;
+}
 
 export type MedicalReportProfile = {
   patientId: string;
@@ -82,7 +105,9 @@ export async function processMedicalReportPdfOnboarding(input: {
   }
 
   if (!fullName || !dob) {
-    throw new Error("Could not extract name and date of birth from the PDF. Please ensure the report contains a patient name and DOB.");
+    throw new Error(
+      "Could not extract name and date of birth from the PDF. Please ensure the report contains a patient name and DOB.",
+    );
   }
 
   const summary = buildEmergencySummaryFromReport({
@@ -264,7 +289,9 @@ export function extractNameDobFromReport(reportText: string): {
     if (match?.[1]) {
       // Clean up: take only capitalized name words, stop at non-name content
       const raw = match[1].trim();
-      const nameOnly = raw.match(/^([A-Z][a-zA-Z'-]+(?:\s+[A-Z][a-zA-Z'-]+){0,4})/);
+      const nameOnly = raw.match(
+        /^([A-Z][a-zA-Z'-]+(?:\s+[A-Z][a-zA-Z'-]+){0,4})/,
+      );
       name = nameOnly?.[1]?.trim() ?? raw.split("\n")[0].trim();
       if (name) break;
     }
@@ -314,6 +341,7 @@ async function extractTextWithPdfParse(
   filePath: string,
 ): Promise<ExtractionResult> {
   const dataBuffer = fs.readFileSync(filePath);
+  const PDFParse = getPdfParseConstructor();
   const parser = new PDFParse({ data: new Uint8Array(dataBuffer) });
   const result = await parser.getText();
   await parser.destroy();
@@ -369,11 +397,16 @@ export async function extractPdfMetadata(
     const { stdout } = await execFileAsync(
       "/usr/bin/mdls",
       [
-        "-name", "kMDItemNumberOfPages",
-        "-name", "kMDItemAuthors",
-        "-name", "kMDItemCreator",
-        "-name", "kMDItemKeywords",
-        "-name", "kMDItemContentCreationDate",
+        "-name",
+        "kMDItemNumberOfPages",
+        "-name",
+        "kMDItemAuthors",
+        "-name",
+        "kMDItemCreator",
+        "-name",
+        "kMDItemKeywords",
+        "-name",
+        "kMDItemContentCreationDate",
         filePath,
       ],
       { encoding: "utf8", timeout: 10_000, maxBuffer: 1024 * 1024 },
