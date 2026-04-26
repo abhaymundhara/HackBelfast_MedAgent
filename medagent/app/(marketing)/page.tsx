@@ -1,13 +1,11 @@
 import Link from "next/link";
 
 import { CopyNumberButton } from "@/components/landing/copy-number";
-import { IntegrationsStrip } from "@/components/landing/integrations-strip";
 import { QrCard } from "@/components/landing/qr-card";
 import { Reveal } from "@/components/landing/reveal";
 import { ShowcaseOverlap } from "@/components/landing/showcase-overlap";
 import { StickyNotes } from "@/components/landing/sticky-notes";
 import { TextMedAgentButton } from "@/components/landing/text-medagent-button";
-import { WorkflowDiagram } from "@/components/landing/workflow-diagram";
 import { getMedAgentPhone } from "@/lib/contactPhone";
 
 export const dynamic = "force-static";
@@ -40,12 +38,26 @@ export default function HomePage() {
             <span>NHS ↔ HSE — closing three gaps in one thread →</span>
           </Link>
 
-          <h1 className="display" style={{ fontSize: "clamp(24px, 3.4vw, 40px)", maxWidth: 640 }}>
-            where the NHS meets the HSE
+          <span
+            style={{
+              display: "block",
+              marginBottom: 12,
+              fontSize: "clamp(30px, 4.2vw, 48px)",
+              fontWeight: 600,
+              letterSpacing: "0.08em",
+              lineHeight: 1,
+              textTransform: "uppercase",
+            }}
+          >
+            MEDAGENT <span style={{ color: "#dc2626", fontWeight: 700 }}>+</span>
+          </span>
+
+          <h1 className="display" style={{ fontSize: "clamp(20px, 2.4vw, 30px)", maxWidth: 640 }}>
+            Where the NHS meets HSE
           </h1>
           <p className="lead">
             Three gaps, one text message. Speed inside the NHS, data and login security across
-            providers, and a bridge between the UK and Europe so a patient&apos;s medical record can
+            providers, and a bridge from the UK to Ireland so a patient&apos;s medical record can
             cross the border as fast as the patient does.
           </p>
           <div className="hero-ctas">
@@ -86,25 +98,11 @@ export default function HomePage() {
         <div className="trust">
           <span className="item">NHS speed gap</span>
           <span className="item">Data &amp; login security</span>
-          <span className="item">UK ↔ Europe record transfer</span>
+          <span className="item">UK to Ireland record transfer</span>
           <span className="item">Built for HackBelfast 2026</span>
         </div>
       </div>
-
-      <IntegrationsStrip />
-
       <StickyNotes />
-
-      <section className="sec wf-sec">
-        <div className="container">
-          <div className="sec-head">
-            <span className="eyebrow">How the agent thinks</span>
-            <h2 className="display-md">Three gaps. One thread. Three stages.</h2>
-            <p>Speed inside the NHS, data and login security, a bridge between the UK and Europe — closed by a deterministic agent that hashes every decision on-chain.</p>
-          </div>
-          <WorkflowDiagram />
-        </div>
-      </section>
 
       <section className="bigstats" id="audit">
         <div className="container">

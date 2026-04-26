@@ -3021,7 +3021,7 @@ html {
 }
 .landing-root .dashb-stats {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 12px;
 }
 @media (max-width: 880px) {
@@ -3197,6 +3197,11 @@ html {
   border: 1px solid var(--line-2);
   margin-top: 10px;
   display: block;
+}
+.landing-root .dashb-card img.dashb-qr-image {
+  width: 168px;
+  max-width: 100%;
+  margin-inline: auto;
 }
 .landing-root .dashb-actions {
   display: flex;

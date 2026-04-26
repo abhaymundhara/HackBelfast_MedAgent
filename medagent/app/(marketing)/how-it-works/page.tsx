@@ -16,7 +16,7 @@ export default function HowItWorksPage() {
           <h1 className="display-md">Closing three gaps where the NHS meets the HSE.</h1>
           <p className="lead">
             Speed inside the NHS, data and login security across providers, and a bridge between the
-            UK and Europe — the LLM never decides who can see what, policy does. Three stages, every
+            UK and Ireland — the LLM never decides who can see what, policy does. Three stages, every
             one text-first.
           </p>
         </div>
@@ -45,7 +45,7 @@ export default function HowItWorksPage() {
             </div>
             <div className="why-card">
               <div className="why-num">03</div>
-              <h3>UK ↔ Europe record transfer.</h3>
+              <h3>UK to Ireland record transfer.</h3>
               <p>
                 Cross-border care is the breaking point. MedAgent bridges NHS and HSE so a record
                 follows the patient from Belfast to Dundalk to Galway — not via a fax queue, but a

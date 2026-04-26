@@ -34,7 +34,7 @@ const cases: CasePanel[] = [
     tab: "Cross-border GPs",
     label: "Cross-border GPs",
     heading: "Routine, but across the border.",
-    body: "You're a GP in Newry seeing a patient who lives in Belfast. The visit is routine but the record is on the other side.",
+    body: "You're a GP in Newry seeing a patient who lives in Cavan. The visit is routine but the record is on the other side.",
     bullets: [
       "Patient consent prompt fires automatically",
       "Time-limited access window with field-level scoping",
