@@ -210,6 +210,7 @@ export function formatAppointmentShareCreated(input: {
   doctorName: string;
   shareUrl: string;
   dashboardUrl: string;
+  revokeUrl?: string;
   chainRef?: string | null;
   shareId?: string;
   emailRecipient?: string;
@@ -235,8 +236,8 @@ export function formatAppointmentShareCreated(input: {
   }
   lines.push(
     "",
-    `you can revoke access anytime from your dashboard:`,
-    input.dashboardUrl,
+    `you can revoke access anytime:`,
+    input.revokeUrl ?? input.dashboardUrl,
   );
   return lines.join("\n");
 }

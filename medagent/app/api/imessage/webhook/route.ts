@@ -1067,6 +1067,7 @@ async function handlePatientAppointmentIntent(
       doctorName: appointment.doctorName,
       shareUrl,
       dashboardUrl: `${appBaseUrl}/patient/dashboard`,
+      revokeUrl: `${appBaseUrl}/patient/share/${result.shareId}/revoke`,
       chainRef: result.chainRef,
       shareId: result.shareId,
       emailRecipient: emailResult.to,
