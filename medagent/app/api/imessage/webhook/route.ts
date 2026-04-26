@@ -261,7 +261,7 @@ export async function POST(request: Request) {
       if (!activation.activated && !canSkipActivation) {
         await bridge.sendText({
           chatGuid,
-          text: `Start your message with "${activation.keyword}" to trigger MedAgent. Example: "${activation.keyword} access patient SARAHB".`,
+          text: `Just start your message with "${activation.keyword}" and I'll jump in! For example: "${activation.keyword} I need Sarah Bennett's allergy info."`,
         });
       } else {
         const routedText = activation.activated ? activation.cleanedText : text;
@@ -269,7 +269,7 @@ export async function POST(request: Request) {
         if (routedIntent.kind !== "freeform_clinician") {
           await bridge.sendText({
             chatGuid,
-            text: `Reply /help for commands or start with "${activation.keyword}".`,
+            text: `Hmm, I didn't quite catch that. Try starting with "${activation.keyword}" and tell me what you need — or send /help to see what I can do.`,
           });
         } else {
           await handleClinicianRequest(
@@ -294,14 +294,15 @@ export async function POST(request: Request) {
         messageId,
       );
     } else {
-      await bridge.sendText({ chatGuid, text: formatAskApproval() });
+      // Friendly out-of-scope catch-all — redirect naturally
+      await handleOutOfScope(text, conv, chatGuid, bridge);
     }
   } catch (err) {
     console.error("[webhook] dispatch error:", err);
     await bridge
       .sendText({
         chatGuid,
-        text: "MedAgent encountered an error. Please try again.",
+        text: "Oops, something went wrong on my end. Give it another go in a moment — I'll be ready!",
       })
       .catch(() => {});
   }
@@ -584,7 +585,7 @@ async function handleOnboardingReadyReply(
   }
   await bridge.sendText({
     chatGuid,
-    text: "Please reply YES to continue setup or NO to cancel.",
+    text: "Just say yes to keep going, or no if you'd rather not right now.",
   });
 }
 
@@ -783,7 +784,7 @@ async function handleSlashCommand(
     default:
       await bridge.sendText({
         chatGuid,
-        text: `Unknown command: /${command}. Reply /help for available commands.`,
+        text: `I don't know that one! Send /help to see what I can do, or just tell me what you need in plain English.`,
       });
   }
 }
@@ -918,7 +919,7 @@ async function handlePatientAppointmentIntent(
   if (!patientId || conv.identityKind !== "patient") {
     await bridge.sendText({
       chatGuid,
-      text: "Please finish onboarding before booking an appointment.",
+      text: "I'd love to help with that! Let's get your profile set up first though — say \"hey baymax!\" to start.",
     });
     return;
   }
@@ -1023,6 +1024,51 @@ async function handlePatientAppointmentIntent(
   });
 }
 
+const OUT_OF_SCOPE_RESPONSES_PATIENT = [
+  "hey! that's a bit outside my wheelhouse — i'm really just set up for medical stuff. i can check your allergies, meds, conditions, or help you book a GP appointment in belfast. what do you need?",
+  "haha i wish i could help with that one! i'm only really useful for medical things though — your health record, booking appointments, sharing info with a doctor. anything like that?",
+  "not sure i can help there! but if you need anything medical — like \"what are my allergies?\" or \"i need an appointment for my knee\" — i'm all yours.",
+  "i'm more of a medical assistant than a general one, but i'm really good at the medical stuff! ask me about your record, book an appointment, or check your meds — whatever you need.",
+];
+
+const OUT_OF_SCOPE_RESPONSES_CLINICIAN = [
+  "hey — i'm set up for emergency record access and patient lookups. if you need a patient's summary, just tell me who and i'll get on it. try something like \"access patient SARAHB.\"",
+  "that's a bit outside what i do! i'm here for clinical record access — patient lookups, emergency summaries, audit-trailed access. just let me know who you need.",
+];
+
+const OUT_OF_SCOPE_RESPONSES_NEW = [
+  "hey! i'm medagent — i help with cross-border medical care on the island of ireland. i can store your emergency profile and help you find a GP when you're travelling. say \"hey baymax!\" to get started!",
+  "hi there! i'm a secure medical assistant for travellers between ireland and northern ireland. i keep your medical info safe and help you book appointments when you need one. say \"hey baymax!\" to set things up.",
+];
+
+function pickResponse(responses: string[]): string {
+  return responses[Math.floor(Math.random() * responses.length)];
+}
+
+async function handleOutOfScope(
+  _text: string,
+  conv: ConversationState,
+  chatGuid: string,
+  bridge: ReturnType<typeof getBridge>,
+) {
+  let response: string;
+
+  if (conv.identityKind === "patient") {
+    const imessageUser = touchImessageUser(conv.handle);
+    if (imessageUser.stage === "onboarded") {
+      response = pickResponse(OUT_OF_SCOPE_RESPONSES_PATIENT);
+    } else {
+      response = pickResponse(OUT_OF_SCOPE_RESPONSES_NEW);
+    }
+  } else if (conv.identityKind === "clinician") {
+    response = pickResponse(OUT_OF_SCOPE_RESPONSES_CLINICIAN);
+  } else {
+    response = pickResponse(OUT_OF_SCOPE_RESPONSES_NEW);
+  }
+
+  await bridge.sendText({ chatGuid, text: response });
+}
+
 async function handlePatientRecordQuery(
   query: string,
   conv: ConversationState,
@@ -1033,7 +1079,7 @@ async function handlePatientRecordQuery(
   if (!patientId || conv.identityKind !== "patient") {
     await bridge.sendText({
       chatGuid,
-      text: "Please finish onboarding before querying your medical record.",
+      text: "I'd love to look that up for you! Let's get your profile set up first — say \"hey baymax!\" to start.",
     });
     return;
   }
