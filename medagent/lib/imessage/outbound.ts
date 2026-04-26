@@ -207,6 +207,7 @@ export function formatAppointmentShareCreated(input: {
   shareUrl: string;
   dashboardUrl: string;
   chainRef?: string | null;
+  shareId?: string;
 }) {
   const lines = [
     `done! i've shared your medical record with ${input.doctorName}.`,
@@ -216,6 +217,9 @@ export function formatAppointmentShareCreated(input: {
   const proof = formatSolanaProof({ action: "record share", chainRef: input.chainRef ?? null });
   if (proof) {
     lines.push("", proof);
+  }
+  if (input.shareId) {
+    lines.push("", `blink: ${generateBlinkUrl(`/api/actions/share/${input.shareId}`)}`);
   }
   lines.push(
     "",
@@ -237,6 +241,12 @@ export function formatSolanaProof(input: {
     `your ${input.action} is safely stored and permanently protected — here's your receipt:`,
     `https://solscan.io/tx/${input.chainRef}?cluster=devnet`,
   ].join("\n");
+}
+
+export function generateBlinkUrl(actionPath: string): string {
+  const appBaseUrl = process.env.APP_BASE_URL ?? "http://localhost:3000";
+  const actionUrl = `solana-action:${appBaseUrl}${actionPath}`;
+  return `https://dial.to/?action=${encodeURIComponent(actionUrl)}&cluster=devnet`;
 }
 
 export function formatFollowUpAnswer(input: {

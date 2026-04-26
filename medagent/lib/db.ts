@@ -2139,6 +2139,8 @@ export type SharedRecordRow = {
   share_chain_slot: number | null;
   access_chain_ref: string | null;
   revoke_chain_ref: string | null;
+  short_code: string | null;
+  short_token: string | null;
   created_at: string;
   updated_at: string;
 };
