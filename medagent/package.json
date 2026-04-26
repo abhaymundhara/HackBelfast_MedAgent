@@ -14,6 +14,7 @@
     "demo:reset": "tsx scripts/demo-reset.ts",
     "demo:readiness": "tsx scripts/demo-readiness.ts",
     "imessage:live": "tsx scripts/imessage-live.ts",
+    "imessage:live:tunnel": "bash scripts/start-tunnel.sh 3000 -- npm run imessage:live",
     "imessage:health": "curl -sS -H \"x-webhook-secret: ${IMESSAGE_WEBHOOK_SECRET}\" \"${APP_BASE_URL:-http://localhost:3000}/api/imessage/health\"",
     "imessage:poll": "tsx scripts/imessage-local-poller.ts",
     "imessage:clear-onboarded": "tsx scripts/imessage-clear-onboarded.ts",

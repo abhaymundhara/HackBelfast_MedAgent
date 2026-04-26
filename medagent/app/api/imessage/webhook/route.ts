@@ -33,6 +33,7 @@ import {
 import { getDemoClinician } from "@/lib/ips/seed";
 import { searchAppointmentSlots } from "@/lib/appointments/availability";
 import { bookAppointmentSlot } from "@/lib/appointments/bookAppointment";
+import { getPublicAppBaseUrl } from "@/lib/appUrl";
 import {
   formatAppointmentConfirmation,
   formatAppointmentOptions,
@@ -797,7 +798,7 @@ async function handleSlashCommand(
       await bridge.sendText({ chatGuid, text: "Session ended." });
       break;
     case "audit": {
-      const appUrl = process.env.APP_BASE_URL ?? "http://localhost:3000";
+      const appUrl = getPublicAppBaseUrl();
       const patientId = args[0]?.toLowerCase() ?? "sarah-bennett";
       await bridge.sendText({
         chatGuid,
@@ -871,7 +872,7 @@ async function handleApproval(
       }
 
       // Confirm to patient
-      const appUrl = process.env.APP_BASE_URL ?? "http://localhost:3000";
+      const appUrl = getPublicAppBaseUrl();
       const requesterLabel =
         outcome.verification?.requesterLabel ?? "The clinician";
       const ttlMinutes = Math.round(outcome.ttlSeconds / 60);
@@ -1024,6 +1025,7 @@ async function handlePatientAppointmentIntent(
     return;
   }
 
+  const appBaseUrl = getPublicAppBaseUrl();
   const result = await createShareRecord({
     patientId,
     doctorName: appointment.doctorName,
@@ -1037,7 +1039,6 @@ async function handlePatientAppointmentIntent(
   delete conv.metadata.pendingAppointmentId;
   delete conv.metadata.pendingShareDoctor;
   delete conv.metadata.pendingShareScope;
-  const appBaseUrl = process.env.APP_BASE_URL ?? "http://localhost:3000";
   await bridge.sendText({
     chatGuid,
     text: formatAppointmentShareCreated({

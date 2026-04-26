@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { decryptJson } from "@/lib/crypto";
 import { getAppointment, getPatientRow, getSharedRecord } from "@/lib/db";
+import { getPublicAppBaseUrl } from "@/lib/appUrl";
 import { getSolscanTxUrl } from "@/lib/solana/client";
 import { EmergencySummary } from "@/lib/types";
 
@@ -69,7 +70,7 @@ export async function GET(
     new Date(share.expires_at) <= new Date() ||
     share.access_count >= share.max_access_count;
 
-  const appBaseUrl = process.env.APP_BASE_URL ?? "http://localhost:3000";
+  const appBaseUrl = getPublicAppBaseUrl();
 
   const response = {
     type: "action",

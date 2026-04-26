@@ -27,7 +27,7 @@ describe("requester verification", () => {
 
     expect(result.verified).toBe(true);
     expect(result.requesterLabel).toBe("Dr. Chidi Okonkwo");
-    expect(result.verificationReason).toContain("GMC7953798");
+    expect(result.verificationReason).toContain("GMC4921847");
   });
 
   it("recognizes a credential issuer hint without using legacy DID trust for verification", async () => {
