@@ -103,9 +103,11 @@ function getIdlPath() {
 function loadProgramIdAndIdl() {
   const idlPath = getIdlPath();
   const raw = fs.readFileSync(idlPath, "utf8");
-  const idl = JSON.parse(raw) as MedagentAuditIdl;
-  const programId = new PublicKey(idl.address);
-  return { idl: JSON.parse(raw), programId };
+  const idl = JSON.parse(raw);
+  const programId = process.env.SOLANA_PROGRAM_ID
+    ? new PublicKey(process.env.SOLANA_PROGRAM_ID)
+    : new PublicKey((idl as MedagentAuditIdl).address);
+  return { idl, programId };
 }
 
 function deriveAuditSeed(patientHash: string): Uint8Array {
