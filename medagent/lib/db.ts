@@ -603,45 +603,41 @@ export function initDb() {
   `);
 
   // Lightweight forward-compatible migration for branches that already have old schemas.
-  ensureColumn(db, "access_requests", "chain_ref", "TEXT");
-  ensureColumn(db, "access_requests", "chain_sequence", "INTEGER");
-  ensureColumn(db, "access_requests", "chain_timestamp", "TEXT");
-  ensureColumn(db, "sessions", "chain_ref", "TEXT");
-  ensureColumn(db, "sessions", "chain_sequence", "INTEGER");
-  ensureColumn(db, "sessions", "chain_timestamp", "TEXT");
-  ensureColumn(db, "patients", "registry_account_id", "TEXT");
-  ensureColumn(db, "patients", "chain_identity", "TEXT");
-  ensureColumn(db, "patients", "audit_ref", "TEXT");
-  ensureColumn(db, "issuer_registry", "registry_account_id", "TEXT");
-  ensureColumn(db, "issuer_registry", "jurisdiction", "TEXT");
-  ensureColumn(
-    db,
-    "issuer_registry",
-    "requires_cross_system_approval",
-    "INTEGER",
-  );
-  ensureColumn(db, "patient_accounts", "solana_log_pda", "TEXT");
-  ensureColumn(db, "shared_records", "share_scope", "TEXT");
-  ensureColumn(db, "shared_records", "appointment_id", "TEXT");
-  ensureColumn(db, "shared_records", "document_manifest_json", "TEXT");
-  ensureColumn(db, "shared_records", "share_payload_version", "TEXT");
-  ensureColumn(db, "shared_records", "short_code", "TEXT");
-  ensureColumn(db, "access_requests", "source_message_id", "TEXT");
-  ensureColumn(db, "access_requests", "clinician_handle", "TEXT");
-  ensureColumn(db, "access_requests", "clinician_chat_guid", "TEXT");
-  ensureColumn(db, "audit_events", "source_message_id", "TEXT");
-  ensureColumn(db, "pending_audit_events", "source_message_id", "TEXT");
-  ensureColumn(db, "patient_documents", "file_size_bytes", "INTEGER");
-  ensureColumn(db, "patient_documents", "page_count", "INTEGER");
-  ensureColumn(db, "patient_documents", "pdf_author", "TEXT");
-  ensureColumn(db, "patient_documents", "pdf_creation_date", "TEXT");
-  ensureColumn(db, "patient_documents", "pdf_producer", "TEXT");
-  ensureColumn(db, "patient_documents", "pdf_keywords", "TEXT");
-  ensureColumn(db, "patient_documents", "extraction_method", "TEXT");
-  ensureColumn(db, "patient_documents", "extracted_text_length", "INTEGER");
-
-  if (!database) {
-    db.close();
+  const migrations: [string, string, string][] = [
+    ["access_requests", "chain_ref", "TEXT"],
+    ["access_requests", "chain_sequence", "INTEGER"],
+    ["access_requests", "chain_timestamp", "TEXT"],
+    ["sessions", "chain_ref", "TEXT"],
+    ["sessions", "chain_sequence", "INTEGER"],
+    ["sessions", "chain_timestamp", "TEXT"],
+    ["patients", "registry_account_id", "TEXT"],
+    ["patients", "chain_identity", "TEXT"],
+    ["patients", "audit_ref", "TEXT"],
+    ["issuer_registry", "registry_account_id", "TEXT"],
+    ["issuer_registry", "jurisdiction", "TEXT"],
+    ["issuer_registry", "requires_cross_system_approval", "INTEGER"],
+    ["patient_accounts", "solana_log_pda", "TEXT"],
+    ["shared_records", "share_scope", "TEXT"],
+    ["shared_records", "appointment_id", "TEXT"],
+    ["shared_records", "document_manifest_json", "TEXT"],
+    ["shared_records", "share_payload_version", "TEXT"],
+    ["shared_records", "short_code", "TEXT"],
+    ["access_requests", "source_message_id", "TEXT"],
+    ["access_requests", "clinician_handle", "TEXT"],
+    ["access_requests", "clinician_chat_guid", "TEXT"],
+    ["audit_events", "source_message_id", "TEXT"],
+    ["pending_audit_events", "source_message_id", "TEXT"],
+    ["patient_documents", "file_size_bytes", "INTEGER"],
+    ["patient_documents", "page_count", "INTEGER"],
+    ["patient_documents", "pdf_author", "TEXT"],
+    ["patient_documents", "pdf_creation_date", "TEXT"],
+    ["patient_documents", "pdf_producer", "TEXT"],
+    ["patient_documents", "pdf_keywords", "TEXT"],
+    ["patient_documents", "extraction_method", "TEXT"],
+    ["patient_documents", "extracted_text_length", "INTEGER"],
+  ];
+  for (const [table, col, type] of migrations) {
+    ensureColumn(db, table, col, type);
   }
 }
 
@@ -1426,30 +1422,21 @@ export function createApproval(input: {
   });
 }
 
-export function getApprovalByToken(token: string) {
-  const db = getDb();
-  const approval = db
-    .prepare("SELECT * FROM approvals WHERE token = ?")
-    .get(token) as
-    | {
-        id: string;
-        request_id: string;
-        patient_id: string;
-        token: string;
-        method: "push" | "email";
-        status: string;
-        sent_at: string;
-        decided_at: string | null;
-        expires_at: string;
-      }
-    | undefined;
+type ApprovalRow = {
+  id: string;
+  request_id: string;
+  patient_id: string;
+  token: string;
+  method: "push" | "email";
+  status: string;
+  sent_at: string;
+  decided_at: string | null;
+  expires_at: string;
+};
 
-  if (
-    approval &&
-    approval.status === "pending" &&
-    isExpired(approval.expires_at)
-  ) {
-    updateApprovalStatus(token, "expired");
+function handleApprovalExpiry(approval: ApprovalRow): ApprovalRow {
+  if (approval.status === "pending" && isExpired(approval.expires_at)) {
+    updateApprovalStatus(approval.token, "expired");
     updateAccessRequest(approval.request_id, {
       status: "expired",
       decision: "denied",
@@ -1457,15 +1444,19 @@ export function getApprovalByToken(token: string) {
         "The patient approval window expired before a decision was received. No data was released.",
       fieldsReleased: [],
     });
-
-    return {
-      ...approval,
-      status: "expired",
-      decided_at: nowIso(),
-    };
+    return { ...approval, status: "expired", decided_at: nowIso() };
   }
-
   return approval;
+}
+
+export function getApprovalByToken(token: string) {
+  const db = getDb();
+  const approval = db
+    .prepare("SELECT * FROM approvals WHERE token = ?")
+    .get(token) as ApprovalRow | undefined;
+
+  if (!approval) return approval;
+  return handleApprovalExpiry(approval);
 }
 
 export function getApprovalByRequestId(requestId: string) {
@@ -1474,42 +1465,10 @@ export function getApprovalByRequestId(requestId: string) {
     .prepare(
       "SELECT * FROM approvals WHERE request_id = ? ORDER BY sent_at DESC LIMIT 1",
     )
-    .get(requestId) as
-    | {
-        id: string;
-        request_id: string;
-        patient_id: string;
-        token: string;
-        method: "push" | "email";
-        status: string;
-        sent_at: string;
-        decided_at: string | null;
-        expires_at: string;
-      }
-    | undefined;
+    .get(requestId) as ApprovalRow | undefined;
 
-  if (
-    approval &&
-    approval.status === "pending" &&
-    isExpired(approval.expires_at)
-  ) {
-    updateApprovalStatus(approval.token, "expired");
-    updateAccessRequest(requestId, {
-      status: "expired",
-      decision: "denied",
-      justification:
-        "The patient approval window expired before a decision was received. No data was released.",
-      fieldsReleased: [],
-    });
-
-    return {
-      ...approval,
-      status: "expired",
-      decided_at: nowIso(),
-    };
-  }
-
-  return approval;
+  if (!approval) return approval;
+  return handleApprovalExpiry(approval);
 }
 
 export function updateApprovalStatus(
@@ -1695,14 +1654,7 @@ export function deleteSession(sessionId: string) {
   db.prepare("DELETE FROM sessions WHERE id = ?").run(sessionId);
 }
 
-export function getSession(sessionId: string) {
-  const db = getDb();
-  const row = db
-    .prepare("SELECT * FROM sessions WHERE id = ?")
-    .get(sessionId) as SessionRow | undefined;
-  if (!row) {
-    return null;
-  }
+function mapSession(row: SessionRow) {
   return {
     ...row,
     fieldsAllowed: parseJson<string[]>(row.fields_allowed_json, []),
@@ -1717,6 +1669,17 @@ export function getSession(sessionId: string) {
   };
 }
 
+export function getSession(sessionId: string) {
+  const db = getDb();
+  const row = db
+    .prepare("SELECT * FROM sessions WHERE id = ?")
+    .get(sessionId) as SessionRow | undefined;
+  if (!row) {
+    return null;
+  }
+  return mapSession(row);
+}
+
 export function getSessionByRequestId(requestId: string) {
   const db = getDb();
   const row = db
@@ -1727,18 +1690,7 @@ export function getSessionByRequestId(requestId: string) {
   if (!row) {
     return null;
   }
-  return {
-    ...row,
-    fieldsAllowed: parseJson<string[]>(row.fields_allowed_json, []),
-    summarySubset: decryptJson<Record<string, unknown>>(row.encrypted_summary),
-    translatedSummary: decryptJson<Record<string, unknown>>(
-      row.encrypted_translated_summary,
-    ),
-    glossary: parseJson<{ original: string; translated: string }[]>(
-      row.glossary_json,
-      [],
-    ),
-  };
+  return mapSession(row);
 }
 
 export function listSessions() {
