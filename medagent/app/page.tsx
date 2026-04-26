@@ -1,9 +1,11 @@
 import Link from "next/link";
 
+import { AnimatedNav } from "@/components/landing/animated-nav";
 import { CopyNumberButton } from "@/components/landing/copy-number";
 import { QrCard } from "@/components/landing/qr-card";
 import { Reveal } from "@/components/landing/reveal";
 import { ShowcaseOverlap } from "@/components/landing/showcase-overlap";
+import { SiteFooter } from "@/components/landing/site-footer";
 import { StickyNotes } from "@/components/landing/sticky-notes";
 import { TextMedAgentButton } from "@/components/landing/text-medagent-button";
 import { getMedAgentPhone } from "@/lib/contactPhone";
@@ -30,7 +32,9 @@ const ImsgIcon = () => (
 
 export default function HomePage() {
   return (
-    <>
+    <div className="landing-root">
+      <AnimatedNav />
+      <main>
       <section className="hero">
         <div className="container">
           <Link href="/how-it-works" className="pill-link">
@@ -184,6 +188,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-    </>
+      </main>
+      <SiteFooter />
+    </div>
   );
 }

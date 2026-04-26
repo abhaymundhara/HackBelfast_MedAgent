@@ -6,6 +6,7 @@ import Database from "better-sqlite3";
 import { config } from "dotenv";
 import { getAppBaseUrl } from "@/lib/appUrl";
 import { appendAllowedImessageHandle } from "@/lib/imessage/allowedHandlesEnv";
+import { createDebugLogger } from "@/lib/imessage/debug";
 import { listHandleMappings } from "@/lib/imessage/handles";
 import { stripActivationKeyword } from "@/lib/imessage/intents";
 
