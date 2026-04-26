@@ -31,9 +31,9 @@ export function AnimatedNav() {
     <motion.header
       className="nav"
       style={{
-        backgroundColor: "transparent",
+        backgroundColor: "#ffffff",
         backdropFilter: "none",
-        borderBottom: "1px solid transparent",
+        borderBottom: "1px solid #e2e8f0",
       }}
     >
       <div className="container nav-inner">
