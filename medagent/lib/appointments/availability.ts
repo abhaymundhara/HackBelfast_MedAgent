@@ -19,7 +19,11 @@ function parseRequestedDate(value: string | undefined) {
 function matchesReason(slotTags: string[], reason: string) {
   const normalizedReason = reason.toLowerCase();
   if (!slotTags.length) return true;
-  return slotTags.some((tag) => normalizedReason.includes(tag.toLowerCase()));
+  // If the reason is too vague (no medical keywords), don't filter — show all available slots
+  const hasAnyMedicalContext = slotTags.some((tag) => normalizedReason.includes(tag.toLowerCase()));
+  const isVagueRequest = /\b(appointment|book|see a doctor|need a doctor|available|any)\b/i.test(reason) && !hasAnyMedicalContext;
+  if (isVagueRequest) return true;
+  return hasAnyMedicalContext;
 }
 
 function toCandidate(slot: ReturnType<typeof listAppointmentSlots>[number]): AppointmentCandidate {
