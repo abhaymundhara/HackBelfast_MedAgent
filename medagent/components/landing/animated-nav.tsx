@@ -4,13 +4,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 
+import { TextMedAgentButton } from "@/components/landing/text-medagent-button";
+
 const links = [
   { href: "/how-it-works", label: "How it works" },
   { href: "/features", label: "Features" },
   { href: "/use-cases", label: "Use cases" },
 ];
-
-const SMS_HREF = "sms:+447700900099?body=Emergency%20access%20request";
 
 const ArrowRight = () => (
   <svg
@@ -72,10 +72,10 @@ export function AnimatedNav() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3, delay: 0.3 }}
           >
-            <Link className="btn btn-primary" href={SMS_HREF}>
+            <TextMedAgentButton className="btn btn-primary">
               Text MedAgent
               <ArrowRight />
-            </Link>
+            </TextMedAgentButton>
           </motion.div>
         </nav>
       </div>

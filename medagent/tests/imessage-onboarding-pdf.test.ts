@@ -61,10 +61,19 @@ async function postWebhook(payload: unknown) {
 
 describe("iMessage PDF onboarding", () => {
   let tempDir: string;
+  let previousPollerEnvPath: string | undefined;
+  let previousAllowedHandles: string | undefined;
 
   beforeEach(() => {
     resetDatabase();
     tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "medagent-pdf-test-"));
+    previousPollerEnvPath = process.env.IMESSAGE_POLLER_ENV_PATH;
+    previousAllowedHandles = process.env.IMESSAGE_POLLER_ALLOWED_HANDLES;
+    process.env.IMESSAGE_POLLER_ENV_PATH = path.join(tempDir, ".env.local");
+    fs.writeFileSync(
+      process.env.IMESSAGE_POLLER_ENV_PATH,
+      "IMESSAGE_POLLER_ALLOWED_HANDLES=+15550000000\n",
+    );
     bridgeSpies.sendText.mockResolvedValue({
       messageGuid: "sent",
       status: "sent",
@@ -76,6 +85,16 @@ describe("iMessage PDF onboarding", () => {
   afterEach(() => {
     vi.clearAllMocks();
     __setPdfTextExtractorForTests(null);
+    if (previousPollerEnvPath === undefined) {
+      delete process.env.IMESSAGE_POLLER_ENV_PATH;
+    } else {
+      process.env.IMESSAGE_POLLER_ENV_PATH = previousPollerEnvPath;
+    }
+    if (previousAllowedHandles === undefined) {
+      delete process.env.IMESSAGE_POLLER_ALLOWED_HANDLES;
+    } else {
+      process.env.IMESSAGE_POLLER_ALLOWED_HANDLES = previousAllowedHandles;
+    }
     fs.rmSync(tempDir, { recursive: true, force: true });
   });
 
@@ -89,6 +108,9 @@ describe("iMessage PDF onboarding", () => {
     expect(getImessageUser("+15550001111")?.stage).toBe(
       "awaiting_new_user_record",
     );
+    expect(
+      fs.readFileSync(process.env.IMESSAGE_POLLER_ENV_PATH ?? "", "utf8"),
+    ).toContain("+15550001111");
   });
 
   it("extracts a PDF attachment, stores a patient profile, and marks onboarding complete", async () => {

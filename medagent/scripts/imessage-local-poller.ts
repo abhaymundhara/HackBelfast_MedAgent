@@ -5,8 +5,9 @@ import path from "path";
 import Database from "better-sqlite3";
 import { config } from "dotenv";
 import { getAppBaseUrl } from "@/lib/appUrl";
+import { appendAllowedImessageHandle } from "@/lib/imessage/allowedHandlesEnv";
 import { listHandleMappings } from "@/lib/imessage/handles";
-import { createDebugLogger } from "@/lib/imessage/debug";
+import { stripActivationKeyword } from "@/lib/imessage/intents";
 
 config({ path: ".env.local" });
 config();
@@ -83,8 +84,7 @@ function readBool(name: string, fallback: boolean): boolean {
 const debugLog = createDebugLogger("imessage-poller:debug");
 
 function buildAllowedHandles(): Set<string> {
-  const configured = process.env.IMESSAGE_POLLER_ALLOWED_HANDLES
-    ?.split(",")
+  const configured = process.env.IMESSAGE_POLLER_ALLOWED_HANDLES?.split(",")
     .map((value) => value.trim())
     .filter(Boolean);
 
@@ -96,6 +96,11 @@ function buildAllowedHandles(): Set<string> {
   }
 
   return new Set(listHandleMappings().map((m) => m.handle));
+}
+
+function isActivationOnlyMessage(text: string | null): boolean {
+  const activation = stripActivationKeyword(text ?? "");
+  return activation.activated && !activation.cleanedText;
 }
 
 let attachmentQuery: Database.Statement | null = null;
@@ -210,7 +215,7 @@ async function main() {
     "IMESSAGE_POLLER_ONLY_IMESSAGE_SERVICE",
     true,
   );
-  const allowedHandles = buildAllowedHandles();
+  let allowedHandles = buildAllowedHandles();
   const bridgeKind = (process.env.IMESSAGE_BRIDGE_KIND ?? "")
     .trim()
     .toLowerCase();
@@ -305,7 +310,9 @@ async function main() {
       `[imessage-poller] handle filter active (${allowedHandles.size} handles)`,
     );
   } else {
-    console.log("[imessage-poller] handle filter disabled (all senders allowed)");
+    console.log(
+      "[imessage-poller] handle filter disabled (all senders allowed)",
+    );
   }
 
   let shutdownRequested = false;
@@ -329,6 +336,7 @@ async function main() {
 
   try {
     while (!shutdownRequested) {
+      allowedHandles = buildAllowedHandles();
       const rows = query.all({
         afterRowId: state.lastRowId,
         limit: batchSize,
@@ -353,6 +361,27 @@ async function main() {
           state.lastRowId = row.rowid;
           writeState(statePath, state);
           continue;
+        }
+        if (isActivationOnlyMessage(row.text)) {
+          try {
+            const result = appendAllowedImessageHandle(
+              row.handle,
+              undefined,
+              Array.from(allowedHandles),
+            );
+            if (result.added) {
+              allowedHandles = buildAllowedHandles();
+              console.log(
+                `[imessage-poller] added activation sender to ${result.envPath}: ${row.handle}`,
+              );
+            }
+          } catch (err) {
+            debugLog("activation allowlist update failed", {
+              rowid: row.rowid,
+              handle: row.handle,
+              error: err instanceof Error ? err.message : String(err),
+            });
+          }
         }
         if (allowedHandles.size > 0 && !allowedHandles.has(row.handle)) {
           debugLog("skip row: handle not allowlisted", {

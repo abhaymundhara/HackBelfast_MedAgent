@@ -5,6 +5,7 @@ import {
   stripActivationKeyword,
   type ParsedIntent,
 } from "@/lib/imessage/intents";
+import { appendAllowedImessageHandle } from "@/lib/imessage/allowedHandlesEnv";
 import { resolveHandle, listHandleMappings } from "@/lib/imessage/handles";
 import {
   loadConversation,
@@ -178,6 +179,20 @@ export async function POST(request: Request) {
   const activationReset = stripActivationKeyword(text);
   if (activationReset.activated && !activationReset.cleanedText) {
     debugLog("activation keyword detected", { stage: imessageUser.stage });
+    try {
+      debugLog(
+        "activation allowlist update",
+        appendAllowedImessageHandle(
+          handle,
+          undefined,
+          listHandleMappings().map((mapping) => mapping.handle),
+        ),
+      );
+    } catch (err) {
+      debugLog("activation allowlist update failed", {
+        error: err instanceof Error ? err.message : String(err),
+      });
+    }
     if (imessageUser.stage === "onboarded") {
       await bridge.sendText({
         chatGuid,
