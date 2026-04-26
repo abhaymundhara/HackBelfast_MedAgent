@@ -212,6 +212,9 @@ export function formatAppointmentShareCreated(input: {
   dashboardUrl: string;
   chainRef?: string | null;
   shareId?: string;
+  emailRecipient?: string;
+  emailSent?: boolean;
+  emailError?: string;
 }) {
   const lines = [
     `done! i've shared your medical record with ${input.doctorName}.`,
@@ -221,6 +224,14 @@ export function formatAppointmentShareCreated(input: {
   const proof = formatSolanaProof({ action: "record share", chainRef: input.chainRef ?? null });
   if (proof) {
     lines.push("", proof);
+  }
+  if (input.emailRecipient) {
+    lines.push(
+      "",
+      input.emailSent
+        ? `email sent to: ${input.emailRecipient}`
+        : `email not sent to ${input.emailRecipient}: ${input.emailError ?? "unknown error"}`,
+    );
   }
   lines.push(
     "",

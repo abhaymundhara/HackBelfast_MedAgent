@@ -34,7 +34,7 @@ export async function sendAppointmentShareLinkEmail(input: {
   try {
     const { Resend } = await import("resend");
     const resend = new Resend(apiKey);
-    await resend.emails.send({
+    const response = await resend.emails.send({
       from: fromEmail,
       to,
       subject: `MedAgent record link for ${input.doctorName}`,
@@ -48,6 +48,13 @@ export async function sendAppointmentShareLinkEmail(input: {
         </div>
       `,
     });
+    if (response.error) {
+      const message =
+        response.error.message ??
+        `Resend rejected the email with status ${response.error.statusCode ?? "unknown"}`;
+      console.error("Failed to send appointment share email:", message);
+      return { sent: false, to, error: message };
+    }
     return { sent: true, to };
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);

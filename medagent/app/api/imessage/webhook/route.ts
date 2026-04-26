@@ -1064,6 +1064,9 @@ async function handlePatientAppointmentIntent(
       dashboardUrl: `${appBaseUrl}/patient/dashboard`,
       chainRef: result.chainRef,
       shareId: result.shareId,
+      emailRecipient: emailResult.to,
+      emailSent: emailResult.sent,
+      emailError: emailResult.error,
     }),
   });
 }
