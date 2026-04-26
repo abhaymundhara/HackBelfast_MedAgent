@@ -625,6 +625,7 @@ export function initDb() {
   ensureColumn(db, "shared_records", "appointment_id", "TEXT");
   ensureColumn(db, "shared_records", "document_manifest_json", "TEXT");
   ensureColumn(db, "shared_records", "share_payload_version", "TEXT");
+  ensureColumn(db, "shared_records", "short_code", "TEXT");
   ensureColumn(db, "access_requests", "source_message_id", "TEXT");
   ensureColumn(db, "access_requests", "clinician_handle", "TEXT");
   ensureColumn(db, "access_requests", "clinician_chat_guid", "TEXT");
@@ -2160,6 +2161,7 @@ export function createSharedRecord(input: {
   expiresAt: string;
   shareChainRef?: string;
   shareChainSlot?: number;
+  shortCode?: string;
 }) {
   const db = getDb();
   const now = nowIso();
@@ -2169,12 +2171,12 @@ export function createSharedRecord(input: {
       encrypted_summary, encrypted_share_key, fields_shared,
       access_token_hash, document_hash, share_scope, appointment_id,
       document_manifest_json, share_payload_version, status, expires_at,
-      share_chain_ref, share_chain_slot, created_at, updated_at)
+      share_chain_ref, share_chain_slot, short_code, created_at, updated_at)
      VALUES (@id, @patientId, @doctorName, @doctorEmail, @doctorHash,
       @encryptedSummary, @encryptedShareKey, @fieldsShared,
       @accessTokenHash, @documentHash, @shareScope, @appointmentId,
       @documentManifestJson, @sharePayloadVersion, 'active', @expiresAt,
-      @shareChainRef, @shareChainSlot, @createdAt, @updatedAt)`,
+      @shareChainRef, @shareChainSlot, @shortCode, @createdAt, @updatedAt)`,
   ).run({
     id: input.id,
     patientId: input.patientId,
@@ -2193,9 +2195,23 @@ export function createSharedRecord(input: {
     expiresAt: input.expiresAt,
     shareChainRef: input.shareChainRef ?? null,
     shareChainSlot: input.shareChainSlot ?? null,
+    shortCode: input.shortCode ?? null,
     createdAt: now,
     updatedAt: now,
   });
+}
+
+export function getSharedRecordByShortCode(shortCode: string) {
+  const db = getDb();
+  return db
+    .prepare("SELECT * FROM shared_records WHERE short_code = ?")
+    .get(shortCode) as (SharedRecordRow & { short_token?: string }) | undefined;
+}
+
+export function updateSharedRecordShortToken(shareId: string, shortToken: string) {
+  const db = getDb();
+  ensureColumn(db, "shared_records", "short_token", "TEXT");
+  db.prepare("UPDATE shared_records SET short_token = ? WHERE id = ?").run(shortToken, shareId);
 }
 
 export function getSharedRecord(shareId: string) {

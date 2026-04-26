@@ -9,6 +9,7 @@ import {
   listPatientDocuments,
   listSharedRecords,
   readEncryptedDocument,
+  updateSharedRecordShortToken,
 } from "@/lib/db";
 import { solanaAuditStore } from "@/lib/solana/auditStore";
 import { AuditEventSchema, EmergencySummary, ReleasedField } from "@/lib/types";
@@ -153,6 +154,8 @@ export async function createShareRecord(input: {
     event,
   });
 
+  const shortCode = crypto.randomBytes(4).toString("base64url");
+
   createSharedRecord({
     id: shareId,
     patientId: input.patientId,
@@ -171,17 +174,22 @@ export async function createShareRecord(input: {
     expiresAt,
     shareChainRef: auditResult.chainRef,
     shareChainSlot: auditResult.chainSequence ?? undefined,
+    shortCode,
   });
+
+  updateSharedRecordShortToken(shareId, accessToken);
 
   if (input.appointmentId) {
     attachShareToAppointment(input.appointmentId, shareId);
   }
 
   const shareUrl = `/share/${shareId}#token=${accessToken}`;
+  const shortUrl = `/s/${shortCode}`;
 
   return {
     shareId,
     shareUrl,
+    shortUrl,
     chainRef: auditResult.chainRef,
     expiresAt,
     patientName: summary.demographics.name,
