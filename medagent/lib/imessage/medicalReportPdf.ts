@@ -250,24 +250,29 @@ export function extractNameDobFromReport(reportText: string): {
   name: string | null;
   dob: string | null;
 } {
+  // Name extraction — line-based to avoid greedy multi-line grabs
   const namePatterns = [
-    /\bname[:\s]+([A-Z][a-zA-Z'-]+(?:\s+[A-Z][a-zA-Z'-]+)+)/m,
-    /\bpatient[:\s]+([A-Z][a-zA-Z'-]+(?:\s+[A-Z][a-zA-Z'-]+)+)/m,
-  ];
-
-  const dobPatterns = [
-    /\b(?:date of birth|dob|d\.o\.b\.?)[:\s]+(\d{4}-\d{2}-\d{2})/i,
-    /\b(?:date of birth|dob|d\.o\.b\.?)[:\s]+(\d{2}[\/.-]\d{2}[\/.-]\d{4})/i,
+    /(?:^|\n)\s*[Nn]ame\s*:\s*(.+)/,
+    /(?:^|\n)\s*[Pp]atient\s*(?:[Nn]ame)?\s*:\s*(.+)/,
   ];
 
   let name: string | null = null;
   for (const pattern of namePatterns) {
     const match = pattern.exec(reportText);
     if (match?.[1]) {
-      name = match[1].trim();
-      break;
+      // Clean up: take only capitalized name words, stop at non-name content
+      const raw = match[1].trim();
+      const nameOnly = raw.match(/^([A-Z][a-zA-Z'-]+(?:\s+[A-Z][a-zA-Z'-]+){0,4})/);
+      name = nameOnly?.[1]?.trim() ?? raw.split("\n")[0].trim();
+      if (name) break;
     }
   }
+
+  // DOB extraction
+  const dobPatterns = [
+    /(?:date of birth|dob|d\.o\.b\.?)\s*:\s*(\d{4}-\d{2}-\d{2})/i,
+    /(?:date of birth|dob|d\.o\.b\.?)\s*:\s*(\d{2}[\/.-]\d{2}[\/.-]\d{4})/i,
+  ];
 
   let dob: string | null = null;
   for (const pattern of dobPatterns) {

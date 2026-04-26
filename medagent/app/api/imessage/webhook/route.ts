@@ -658,26 +658,14 @@ async function handleOnboardingMedicalReportUpload(
       ].join("\n"),
     });
   } catch (error) {
-    const isNameDobError = error instanceof Error && error.message.includes("name and date of birth");
     debugLog("pdf onboarding failed", {
       handle,
       reason: error instanceof Error ? error.message : "unknown",
-      isNameDobError,
     });
-    if (isNameDobError) {
-      // Fall back to asking for name/DOB, then they can re-send the PDF
-      conv.awaiting = "onboarding_name_dob";
-      updateImessageUser(handle, { stage: "awaiting_name_dob" });
-      await bridge.sendText({
-        chatGuid,
-        text: "hmm, i couldn't find your name or date of birth in that PDF. could you send me your name and DOB? just type something like: Ciara Byrne 1994-02-17",
-      });
-    } else {
-      await bridge.sendText({
-        chatGuid,
-        text: "hmm, i couldn't pull enough medical info from that PDF. could you try sending one that has your allergies, medications, conditions, and emergency contact? a GP summary works great.",
-      });
-    }
+    const hint = error instanceof Error && error.message.includes("name and date of birth")
+      ? "hmm, i couldn't find your name or date of birth in that PDF. make sure it has a line like \"Name: Ciara Byrne\" and \"Date of Birth: 1994-02-17\" and try sending it again."
+      : "hmm, i couldn't pull enough medical info from that PDF. could you try a different one? a GP summary with your allergies, medications, and conditions works great.";
+    await bridge.sendText({ chatGuid, text: hint });
   }
 }
 
