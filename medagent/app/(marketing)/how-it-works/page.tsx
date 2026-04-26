@@ -13,10 +13,11 @@ export default function HowItWorksPage() {
       <section className="page-hero">
         <div className="container">
           <span className="eyebrow">How it works</span>
-          <h1 className="display-md">Built for the 90 seconds before the patient is in the bay.</h1>
+          <h1 className="display-md">Closing three gaps where the NHS meets the HSE.</h1>
           <p className="lead">
-            MedAgent is a deterministic agent. The LLM never decides who can see what — policy does.
-            Three stages, every one of them text-first.
+            Speed inside the NHS, data and login security across providers, and a bridge between the
+            UK and Europe — the LLM never decides who can see what, policy does. Three stages, every
+            one text-first.
           </p>
         </div>
       </section>
@@ -26,26 +27,29 @@ export default function HowItWorksPage() {
           <div className="why">
             <div className="why-card">
               <div className="why-num">01</div>
-              <h3>The record is one text away.</h3>
+              <h3>NHS speed gap.</h3>
               <p>
-                No portal. No login. No &quot;press three to speak to the on-call.&quot; iMessage your
-                request and get plain-text back in seconds.
+                Faxed referrals, on-call switchboards, &quot;press three to leave a message.&quot;
+                MedAgent collapses that into a text — clinician sends, agent verifies, plain-text
+                record back in seconds.
               </p>
             </div>
             <div className="why-card">
               <div className="why-num">02</div>
-              <h3>The patient stays in the loop.</h3>
+              <h3>Data &amp; login security.</h3>
               <p>
-                Cross-jurisdiction requests pause for patient consent on the same channel. They reply
-                YES, NO, or stay silent — and the agent honours it.
+                No new portal, no extra password. Identity is verified against IMC / GMC registries,
+                consent is collected on the same thread, and every access is hashed on Solana —
+                patient-auditable forever, PHI never on chain.
               </p>
             </div>
             <div className="why-card">
               <div className="why-num">03</div>
-              <h3>Every access is on a public ledger.</h3>
+              <h3>UK ↔ Europe record transfer.</h3>
               <p>
-                Logged on Solana via our Anchor program. Patients verify exactly who opened their
-                record, when, and under what authority. PHI never goes on chain.
+                Cross-border care is the breaking point. MedAgent bridges NHS and HSE so a record
+                follows the patient from Belfast to Dundalk to Galway — not via a fax queue, but a
+                deterministic, jurisdiction-aware text exchange.
               </p>
             </div>
           </div>

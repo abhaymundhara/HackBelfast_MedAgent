@@ -8,22 +8,6 @@ const items: Array<{ name: string; icon: JSX.Element }> = [
     ),
   },
   {
-    name: "WhatsApp",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.4 14.2c-.2.6-1.2 1.2-1.7 1.3-.4.1-1 .1-1.6-.1-.4-.1-.9-.3-1.5-.6-2.6-1.1-4.3-3.7-4.4-3.9-.1-.2-1-1.4-1-2.6 0-1.3.7-1.9.9-2.2.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5.2.5.7 1.7.7 1.9.1.1.1.3 0 .4 0 .2-.1.3-.2.4-.1.2-.3.3-.4.5-.1.1-.3.3-.1.5.1.3.7 1.1 1.5 1.8 1 .9 1.8 1.2 2.1 1.3.3.1.4.1.6-.1.2-.2.7-.8.8-1 .2-.3.3-.2.6-.1.2.1 1.5.7 1.7.8.2.1.4.2.5.3.1.1.1.6-.1 1.2z" />
-      </svg>
-    ),
-  },
-  {
-    name: "SMS",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-      </svg>
-    ),
-  },
-  {
     name: "NHS",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
@@ -62,31 +46,11 @@ const items: Array<{ name: string; icon: JSX.Element }> = [
     ),
   },
   {
-    name: "OpenAI",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-        <path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6L5.6 18.4" />
-      </svg>
-    ),
-  },
-  {
     name: "Solscan",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
         <circle cx="11" cy="11" r="7" />
         <path d="M20 20l-4.35-4.35" />
-      </svg>
-    ),
-  },
-  {
-    name: "Twilio",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-        <circle cx="12" cy="12" r="9" />
-        <circle cx="9" cy="9" r="1.5" fill="currentColor" />
-        <circle cx="15" cy="9" r="1.5" fill="currentColor" />
-        <circle cx="9" cy="15" r="1.5" fill="currentColor" />
-        <circle cx="15" cy="15" r="1.5" fill="currentColor" />
       </svg>
     ),
   },
