@@ -1,5 +1,6 @@
 import fs from "fs";
 import { config } from "dotenv";
+import { getAppBaseUrl } from "@/lib/appUrl";
 config({ path: ".env.local" });
 config();
 
@@ -11,7 +12,7 @@ async function main() {
   }
 
   const payload = JSON.parse(fs.readFileSync(fixturePath, "utf-8"));
-  const webhookUrl = `${process.env.APP_BASE_URL ?? "http://localhost:3000"}/api/imessage/webhook`;
+  const webhookUrl = `${getAppBaseUrl()}/api/imessage/webhook`;
   const secret = process.env.IMESSAGE_WEBHOOK_SECRET;
 
   const headers: Record<string, string> = { "Content-Type": "application/json" };

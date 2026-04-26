@@ -197,6 +197,7 @@ RESEND_FROM_EMAIL=noreply@medagent.dev
 DOCTOR_SESSION_SECRET=...
 PATIENT_SESSION_SECRET=...
 APP_BASE_URL=http://localhost:3000
+NGROK_PUBLIC_URL=
 ```
 
 Notes:
@@ -205,7 +206,8 @@ Notes:
 - If `OPENAI_API_KEY` is missing, translation/follow-up fall back to deterministic local behavior.
 - iMessage bridge runs live-only on macOS Messages.app (AppleScript + local chat.db polling). BlueBubbles and mock modes are disabled.
 - Use `GET /api/imessage/health` (with `x-webhook-secret` or `Authorization: Bearer <secret>` when configured) to verify local bridge connectivity.
-- Run `npm run imessage:live` to start both the app and inbound iMessage poller in one terminal.
+- Run `npm run dev:tunnel` from `medagent/` for globally reachable share links, or `npm run imessage:live:tunnel` to start ngrok, the app, and the inbound iMessage poller together.
+- Run `npm run imessage:live` only when local-only links are acceptable.
 - Advanced/manual mode: run `npm run dev` and `npm run imessage:poll` separately.
 - Poller defaults to iMessage service only and forwards only allowlisted handles to avoid SMS shortcodes/system senders.
 - Poller defaults to `IMESSAGE_POLLER_SKIP_HISTORY_ON_START=true`, so each launch starts from the current message tail and does not replay old history.

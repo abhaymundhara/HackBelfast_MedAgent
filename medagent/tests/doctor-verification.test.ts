@@ -14,7 +14,7 @@ beforeEach(async () => {
 describe("doctor board verification", () => {
   it("looks up seeded doctors by exact, partial, and fuzzy inputs", () => {
     expect(lookupDoctor("MC12345")?.name).toBe("Dr. Aoife Murphy");
-    expect(lookupDoctor("7953798")?.name).toBe("Dr. Chidi Okonkwo");
+    expect(lookupDoctor("4921847")?.name).toBe("Dr. Chidi Okonkwo");
     expect(lookupDoctor("siobhan kelly")?.regNumber).toBe("MC99999");
   });
 

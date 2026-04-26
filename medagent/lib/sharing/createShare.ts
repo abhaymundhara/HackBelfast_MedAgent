@@ -12,6 +12,7 @@ import {
   updateSharedRecordShortToken,
 } from "@/lib/db";
 import { solanaAuditStore } from "@/lib/solana/auditStore";
+import { isSolanaConfigured } from "@/lib/solana/client";
 import { AuditEventSchema, EmergencySummary, ReleasedField } from "@/lib/types";
 
 const MAX_ACTIVE_SHARES = 10;
@@ -135,6 +136,15 @@ export async function createShareRecord(input: {
     duration_seconds: input.ttlHours * 3600,
   });
 
+  const forceLocalAudit =
+    process.env.MEDAGENT_FORCE_LOCAL_AUDIT === "1" ||
+    process.env.MEDAGENT_FORCE_LOCAL_AUDIT === "true";
+  if (!forceLocalAudit && !isSolanaConfigured()) {
+    throw new Error(
+      "Solana audit is not configured; record share was not created.",
+    );
+  }
+
   createAccessRequest({
     id: shareId,
     patientId: input.patientId,
@@ -153,6 +163,15 @@ export async function createShareRecord(input: {
     patientId: input.patientId,
     event,
   });
+  if (
+    !forceLocalAudit &&
+    auditResult.status !== "submitted"
+  ) {
+    throw new Error(
+      auditResult.error ??
+        "Solana audit write did not submit; record share was not created.",
+    );
+  }
 
   const shortCode = crypto.randomBytes(4).toString("base64url");
 

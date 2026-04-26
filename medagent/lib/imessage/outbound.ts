@@ -1,6 +1,7 @@
 "use strict";
 
 import type { MedAgentOutcome } from "@/lib/types";
+import { getPublicAppBaseUrl } from "@/lib/appUrl";
 import { getActivationKeyword } from "./intents";
 
 export interface OutboundContext {
@@ -175,6 +176,8 @@ export function formatHelp(): string {
   return [
     `Hey! Here's what I can help you with.`,
     "",
+    `Wake word: ${activationKeyword}`,
+    "",
     "Just talk to me naturally — or use these shortcuts:",
     "",
     `• Say "${activationKeyword}" + what you need — e.g. "${activationKeyword} access patient SARAHB"`,
@@ -183,6 +186,7 @@ export function formatHelp(): string {
     "",
     "Quick commands:",
     "• /access <patient> — look up a patient's record",
+    "• /help — show this menu",
     "• /approve or /deny — respond to a pending request",
     "• /status — check what's active",
     "• /audit <patient> — see the audit trail",
@@ -235,7 +239,7 @@ export function formatSolanaProof(input: {
 }): string {
   if (!input.chainRef) return "";
   if (input.chainRef.startsWith("local-solana:")) {
-    return "your data is safely stored and protected.";
+    return "Solana audit is in local-only demo mode; no on-chain receipt was created.";
   }
   return [
     `your ${input.action} is safely stored and permanently protected — here's your receipt:`,
@@ -244,7 +248,7 @@ export function formatSolanaProof(input: {
 }
 
 export function generateBlinkUrl(actionPath: string): string {
-  const appBaseUrl = process.env.APP_BASE_URL ?? "http://localhost:3000";
+  const appBaseUrl = getPublicAppBaseUrl();
   const actionUrl = `solana-action:${appBaseUrl}${actionPath}`;
   return `https://dial.to/?action=${encodeURIComponent(actionUrl)}&cluster=devnet`;
 }

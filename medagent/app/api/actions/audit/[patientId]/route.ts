@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { decryptJson } from "@/lib/crypto";
 import { getPatientRow, getPatientAccountByPatientId, listAuditEvents } from "@/lib/db";
+import { getPublicAppBaseUrl } from "@/lib/appUrl";
 import { getSolscanTxUrl } from "@/lib/solana/client";
 import { EmergencySummary } from "@/lib/types";
 
@@ -53,7 +54,7 @@ export async function GET(
     ? getSolscanTxUrl(latestOnChain.chainRef!)
     : null;
 
-  const appBaseUrl = process.env.APP_BASE_URL ?? "http://localhost:3000";
+  const appBaseUrl = getPublicAppBaseUrl();
 
   const description = [
     `${onChainCount} audit event${onChainCount !== 1 ? "s" : ""} verified on Solana`,
