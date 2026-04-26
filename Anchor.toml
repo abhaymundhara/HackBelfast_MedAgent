@@ -9,14 +9,14 @@ skip-lint = false
 medagent_audit = "5ELaWMqQZPseQBuTEGgkPygBXWn1KUQdpMAkQR15Pg6K"
 
 [programs.devnet]
-medagent_audit = "3yPCnb5XQAJcvqmVz1xjUrL9iE24oUAX6LkycfWw5NKX"
+medagent_audit = "dNiqJwpDnNDDqbJ6R8eQ5UwkXVTd6B2dKJ8M1drmEUR"
 
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
 cluster = "devnet"
-wallet = "${SOLANA_WALLET}"
+wallet = "~/.config/solana/id.json"
 
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 300000 tests/**/*.ts"
