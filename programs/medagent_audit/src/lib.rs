@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use anchor_lang::system_program;
 
-declare_id!("3yPCnb5XQAJcvqmVz1xjUrL9iE24oUAX6LkycfWw5NKX");
+declare_id!("dNiqJwpDnNDDqbJ6R8eQ5UwkXVTd6B2dKJ8M1drmEUR");
 
 #[program]
 pub mod medagent_audit {

@@ -1,344 +1,207 @@
 {
-  "address": "3yPCnb5XQAJcvqmVz1xjUrL9iE24oUAX6LkycfWw5NKX",
-  "version": "0.1.0",
-  "name": "medagent_audit",
+  "address": "dNiqJwpDnNDDqbJ6R8eQ5UwkXVTd6B2dKJ8M1drmEUR",
+  "metadata": {
+    "name": "medagent_audit",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "MedAgent on-chain audit log program for Solana"
+  },
   "instructions": [
     {
-      "name": "initializeAuditLog",
+      "name": "close_audit_log",
+      "discriminator": [
+        146,
+        53,
+        89,
+        194,
+        130,
+        29,
+        170,
+        177
+      ],
       "accounts": [
         {
-          "name": "auditLog",
-          "isMut": true,
-          "isSigner": false
+          "name": "audit_log",
+          "writable": true
         },
         {
           "name": "authority",
-          "isMut": true,
-          "isSigner": true
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "audit_log"
+          ]
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "initialize_audit_log",
+      "discriminator": [
+        161,
+        252,
+        219,
+        225,
+        172,
+        150,
+        152,
+        106
+      ],
+      "accounts": [
+        {
+          "name": "audit_log",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  101,
+                  100,
+                  97,
+                  103,
+                  101,
+                  110,
+                  116,
+                  95,
+                  97,
+                  117,
+                  100,
+                  105,
+                  116
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "seed"
+              }
+            ]
+          }
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
         {
-          "name": "patientHash",
+          "name": "patient_hash",
           "type": "string"
         },
         {
           "name": "seed",
           "type": {
-            "array": ["u8", 32]
+            "array": [
+              "u8",
+              32
+            ]
           }
         }
       ]
     },
     {
-      "name": "logAuditEvent",
+      "name": "log_audit_event",
+      "discriminator": [
+        123,
+        133,
+        173,
+        167,
+        180,
+        144,
+        243,
+        203
+      ],
       "accounts": [
         {
-          "name": "auditLog",
-          "isMut": true,
-          "isSigner": false
+          "name": "audit_log",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  101,
+                  100,
+                  97,
+                  103,
+                  101,
+                  110,
+                  116,
+                  95,
+                  97,
+                  117,
+                  100,
+                  105,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "audit_log.seed",
+                "account": "AuditLog"
+              }
+            ]
+          }
         },
         {
           "name": "authority",
-          "isMut": true,
-          "isSigner": true
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "audit_log"
+          ]
         },
         {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
         {
           "name": "params",
           "type": {
-            "defined": "AuditEventParams"
+            "defined": {
+              "name": "AuditEventParams"
+            }
           }
         }
       ]
-    },
-    {
-      "name": "closeAuditLog",
-      "accounts": [
-        {
-          "name": "auditLog",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "authority",
-          "isMut": true,
-          "isSigner": true
-        }
-      ],
-      "args": []
     }
   ],
   "accounts": [
     {
       "name": "AuditLog",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "authority",
-            "type": "publicKey"
-          },
-          {
-            "name": "patientHash",
-            "type": "string"
-          },
-          {
-            "name": "seed",
-            "type": {
-              "array": ["u8", 32]
-            }
-          },
-          {
-            "name": "bump",
-            "type": "u8"
-          },
-          {
-            "name": "records",
-            "type": {
-              "vec": {
-                "defined": "AuditRecord"
-              }
-            }
-          }
-        ]
-      }
-    }
-  ],
-  "types": [
-    {
-      "name": "AuditEventParams",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "eventType",
-            "type": "string"
-          },
-          {
-            "name": "requestId",
-            "type": "string"
-          },
-          {
-            "name": "doctorHash",
-            "type": "string"
-          },
-          {
-            "name": "patientHash",
-            "type": "string"
-          },
-          {
-            "name": "jurisdiction",
-            "type": "string"
-          },
-          {
-            "name": "decision",
-            "type": {
-              "option": "string"
-            }
-          },
-          {
-            "name": "tokenExpiry",
-            "type": {
-              "option": "string"
-            }
-          },
-          {
-            "name": "timestamp",
-            "type": "string"
-          },
-          {
-            "name": "interactionType",
-            "type": {
-              "option": "string"
-            }
-          },
-          {
-            "name": "summaryHash",
-            "type": {
-              "option": "string"
-            }
-          },
-          {
-            "name": "fieldsAccessed",
-            "type": {
-              "option": "string"
-            }
-          },
-          {
-            "name": "durationSeconds",
-            "type": {
-              "option": "u32"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "name": "AuditRecord",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "eventType",
-            "type": "string"
-          },
-          {
-            "name": "requestId",
-            "type": "string"
-          },
-          {
-            "name": "doctorHash",
-            "type": "string"
-          },
-          {
-            "name": "patientHash",
-            "type": "string"
-          },
-          {
-            "name": "jurisdiction",
-            "type": "string"
-          },
-          {
-            "name": "decision",
-            "type": {
-              "option": "string"
-            }
-          },
-          {
-            "name": "tokenExpiry",
-            "type": {
-              "option": "string"
-            }
-          },
-          {
-            "name": "timestamp",
-            "type": "string"
-          },
-          {
-            "name": "interactionType",
-            "type": {
-              "option": "string"
-            }
-          },
-          {
-            "name": "summaryHash",
-            "type": {
-              "option": "string"
-            }
-          },
-          {
-            "name": "fieldsAccessed",
-            "type": {
-              "option": "string"
-            }
-          },
-          {
-            "name": "durationSeconds",
-            "type": {
-              "option": "u32"
-            }
-          },
-          {
-            "name": "slot",
-            "type": "u64"
-          }
-        ]
-      }
+      "discriminator": [
+        230,
+        207,
+        176,
+        233,
+        170,
+        130,
+        101,
+        244
+      ]
     }
   ],
   "events": [
     {
       "name": "AuditEventEmitted",
-      "fields": [
-        {
-          "name": "eventType",
-          "type": "string",
-          "index": false
-        },
-        {
-          "name": "requestId",
-          "type": "string",
-          "index": false
-        },
-        {
-          "name": "doctorHash",
-          "type": "string",
-          "index": false
-        },
-        {
-          "name": "patientHash",
-          "type": "string",
-          "index": false
-        },
-        {
-          "name": "jurisdiction",
-          "type": "string",
-          "index": false
-        },
-        {
-          "name": "decision",
-          "type": {
-            "option": "string"
-          },
-          "index": false
-        },
-        {
-          "name": "tokenExpiry",
-          "type": {
-            "option": "string"
-          },
-          "index": false
-        },
-        {
-          "name": "timestamp",
-          "type": "string",
-          "index": false
-        },
-        {
-          "name": "interactionType",
-          "type": {
-            "option": "string"
-          },
-          "index": false
-        },
-        {
-          "name": "summaryHash",
-          "type": {
-            "option": "string"
-          },
-          "index": false
-        },
-        {
-          "name": "fieldsAccessed",
-          "type": {
-            "option": "string"
-          },
-          "index": false
-        },
-        {
-          "name": "durationSeconds",
-          "type": {
-            "option": "u32"
-          },
-          "index": false
-        },
-        {
-          "name": "slot",
-          "type": "u64",
-          "index": false
-        }
+      "discriminator": [
+        212,
+        194,
+        86,
+        75,
+        157,
+        201,
+        185,
+        224
       ]
     }
   ],
@@ -354,7 +217,257 @@
       "msg": "Patient hash exceeds maximum allowed size."
     }
   ],
-  "metadata": {
-    "address": "3yPCnb5XQAJcvqmVz1xjUrL9iE24oUAX6LkycfWw5NKX"
-  }
+  "types": [
+    {
+      "name": "AuditEventEmitted",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "event_type",
+            "type": "string"
+          },
+          {
+            "name": "request_id",
+            "type": "string"
+          },
+          {
+            "name": "doctor_hash",
+            "type": "string"
+          },
+          {
+            "name": "patient_hash",
+            "type": "string"
+          },
+          {
+            "name": "jurisdiction",
+            "type": "string"
+          },
+          {
+            "name": "decision",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "token_expiry",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "timestamp",
+            "type": "string"
+          },
+          {
+            "name": "interaction_type",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "summary_hash",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "fields_accessed",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "duration_seconds",
+            "type": {
+              "option": "u32"
+            }
+          },
+          {
+            "name": "slot",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "AuditEventParams",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "event_type",
+            "type": "string"
+          },
+          {
+            "name": "request_id",
+            "type": "string"
+          },
+          {
+            "name": "doctor_hash",
+            "type": "string"
+          },
+          {
+            "name": "patient_hash",
+            "type": "string"
+          },
+          {
+            "name": "jurisdiction",
+            "type": "string"
+          },
+          {
+            "name": "decision",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "token_expiry",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "timestamp",
+            "type": "string"
+          },
+          {
+            "name": "interaction_type",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "summary_hash",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "fields_accessed",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "duration_seconds",
+            "type": {
+              "option": "u32"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "AuditLog",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "patient_hash",
+            "type": "string"
+          },
+          {
+            "name": "seed",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "records",
+            "type": {
+              "vec": {
+                "defined": {
+                  "name": "AuditRecord"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "AuditRecord",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "event_type",
+            "type": "string"
+          },
+          {
+            "name": "request_id",
+            "type": "string"
+          },
+          {
+            "name": "doctor_hash",
+            "type": "string"
+          },
+          {
+            "name": "patient_hash",
+            "type": "string"
+          },
+          {
+            "name": "jurisdiction",
+            "type": "string"
+          },
+          {
+            "name": "decision",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "token_expiry",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "timestamp",
+            "type": "string"
+          },
+          {
+            "name": "interaction_type",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "summary_hash",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "fields_accessed",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "duration_seconds",
+            "type": {
+              "option": "u32"
+            }
+          },
+          {
+            "name": "slot",
+            "type": "u64"
+          }
+        ]
+      }
+    }
+  ]
 }
