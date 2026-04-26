@@ -134,9 +134,9 @@ describe("iMessage appointment flow", () => {
 
     const texts = bridgeSpies.sendText.mock.calls.map((call) => call[0].text).join("\n\n");
     expect(texts).toContain("I found these Belfast appointment slots");
-    expect(texts).toContain("Appointment confirmed.");
-    expect(texts).toContain("Booking does not share your medical data.");
-    expect(texts).toContain("Shared your full uploaded medical record");
+    expect(texts).toContain("you're booked in!");
+    expect(texts).toContain("your medical data hasn't been shared yet");
+    expect(texts).toContain("done! i've shared your medical record");
     expect(texts).toContain("/share/");
     expect(texts).toContain("#token=");
   });
