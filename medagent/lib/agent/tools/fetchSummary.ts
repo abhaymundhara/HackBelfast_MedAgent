@@ -339,47 +339,47 @@ function buildDocumentItems(
     }
 
     if (approvedTiers.length > 0) {
-      items.push({
-        id: crypto.randomUUID(),
-        patientHash,
-        content: `Title: ${row.title}\nContent:\n${content}`,
-        authorization: {
-          fieldKey: "documents",
-          allowedForTiers: approvedTiers,
-          sensitivityClass: "sensitive",
-          requiresExplicitApproval: true,
+      const variants: Array<{
+        noteType: CanonicalEvidenceItem["noteType"];
+        extractionMode: CanonicalEvidenceItem["extractionMode"];
+        content: string;
+        clinicalTags: string[];
+      }> = [
+        {
+          noteType: "upload",
+          extractionMode: "narrative",
+          content: `Title: ${row.title}\nContent:\n${content}`,
+          clinicalTags: [],
         },
-        sourceType: "document",
-        noteType: "upload",
-        extractionMode: "narrative",
-        sensitivityTags: [],
-        clinicalTags: [],
-        recencyBucket: "historical",
-        language: "en",
-        provenance: { documentId: row.id, timestamp: new Date().toISOString() },
-      });
-    }
+        {
+          noteType: "procedure_history",
+          extractionMode: "derived",
+          content: `Procedure history context from document "${row.title}": ${content}`,
+          clinicalTags: ["procedure_history"],
+        },
+      ];
 
-    if (approvedTiers.length > 0) {
-      items.push({
-        id: crypto.randomUUID(),
-        patientHash,
-        content: `Procedure history context from document "${row.title}": ${content}`,
-        authorization: {
-          fieldKey: "documents",
-          allowedForTiers: approvedTiers,
-          sensitivityClass: "sensitive",
-          requiresExplicitApproval: true,
-        },
-        sourceType: "document",
-        noteType: "procedure_history",
-        extractionMode: "derived",
-        sensitivityTags: [],
-        clinicalTags: ["procedure_history"],
-        recencyBucket: "historical",
-        language: "en",
-        provenance: { documentId: row.id, timestamp: new Date().toISOString() },
-      });
+      for (const variant of variants) {
+        items.push({
+          id: crypto.randomUUID(),
+          patientHash,
+          content: variant.content,
+          authorization: {
+            fieldKey: "documents",
+            allowedForTiers: approvedTiers,
+            sensitivityClass: "sensitive",
+            requiresExplicitApproval: true,
+          },
+          sourceType: "document",
+          noteType: variant.noteType,
+          extractionMode: variant.extractionMode,
+          sensitivityTags: [],
+          clinicalTags: variant.clinicalTags,
+          recencyBucket: "historical",
+          language: "en",
+          provenance: { documentId: row.id, timestamp: new Date().toISOString() },
+        });
+      }
     }
   }
 

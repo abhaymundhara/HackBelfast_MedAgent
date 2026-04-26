@@ -160,39 +160,51 @@ function resolveOptimizerProfileOverride():
   return "auto";
 }
 
-function toRerankCandidate(
-  item: CanonicalEvidenceItem,
-  fallbackQuery: string,
-): LexicalSearchResult {
-  return {
-    item,
-    source: "rag",
-    mode: item.retrieval?.mode ?? "balanced",
-    query: item.retrieval?.query ?? fallbackQuery,
-    score:
-      item.retrieval?.fusionScore ??
-      item.retrieval?.score ??
-      item.retrieval?.semanticScore ??
-      0,
-    matchedQueries: item.retrieval?.matchedQueries ?? [fallbackQuery],
-    scoreBreakdown: {
-      bm25Score: item.retrieval?.score ?? 0,
-      bm25Normalized: item.retrieval?.score ?? 0,
-      matchedKeywordCount: 0,
-      matchedPhraseCount: 0,
-      fieldMatchBoost: 0,
-      noteTypeMatchBoost: 0,
-      recencyBoost: 0,
-      termCoverageBoost: 0,
-      finalScore: item.retrieval?.fusionScore ?? item.retrieval?.score ?? 0,
-    },
-  };
-}
-
 function isRerankEnabled() {
   const raw = process.env.MEDAGENT_ENABLE_LOCAL_RERANK;
   if (!raw) return true;
   return !["0", "false", "off"].includes(raw.toLowerCase().trim());
+}
+
+function buildCacheMetadata(
+  rec: Pick<
+    RetrievalExecutionRecord,
+    | "lexicalReturnedCount"
+    | "lexicalContributedCount"
+    | "lexicalLatencyMs"
+    | "rerankApplied"
+    | "rerankInputCount"
+    | "rerankLatencyMs"
+    | "rerankModel"
+    | "semanticTopScore"
+    | "fusionTopScore"
+    | "semanticReturnedCount"
+    | "semanticContributedCount"
+    | "semanticLatencyMs"
+    | "fusionApplied"
+    | "fusionInputCount"
+    | "semanticIndexHit"
+    | "semanticFailureReason"
+  >,
+) {
+  return {
+    lexicalReturnedCount: rec.lexicalReturnedCount,
+    lexicalContributedCount: rec.lexicalContributedCount,
+    lexicalLatencyMs: rec.lexicalLatencyMs,
+    rerankApplied: rec.rerankApplied,
+    rerankInputCount: rec.rerankInputCount,
+    rerankLatencyMs: rec.rerankLatencyMs,
+    rerankModel: rec.rerankModel,
+    semanticTopScore: rec.semanticTopScore,
+    fusionTopScore: rec.fusionTopScore,
+    semanticReturnedCount: rec.semanticReturnedCount,
+    semanticContributedCount: rec.semanticContributedCount,
+    semanticLatencyMs: rec.semanticLatencyMs,
+    fusionApplied: rec.fusionApplied,
+    fusionInputCount: rec.fusionInputCount,
+    semanticIndexHit: rec.semanticIndexHit,
+    semanticFailureReason: rec.semanticFailureReason,
+  };
 }
 
 type RetrievalPlannerRuntimeConfig = {
@@ -1071,9 +1083,31 @@ export async function runRetrievalPlanner(
       plan,
     });
 
-    const rerankInput = fusedOutcome.fusedCandidates
+    const rerankInput: LexicalSearchResult[] = fusedOutcome.fusedCandidates
       .slice(0, Math.max(plan.topK, rerankShortlistCap))
-      .map((item) => toRerankCandidate(item, plan.query));
+      .map((item) => ({
+        item,
+        source: "rag",
+        mode: item.retrieval?.mode ?? "balanced",
+        query: item.retrieval?.query ?? plan.query,
+        score:
+          item.retrieval?.fusionScore ??
+          item.retrieval?.score ??
+          item.retrieval?.semanticScore ??
+          0,
+        matchedQueries: item.retrieval?.matchedQueries ?? [plan.query],
+        scoreBreakdown: {
+          bm25Score: item.retrieval?.score ?? 0,
+          bm25Normalized: item.retrieval?.score ?? 0,
+          matchedKeywordCount: 0,
+          matchedPhraseCount: 0,
+          fieldMatchBoost: 0,
+          noteTypeMatchBoost: 0,
+          recencyBoost: 0,
+          termCoverageBoost: 0,
+          finalScore: item.retrieval?.fusionScore ?? item.retrieval?.score ?? 0,
+        },
+      }));
 
     const rerankOutcome = rerankLexicalShortlist(
       {
@@ -1138,7 +1172,7 @@ export async function runRetrievalPlanner(
       patientHash: patientHashUsed ?? "",
       sourceFingerprint: sourceFingerprint ?? "unknown",
       candidates: ragCandidatesAfterTargeting,
-      metadata: {
+      metadata: buildCacheMetadata({
         lexicalReturnedCount,
         lexicalContributedCount,
         lexicalLatencyMs,
@@ -1155,7 +1189,7 @@ export async function runRetrievalPlanner(
         fusionInputCount: fusedOutcome.fusionInputCount,
         semanticIndexHit,
         semanticFailureReason,
-      },
+      }),
     });
     const cacheWriteLatencyMs = performance.now() - cacheWriteStart;
 
@@ -1262,35 +1296,7 @@ export async function runRetrievalPlanner(
                   patientHash: patientHashUsed ?? "",
                   sourceFingerprint: sourceFingerprint ?? "unknown",
                   candidates: recomputed.ragCandidates,
-                  metadata: {
-                    lexicalReturnedCount:
-                      recomputed.executionRecord.lexicalReturnedCount,
-                    lexicalContributedCount:
-                      recomputed.executionRecord.lexicalContributedCount,
-                    lexicalLatencyMs:
-                      recomputed.executionRecord.lexicalLatencyMs,
-                    rerankApplied: recomputed.executionRecord.rerankApplied,
-                    rerankInputCount:
-                      recomputed.executionRecord.rerankInputCount,
-                    rerankLatencyMs: recomputed.executionRecord.rerankLatencyMs,
-                    rerankModel: recomputed.executionRecord.rerankModel,
-                    semanticTopScore:
-                      recomputed.executionRecord.semanticTopScore,
-                    fusionTopScore: recomputed.executionRecord.fusionTopScore,
-                    semanticReturnedCount:
-                      recomputed.executionRecord.semanticReturnedCount,
-                    semanticContributedCount:
-                      recomputed.executionRecord.semanticContributedCount,
-                    semanticLatencyMs:
-                      recomputed.executionRecord.semanticLatencyMs,
-                    fusionApplied: recomputed.executionRecord.fusionApplied,
-                    fusionInputCount:
-                      recomputed.executionRecord.fusionInputCount,
-                    semanticIndexHit:
-                      recomputed.executionRecord.semanticIndexHit,
-                    semanticFailureReason:
-                      recomputed.executionRecord.semanticFailureReason,
-                  },
+                  metadata: buildCacheMetadata(recomputed.executionRecord),
                 });
               } catch (error) {
                 console.warn(

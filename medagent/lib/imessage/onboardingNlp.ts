@@ -1,23 +1,13 @@
 import { createHash } from "crypto";
 
+import { createDebugLogger } from "@/lib/imessage/debug";
+
 export type ParsedNameDob = {
   name: string;
   dob: string; // YYYY-MM-DD
 };
 
-function isDebugEnabled(): boolean {
-  const raw = (process.env.IMESSAGE_DEBUG ?? "").trim().toLowerCase();
-  return ["1", "true", "yes", "on"].includes(raw);
-}
-
-function debugLog(message: string, data?: unknown) {
-  if (!isDebugEnabled()) return;
-  if (data === undefined) {
-    console.log(`[imessage/onboarding-nlp] ${message}`);
-    return;
-  }
-  console.log(`[imessage/onboarding-nlp] ${message}`, data);
-}
+const debugLog = createDebugLogger("imessage/onboarding-nlp");
 
 function piiSafeInputMeta(input: string): {
   inputHash: string;

@@ -156,6 +156,34 @@ const checkpointer = new FileCheckpointSaver(
 );
 export const medAgentApp = workflow.compile({ checkpointer });
 
+function buildRequestContext(fields: {
+  requestId: string;
+  patientId: string;
+  requesterId: string;
+  naturalLanguageRequest: string;
+  targetLocale: string;
+  emergencyMode: boolean;
+  patientApprovalPresent: boolean;
+  requesterLabel?: string | null;
+  issuerLabel?: string | null;
+  presentedCredential?: string | null;
+  sourceMessageId?: string | null;
+}): AgentStateType["requestContext"] {
+  return {
+    requestId: fields.requestId,
+    patientId: fields.patientId,
+    requesterId: fields.requesterId,
+    naturalLanguageRequest: fields.naturalLanguageRequest,
+    targetLocale: fields.targetLocale,
+    emergencyMode: fields.emergencyMode,
+    patientApprovalPresent: fields.patientApprovalPresent,
+    requesterLabel: fields.requesterLabel ?? undefined,
+    issuerLabel: fields.issuerLabel ?? undefined,
+    presentedCredential: fields.presentedCredential ?? undefined,
+    sourceMessageId: fields.sourceMessageId ?? undefined,
+  };
+}
+
 /**
  * Main application boundary. Maps frontend types to the state shape,
  * invokes the graph, and translates back to MedAgentOutcome.
@@ -192,7 +220,7 @@ export async function runMedAgentWorkflow({
 
     // Resume state is reconstructed from the persisted request + trace.
     const initialResumeState: Partial<AgentStateType> = {
-      requestContext: {
+      requestContext: buildRequestContext({
         requestId,
         patientId: req.patient_id,
         requesterId: req.requester_id,
@@ -202,8 +230,8 @@ export async function runMedAgentWorkflow({
         patientApprovalPresent: true,
         requesterLabel: persona?.requesterLabel,
         issuerLabel: persona?.issuerLabel,
-        presentedCredential: req.presented_credential ?? undefined,
-      },
+        presentedCredential: req.presented_credential,
+      }),
       trace,
     } as any;
 
@@ -247,7 +275,7 @@ export async function runMedAgentWorkflow({
   saveAgentTrace(initialTrace);
 
   const initialState: Partial<AgentStateType> = {
-    requestContext: {
+    requestContext: buildRequestContext({
       requestId,
       patientId: input.patientId,
       requesterId: input.requesterId,
@@ -259,7 +287,7 @@ export async function runMedAgentWorkflow({
       requesterLabel: initialTrace.requesterLabel,
       issuerLabel: initialTrace.issuerLabel,
       sourceMessageId: input.sourceMessageId,
-    },
+    }),
     trace: initialTrace,
   };
 

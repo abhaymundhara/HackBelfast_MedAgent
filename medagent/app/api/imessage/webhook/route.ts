@@ -62,22 +62,12 @@ import {
 import type { InboundAttachment } from "@/lib/imessage/inbound";
 import type { ConversationState } from "@/lib/imessage/conversationState";
 
+import { createDebugLogger } from "@/lib/imessage/debug";
+
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-function isDebugEnabled(): boolean {
-  const raw = (process.env.IMESSAGE_DEBUG ?? "").trim().toLowerCase();
-  return ["1", "true", "yes", "on"].includes(raw);
-}
-
-function debugLog(message: string, data?: unknown) {
-  if (!isDebugEnabled()) return;
-  if (data === undefined) {
-    console.log(`[imessage/webhook] ${message}`);
-    return;
-  }
-  console.log(`[imessage/webhook] ${message}`, data);
-}
+const debugLog = createDebugLogger("imessage/webhook");
 
 export async function POST(request: Request) {
   // 1. Auth check

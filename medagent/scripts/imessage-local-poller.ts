@@ -6,6 +6,7 @@ import Database from "better-sqlite3";
 import { config } from "dotenv";
 import { getAppBaseUrl } from "@/lib/appUrl";
 import { listHandleMappings } from "@/lib/imessage/handles";
+import { createDebugLogger } from "@/lib/imessage/debug";
 
 config({ path: ".env.local" });
 config();
@@ -79,18 +80,7 @@ function readBool(name: string, fallback: boolean): boolean {
   return fallback;
 }
 
-function isDebugEnabled(): boolean {
-  return readBool("IMESSAGE_DEBUG", false);
-}
-
-function debugLog(message: string, data?: unknown) {
-  if (!isDebugEnabled()) return;
-  if (data === undefined) {
-    console.log(`[imessage-poller:debug] ${message}`);
-    return;
-  }
-  console.log(`[imessage-poller:debug] ${message}`, data);
-}
+const debugLog = createDebugLogger("imessage-poller:debug");
 
 function buildAllowedHandles(): Set<string> {
   const configured = process.env.IMESSAGE_POLLER_ALLOWED_HANDLES
