@@ -13,16 +13,7 @@ export async function OPTIONS() {
 export async function GET() {
   return NextResponse.json(
     {
-      rules: [
-        {
-          pathPattern: "/share/*",
-          apiPath: "/api/actions/share/*",
-        },
-        {
-          pathPattern: "/audit/*",
-          apiPath: "/api/actions/audit/*",
-        },
-      ],
+      rules: [],
     },
     { headers: { "Content-Type": "application/json", ...CORS_HEADERS } },
   );

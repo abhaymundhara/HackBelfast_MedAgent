@@ -1,5 +1,23 @@
+const ngrokOrigin = (() => {
+  const raw =
+    process.env.NGROK_PUBLIC_URL ||
+    process.env.NGROK_URL ||
+    process.env.PUBLIC_APP_BASE_URL ||
+    process.env.APP_BASE_URL;
+  if (!raw) return null;
+  try {
+    return new URL(raw).origin;
+  } catch {
+    return null;
+  }
+})();
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  allowedDevOrigins: [
+    "*.ngrok-free.app",
+    ...(ngrokOrigin ? [ngrokOrigin] : []),
+  ],
   async headers() {
     return [
       {

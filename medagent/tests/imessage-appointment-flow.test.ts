@@ -29,6 +29,12 @@ vi.mock("@/lib/solana/auditStore", () => ({
   },
 }));
 
+const appointmentShareEmailSpy = vi.hoisted(() => vi.fn());
+
+vi.mock("@/lib/sharing/shareEmail", () => ({
+  sendAppointmentShareLinkEmail: appointmentShareEmailSpy,
+}));
+
 import { POST } from "@/app/api/imessage/webhook/route";
 import {
   resetDatabase,
@@ -134,6 +140,10 @@ function setupOnboardedPatient() {
 describe("iMessage appointment flow", () => {
   beforeEach(() => {
     setupOnboardedPatient();
+    appointmentShareEmailSpy.mockResolvedValue({
+      sent: true,
+      to: "gulsameer1000@gmail.com",
+    });
     bridgeSpies.sendText.mockResolvedValue({ messageGuid: "sent", status: "sent" });
     bridgeSpies.markChatRead.mockResolvedValue({ status: "ok" });
     bridgeSpies.showTypingIndicator.mockResolvedValue({ status: "ok" });
@@ -151,5 +161,36 @@ describe("iMessage appointment flow", () => {
     expect(texts).toContain("done! i've shared your medical record");
     expect(texts).toContain("/share/");
     expect(texts).toContain("#token=");
+    expect(texts).not.toContain("dial.to");
+    expect(texts).not.toContain("blink:");
+    expect(texts).toContain("email sent to: gulsameer1000@gmail.com");
+    expect(appointmentShareEmailSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        doctorName: "Dr. Appointment",
+        patientId,
+        shareUrl: expect.stringMatching(
+          /^http:\/\/localhost:3000\/share\/.+#token=.+/,
+        ),
+      }),
+    );
+  });
+
+  it("keeps the share flow working when email delivery is rejected", async () => {
+    appointmentShareEmailSpy.mockResolvedValue({
+      sent: false,
+      to: "gulsameer1000@gmail.com",
+      error: "The gmail.com domain is not verified.",
+    });
+
+    await postWebhook("My knee injury is spiking in Belfast, book a doctor");
+    await postWebhook("1");
+    await postWebhook("YES");
+
+    const texts = bridgeSpies.sendText.mock.calls.map((call) => call[0].text).join("\n\n");
+    expect(texts).toContain("done! i've shared your medical record");
+    expect(texts).toContain("/share/");
+    expect(texts).toContain(
+      "email not sent to gulsameer1000@gmail.com: The gmail.com domain is not verified.",
+    );
   });
 });

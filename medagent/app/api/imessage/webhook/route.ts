@@ -21,6 +21,7 @@ import {
   formatAck,
   formatAppointmentShareCreated,
   formatFollowUpAnswer,
+  formatSolanaProof,
 } from "@/lib/imessage/outbound";
 import { getBridge } from "@/lib/imessage/bridge";
 import { runAccessRequest } from "@/lib/agent/runAccessRequest";
@@ -39,6 +40,7 @@ import {
   formatAppointmentOptions,
 } from "@/lib/appointments/formatAppointment";
 import { createShareRecord } from "@/lib/sharing/createShare";
+import { sendAppointmentShareLinkEmail } from "@/lib/sharing/shareEmail";
 import {
   listPatientsSafe,
   getPatientSummary,
@@ -52,7 +54,6 @@ import {
 } from "@/lib/db";
 import { sha256Hash } from "@/lib/crypto";
 import { solanaAuditStore } from "@/lib/solana/auditStore";
-import { formatSolanaProof, generateBlinkUrl } from "@/lib/imessage/outbound";
 import { parseNameDobInput } from "@/lib/imessage/onboardingNlp";
 import {
   isPdfAttachment,
@@ -670,6 +671,7 @@ async function handleOnboardingMedicalReportUpload(
     }
 
     const proofLine = formatSolanaProof({ action: "medical record", chainRef: onboardChainRef });
+    const auditTrailUrl = `${getPublicAppBaseUrl()}/audit/${profile.patientId}`;
     await bridge.sendText({
       chatGuid,
       text: [
@@ -683,7 +685,7 @@ async function handleOnboardingMedicalReportUpload(
         "you're all set! you can now ask me about your record (\"what are my allergies?\") or book a GP appointment in belfast. just text me anytime.",
         ...(proofLine ? ["", proofLine] : []),
         "",
-        `your audit trail: ${generateBlinkUrl(`/api/actions/audit/${profile.patientId}`)}`,
+        `your audit trail: ${auditTrailUrl}`,
       ].join("\n"),
     });
   } catch (error) {
@@ -1037,6 +1039,19 @@ async function handlePatientAppointmentIntent(
     shareScope: "full_record",
     appointmentId: appointment.id,
   });
+  const shareUrl = `${appBaseUrl}${result.shareUrl}`;
+  const emailResult = await sendAppointmentShareLinkEmail({
+    doctorName: appointment.doctorName,
+    shareUrl,
+    patientId,
+  });
+  if (!emailResult.sent) {
+    debugLog("appointment share email not sent", {
+      patientId,
+      to: emailResult.to,
+      error: emailResult.error,
+    });
+  }
   conv.awaiting = null;
   delete conv.metadata.pendingAppointmentId;
   delete conv.metadata.pendingShareDoctor;
@@ -1045,10 +1060,13 @@ async function handlePatientAppointmentIntent(
     chatGuid,
     text: formatAppointmentShareCreated({
       doctorName: appointment.doctorName,
-      shareUrl: `${appBaseUrl}${result.shareUrl}`,
+      shareUrl,
       dashboardUrl: `${appBaseUrl}/patient/dashboard`,
       chainRef: result.chainRef,
       shareId: result.shareId,
+      emailRecipient: emailResult.to,
+      emailSent: emailResult.sent,
+      emailError: emailResult.error,
     }),
   });
 }

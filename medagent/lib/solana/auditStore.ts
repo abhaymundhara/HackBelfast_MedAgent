@@ -38,7 +38,11 @@ type MedagentAuditIdl = {
 export interface AuditStore {
   initializePatientLog(input: {
     patientHash: string;
-  }): Promise<{ pda: string | null; status: "initialized" | "exists" | "skipped_missing_config" | "failed"; error?: string }>;
+  }): Promise<{
+    pda: string | null;
+    status: "initialized" | "exists" | "skipped_missing_config" | "failed";
+    error?: string;
+  }>;
   writeAuditEvent(input: {
     requestId: string;
     patientId: string;

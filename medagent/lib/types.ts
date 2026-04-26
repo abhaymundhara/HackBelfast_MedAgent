@@ -334,7 +334,6 @@ export interface AccessRequestStatusSnapshot {
   sessionId: string | null;
 }
 
-export const KEY_ALERTS = [...EMERGENCY_ALERTS];
 export const CRITICAL_ALERTS = [
   "anticoagulants",
   "implanted-device",
