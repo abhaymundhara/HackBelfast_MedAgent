@@ -21,7 +21,8 @@
     "eval:embedding-bakeoff": "tsx scripts/run-embedding-bakeoff.ts",
     "eval:cost-dashboard": "tsx scripts/run-retrieval-cost-dashboard.ts",
     "imessage:smoke": "tsx scripts/imessage-smoke.ts",
-    "imessage:replay": "tsx scripts/imessage-replay.ts"
+    "imessage:replay": "tsx scripts/imessage-replay.ts",
+    "dev:tunnel": "bash scripts/start-tunnel.sh"
   },
   "dependencies": {
     "@coral-xyz/anchor": "^0.31.1",

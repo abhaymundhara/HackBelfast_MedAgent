@@ -7,7 +7,7 @@ import { setupFullRecordShareFixture } from "./share-fixture";
 
 async function getDescriptor(shareId: string) {
   const response = await GET(new Request(`http://localhost/api/actions/share/${shareId}`) as never, {
-    params: { id: shareId },
+    params: Promise.resolve({ id: shareId }),
   });
   return response.json();
 }
@@ -30,7 +30,7 @@ describe("share action descriptor", () => {
     expect(descriptor.description).toContain("Full medical record");
     expect(descriptor.description).toContain(fixture.appointment.doctorName);
     expect(descriptor.description).toContain(fixture.appointment.clinic);
-    expect(descriptor.links.actions[0].href).toBe(`/share/${share.shareId}`);
+    expect(descriptor.links.actions[0].href).toContain("/s/");
     expect(descriptor.links.actions[0].href).not.toContain("token=");
     expect(descriptor.disabled).toBe(false);
   });

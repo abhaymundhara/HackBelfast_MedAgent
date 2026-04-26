@@ -207,16 +207,25 @@ export function formatAppointmentShareCreated(input: {
   shareUrl: string;
   dashboardUrl: string;
   chainRef?: string | null;
+  shareId?: string;
 }) {
   const lines = [
-    `Shared your full uploaded medical record with ${input.doctorName}.`,
-    `Doctor access link: ${input.shareUrl}`,
+    `done! i've shared your medical record with ${input.doctorName}.`,
+    "",
+    `doctor's link: ${input.shareUrl}`,
   ];
   const proof = formatSolanaProof({ action: "record share", chainRef: input.chainRef ?? null });
   if (proof) {
     lines.push("", proof);
   }
-  lines.push("", "You can revoke future live access from your dashboard.", input.dashboardUrl);
+  if (input.shareId) {
+    lines.push("", `blink: ${generateBlinkUrl(`/api/actions/share/${input.shareId}`)}`);
+  }
+  lines.push(
+    "",
+    `you can revoke access anytime from your dashboard:`,
+    input.dashboardUrl,
+  );
   return lines.join("\n");
 }
 
@@ -226,12 +235,18 @@ export function formatSolanaProof(input: {
 }): string {
   if (!input.chainRef) return "";
   if (input.chainRef.startsWith("local-solana:")) {
-    return "your record has been logged securely. blockchain confirmation is pending.";
+    return "your data is safely stored and protected.";
   }
   return [
-    `your ${input.action} has been securely logged on a permanent ledger — no one can tamper with it.`,
-    `proof: https://solscan.io/tx/${input.chainRef}?cluster=devnet`,
+    `your ${input.action} is safely stored and permanently protected — here's your receipt:`,
+    `https://solscan.io/tx/${input.chainRef}?cluster=devnet`,
   ].join("\n");
+}
+
+export function generateBlinkUrl(actionPath: string): string {
+  const appBaseUrl = process.env.APP_BASE_URL ?? "http://localhost:3000";
+  const actionUrl = `solana-action:${appBaseUrl}${actionPath}`;
+  return `https://dial.to/?action=${encodeURIComponent(actionUrl)}&cluster=devnet`;
 }
 
 export function formatFollowUpAnswer(input: {

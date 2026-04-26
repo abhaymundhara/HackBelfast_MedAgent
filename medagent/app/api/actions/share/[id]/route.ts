@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { decryptJson } from "@/lib/crypto";
 import { getAppointment, getPatientRow, getSharedRecord } from "@/lib/db";
+import { getSolscanTxUrl } from "@/lib/solana/client";
 import { EmergencySummary } from "@/lib/types";
 
 const CORS_HEADERS = {
@@ -17,9 +18,10 @@ export async function OPTIONS() {
 
 export async function GET(
   _request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
-  const share = getSharedRecord(params.id);
+  const { id } = await params;
+  const share = getSharedRecord(id);
 
   if (!share) {
     return NextResponse.json(
@@ -48,31 +50,38 @@ export async function GET(
 
   let statusText = "";
   if (share.status === "revoked") {
-    statusText = "\nStatus: Access Revoked";
+    statusText = "Status: Access Revoked";
   } else if (new Date(share.expires_at) <= new Date()) {
-    statusText = "\nStatus: Expired";
+    statusText = "Status: Expired";
   } else {
     const remaining = new Date(share.expires_at).getTime() - Date.now();
     const hours = Math.floor(remaining / (1000 * 60 * 60));
     const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
-    statusText = `\nExpires in ${hours}h ${minutes}m`;
+    statusText = `Expires in ${hours}h ${minutes}m`;
   }
+
+  const chainLine = share.share_chain_ref && !share.share_chain_ref.startsWith("local-solana:")
+    ? `Verified on Solana: ${getSolscanTxUrl(share.share_chain_ref)}`
+    : "Audit logged locally";
 
   const isDisabled =
     share.status === "revoked" ||
     new Date(share.expires_at) <= new Date() ||
     share.access_count >= share.max_access_count;
 
+  const appBaseUrl = process.env.APP_BASE_URL ?? "http://localhost:3000";
+
   const response = {
     type: "action",
     icon: "https://raw.githubusercontent.com/nicecatch/medagent-assets/main/medical-record-blink.png",
-    title: `Medical Record — ${patientName}`,
+    title: `MedAgent — ${patientName}'s Record`,
     description: [
       `Scope: ${fieldsText}`,
       appointment
-        ? `Appointment: ${appointment.doctorName}, ${appointment.clinic}, ${new Date(appointment.startsAt).toLocaleString()}`
-        : `Doctor: ${share.doctor_name}`,
-      `${statusText.trim() || "Verified on Solana"}`,
+        ? `Appointment: ${appointment.doctorName} at ${appointment.clinic}`
+        : `Shared with: ${share.doctor_name}`,
+      statusText,
+      chainLine,
     ].join("\n"),
     label: "View Record",
     disabled: isDisabled,
@@ -90,7 +99,7 @@ export async function GET(
       actions: [
         {
           type: "external-link",
-          href: `/share/${params.id}`,
+          href: `${appBaseUrl}/s/${share.short_code ?? id}`,
           label: "View Record",
         },
       ],

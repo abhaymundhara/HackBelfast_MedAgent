@@ -51,7 +51,7 @@ import {
 } from "@/lib/db";
 import { sha256Hash } from "@/lib/crypto";
 import { solanaAuditStore } from "@/lib/solana/auditStore";
-import { formatSolanaProof } from "@/lib/imessage/outbound";
+import { formatSolanaProof, generateBlinkUrl } from "@/lib/imessage/outbound";
 import { parseNameDobInput } from "@/lib/imessage/onboardingNlp";
 import {
   isPdfAttachment,
@@ -681,6 +681,8 @@ async function handleOnboardingMedicalReportUpload(
         "",
         "you're all set! you can now ask me about your record (\"what are my allergies?\") or book a GP appointment in belfast. just text me anytime.",
         ...(proofLine ? ["", proofLine] : []),
+        "",
+        `your audit trail: ${generateBlinkUrl(`/api/actions/audit/${profile.patientId}`)}`,
       ].join("\n"),
     });
   } catch (error) {
@@ -1040,9 +1042,10 @@ async function handlePatientAppointmentIntent(
     chatGuid,
     text: formatAppointmentShareCreated({
       doctorName: appointment.doctorName,
-      shareUrl: `${appBaseUrl}${result.shareUrl}`,
+      shareUrl: `${appBaseUrl}${result.shortUrl}`,
       dashboardUrl: `${appBaseUrl}/patient/dashboard`,
       chainRef: result.chainRef,
+      shareId: result.shareId,
     }),
   });
 }
