@@ -50,7 +50,6 @@ import {
 } from "@/lib/db";
 import { parseNameDobInput } from "@/lib/imessage/onboardingNlp";
 import {
-  extractNameDobFromReport,
   isPdfAttachment,
   processMedicalReportPdfOnboarding,
 } from "@/lib/imessage/medicalReportPdf";
@@ -428,11 +427,7 @@ async function startBaymaxOnboarding(
   });
   await bridge.sendText({
     chatGuid,
-    text: "hey! i'm baymax — your secure medical assistant for cross-border care on the island of ireland. everything's private and auditable on solana.",
-  });
-  await bridge.sendText({
-    chatGuid,
-    text: "why don't you send me your medical history report as a PDF, and i'll get you onboarded! i'll pull your name, DOB, allergies, medications, and conditions straight from it.",
+    text: "hey! i'm baymax — your secure medical assistant for cross-border care on the island of ireland. everything's private and auditable on solana. why don't you send me your medical history report as a PDF and i'll get you onboarded!",
   });
 }
 

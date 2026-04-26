@@ -1,8 +1,26 @@
 import { describe, expect, it } from "vitest";
 
-import { buildEmergencySummaryFromReport } from "@/lib/imessage/medicalReportPdf";
+import {
+  buildEmergencySummaryFromReport,
+  extractNameDobFromReport,
+} from "@/lib/imessage/medicalReportPdf";
 
 describe("medical report PDF extraction", () => {
+  it("extracts patient name and DOB from report demographics", () => {
+    expect(
+      extractNameDobFromReport(
+        [
+          "Patient Name: Sameer Gul",
+          "DOB: 23/11/1988",
+          "Known Allergies: Penicillin",
+        ].join("\n"),
+      ),
+    ).toEqual({
+      name: "Sameer Gul",
+      dob: "1988-11-23",
+    });
+  });
+
   it("parses wrapped OCR text with realistic section headers", () => {
     const reportText = [
       "Patient Name: Sameer Gul",
