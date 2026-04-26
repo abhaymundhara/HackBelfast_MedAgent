@@ -222,9 +222,6 @@ export function formatAppointmentShareCreated(input: {
   if (proof) {
     lines.push("", proof);
   }
-  if (input.shareId) {
-    lines.push("", `blink: ${generateBlinkUrl(`/api/actions/share/${input.shareId}`)}`);
-  }
   lines.push(
     "",
     `you can revoke access anytime from your dashboard:`,

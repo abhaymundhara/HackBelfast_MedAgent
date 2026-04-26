@@ -151,5 +151,7 @@ describe("iMessage appointment flow", () => {
     expect(texts).toContain("done! i've shared your medical record");
     expect(texts).toContain("/share/");
     expect(texts).toContain("#token=");
+    expect(texts).not.toContain("dial.to");
+    expect(texts).not.toContain("blink:");
   });
 });
